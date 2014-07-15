@@ -10,6 +10,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{7A6D4C
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskBook.DomainModel", "TaskBook.DomainModel\TaskBook.DomainModel.csproj", "{E324A2EE-A49F-4B96-80C6-5E87FAAB474A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskBook.DataAccessLayer", "TaskBook.DataAccessLayer\TaskBook.DataAccessLayer.csproj", "{BD70DB56-CC9D-4040-8DCD-1A12C3548F73}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,6 +24,14 @@ Global
 		{CDD91F07-1CF3-4CA7-A36A-7BA627F85634}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CDD91F07-1CF3-4CA7-A36A-7BA627F85634}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CDD91F07-1CF3-4CA7-A36A-7BA627F85634}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E324A2EE-A49F-4B96-80C6-5E87FAAB474A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E324A2EE-A49F-4B96-80C6-5E87FAAB474A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E324A2EE-A49F-4B96-80C6-5E87FAAB474A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E324A2EE-A49F-4B96-80C6-5E87FAAB474A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD70DB56-CC9D-4040-8DCD-1A12C3548F73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD70DB56-CC9D-4040-8DCD-1A12C3548F73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD70DB56-CC9D-4040-8DCD-1A12C3548F73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD70DB56-CC9D-4040-8DCD-1A12C3548F73}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
