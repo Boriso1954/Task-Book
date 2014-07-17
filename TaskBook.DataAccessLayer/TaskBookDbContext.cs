@@ -4,12 +4,11 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Identity.EntityFramework;
 using TaskBook.DomainModel;
 
 namespace TaskBook.DataAccessLayer
 {
-    public class TaskBookDbContext: IdentityDbContext<User>
+    public class TaskBookDbContext: DbContext
     {
         public TaskBookDbContext()
             : base("TaskBookDbContext")
@@ -19,11 +18,14 @@ namespace TaskBook.DataAccessLayer
             Configuration.ProxyCreationEnabled = false;
         }
 
+        public DbSet<TbTask> Tasks { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            // Model configurations here
+            // Other schema configurations here
         }
+
     }
 }
