@@ -5,7 +5,7 @@ namespace TaskBook.DataAccessLayer.AuthMigrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<TaskBook.DataAccessLayer.AuthDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<AuthDbContext>
     {
         public Configuration()
         {
@@ -13,7 +13,7 @@ namespace TaskBook.DataAccessLayer.AuthMigrations
             MigrationsDirectory = @"AuthMigrations";
         }
 
-        protected override void Seed(TaskBook.DataAccessLayer.AuthDbContext context)
+        protected override void Seed(AuthDbContext context)
         {
             //  This method will be called after migrating to the latest version.
 
