@@ -11,6 +11,9 @@ namespace TaskBook.WebApi
     {
         protected void Application_Start()
         {
+            UnityConfig.RegisterComponents();
+
+            // Enables attribute routing
             GlobalConfiguration.Configure(WebApiConfig.Register);
         }
     }
