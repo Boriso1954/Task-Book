@@ -13,6 +13,7 @@ using TaskBook.DataAccessLayer;
 
 namespace TaskBook.WebApi.Controllers
 {
+    [Authorize]
     [RoutePrefix("api/Tasks")]
     public class TasksController : ApiController
     {

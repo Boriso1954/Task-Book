@@ -5,6 +5,7 @@ using System.Web;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
+using TaskBook.WebApi.Providers;
 
 namespace TaskBook.WebApi
 {
@@ -16,8 +17,8 @@ namespace TaskBook.WebApi
             {
                 AllowInsecureHttp = true,
                 TokenEndpointPath = new PathString("/Token"),
-                AccessTokenExpireTimeSpan = TimeSpan.FromDays(1)//,
-                //Provider = new SimpleAuthorizationServerProvider()
+                AccessTokenExpireTimeSpan = TimeSpan.FromDays(1),
+                Provider = new SimpleAuthorizationServerProvider()
             };
 
             // Token Generation

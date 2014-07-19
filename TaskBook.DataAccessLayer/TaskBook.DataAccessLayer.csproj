@@ -59,7 +59,7 @@
       <DependentUpon>201407170830546_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="AuthMigrations\Configuration.cs" />
-    <Compile Include="Repositories\AuthRepository.cs" />
+    <Compile Include="Repositories\UserRepository.cs" />
     <Compile Include="AuthDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaskBookDbContext.cs" />
