@@ -30,10 +30,19 @@
 
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-left">
-                    @RenderSection("NavbarLeft", required: false)
+                    <li data-ng-show="false"><a href="#">Project & Managers</a></li>
+                    <li data-ng-show="false"><a href="#">Add Project</a></li>
+                    <li data-ng-show="false"><a href="#">Add Manager</a></li>
+                    <li data-ng-show="false"><a href="#">Users & Tasks</a></li>
+                    <li data-ng-show="false"><a href="#">Add User</a></li>
+                    <li data-ng-show="false"><a href="#">Add Task</a></li>
+                    <li data-ng-show="false"><a href="#">Tasks</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    @RenderSection("NavbarRight", required: false)
+                    <li data-ng-show="true"><a href="#">Welcome</a></li>
+                    <li data-ng-show="true"> <a href="#/login">Login</a></li>
+                    <li data-ng-show="false"> <a href="#/logout">Logout</a></li>
+                    <li data-ng-show="true"> <a href="#/language">Language</a></li>
                 </ul>
             </div>
         </div>

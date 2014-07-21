@@ -1,0 +1,17 @@
+﻿.jumbotron, .well {
+  margin-top: 50px;
+}
+
+footer {
+  clear: both;
+}
+
+.radio,
+.checkbox {
+  padding-left: 20px;
+}
+
+.radio label,
+.checkbox label {
+  padding-left: 0px;
+}

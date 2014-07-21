@@ -27,11 +27,14 @@ namespace TaskBook.WebApi
 
             bundles.Add(new ScriptBundle("~/bundles/app").Include(
                        "~/Scripts/app/app.js",
-                       "~/Scripts/app/controllers/*.js"
+                       "~/Scripts/app/controllers/*.js",
+                       "~/Scripts/app/services/*.js"
                        ));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css"
+                      "~/Content/bootstrap.css",
+                      "~/Content/site.css",
+                      "~/Content/app.css"
                       ));
         }
     }

@@ -1,0 +1,46 @@
+﻿<div class="row">
+    <section class="col-md-offset-3 col-md-6">
+        <div class = "well">
+            <h2>Log in</h2>
+            <form class="form-horizontal" role="form">
+                <hr />
+                <ul class="text-danger"">
+                    <li data-ng-show="false"></li>
+                </ul>
+
+                <div class="form-group">
+                    <label for="LoginUserName" class="col-md-3 control-label">User name</label>
+                    <div class="col-md-9">
+                        <input type="text" id="LoginUserName" class="form-control" placeholder="Enter your user name" data-ng-model="loginData.userName" autofocus/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="LoginPassword" class="col-md-3 control-label">Password</label>
+                    <div class="col-md-9">
+                        <input type="password" id="LoginPassword" class="form-control" placeholder="Enter password" data-ng-model="loginData.password" />
+                    </div>
+                </div>
+
+                 <div class="form-group">
+                    <div class="col-md-offset-3 col-md-9">
+                        <div class="checkbox">
+                            <input type="checkbox" id="LoginRememberMe" data-ng-model="loginData.rememberMe" />
+                            <label for="LoginRememberMe">Remember me?</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-3 col-md-9">
+                        <button type="submit" class="btn btn-primary" data-ng-click="login()">Log in</button>
+                    </div>
+                </div>
+
+                <div class="">
+                    <p><a href="#/forgotPassword">Forgot your password?</a></p>
+                </div>
+            </form>
+        </div>
+    </section>
+</div>
