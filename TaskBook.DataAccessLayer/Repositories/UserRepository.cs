@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -12,23 +9,29 @@ namespace TaskBook.DataAccessLayer.Repositories
     public class UserRepository: IDisposable
     {
         private AuthDbContext _db;
-        private UserManager<User> _userManager;
+        private UserManager<TbUser> _userManager;
 
-        public UserRepository()
+        public UserRepository(AuthDbContext database)
         {
-            _db = new AuthDbContext();
-            _userManager = new UserManager<User>(new UserStore<User>(_db));
+            _db = database;
+            _userManager = new UserManager<TbUser>(new UserStore<TbUser>(_db));
         }
 
-        public async Task<IdentityResult> RegisterUser(User user, string password)
+        public async Task<IdentityResult> CreateUser(TbUser user, string password)
         {
             var result = await _userManager.CreateAsync(user, password);
             return result;
         }
 
-        public async Task<User> GetUser(string userName, string password)
+        public async Task<TbUser> GetUserAsync(string userName, string password)
         {
             var user = await _userManager.FindAsync(userName, password);
+            return user;
+        }
+
+        public TbUser GetUserByName(string userName)
+        {
+            var user = _userManager.FindByName(userName);
             return user;
         }
 

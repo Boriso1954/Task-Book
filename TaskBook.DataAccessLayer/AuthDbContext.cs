@@ -9,11 +9,16 @@ using TaskBook.DomainModel;
 
 namespace TaskBook.DataAccessLayer
 {
-    public class AuthDbContext: IdentityDbContext<User>
+    public class AuthDbContext: IdentityDbContext<TbUser>
     {
         public AuthDbContext()
             : base("TaskBookDbContext")
         {
+        }
+
+        public static AuthDbContext Create()
+        {
+            return new AuthDbContext();
         }
     }
 }

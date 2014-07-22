@@ -5,8 +5,11 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.Owin.Security.OAuth;
+using Microsoft.AspNet.Identity.Owin;
+
 using TaskBook.DataAccessLayer.Repositories;
 using TaskBook.DomainModel;
+using TaskBook.DataAccessLayer.AuthManagers;
 
 namespace TaskBook.WebApi.Providers
 {
@@ -22,16 +25,13 @@ namespace TaskBook.WebApi.Providers
         {
 
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
+            var userManager = context.OwinContext.GetUserManager<TbUserManager>();
 
-            using(UserRepository _userRepository = new UserRepository())
+            var user = await userManager.FindAsync(context.UserName, context.Password);
+            if(user == null)
             {
-                User user = await _userRepository.GetUser(context.UserName, context.Password);
-
-                if(user == null)
-                {
-                    context.SetError("invalid_grant", "The user name or password is incorrect.");
-                    return;
-                }
+                context.SetError("invalid_grant", "The user name or password is incorrect.");
+                return;
             }
 
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);

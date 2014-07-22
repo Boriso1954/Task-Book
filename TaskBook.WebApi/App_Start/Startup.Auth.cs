@@ -2,9 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
+using TaskBook.DataAccessLayer;
+using TaskBook.DataAccessLayer.AuthManagers;
+using TaskBook.DataAccessLayer.Repositories;
+using TaskBook.DomainModel;
 using TaskBook.WebApi.Providers;
 
 namespace TaskBook.WebApi
@@ -13,6 +19,11 @@ namespace TaskBook.WebApi
     {
         public void ConfigureAuth(IAppBuilder app)
         {
+            // Configure the db auth context, user manager and role manager to use a single instance per request
+            app.CreatePerOwinContext(AuthDbContext.Create);
+            app.CreatePerOwinContext<TbUserManager>(TbUserManager.Create);
+            app.CreatePerOwinContext<TbRoleManager>(TbRoleManager.Create);
+
             OAuthAuthorizationServerOptions OAuthServerOptions = new OAuthAuthorizationServerOptions()
             {
                 AllowInsecureHttp = true,

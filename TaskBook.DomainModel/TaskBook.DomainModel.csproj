@@ -55,9 +55,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entity.cs" />
-    <Compile Include="Role.cs" />
+    <Compile Include="TbRole.cs" />
     <Compile Include="TbTask.cs" />
-    <Compile Include="User.cs" />
+    <Compile Include="TbUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

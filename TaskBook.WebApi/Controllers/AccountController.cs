@@ -26,7 +26,7 @@ namespace TaskBook.WebApi.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = new User
+            var user = new TbUser
             {
                 UserName = userModel.UserName,
                 FirstName = userModel.FirstName,
@@ -34,7 +34,7 @@ namespace TaskBook.WebApi.Controllers
                 Email = userModel.Email
             };
 
-            IdentityResult result = await _userRepository.RegisterUser(user, userModel.Password);
+            IdentityResult result = await _userRepository.CreateUser(user, userModel.Password);
             IHttpActionResult errorResult = GetErrorResult(result);
             if(errorResult != null)
             {

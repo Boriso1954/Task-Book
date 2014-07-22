@@ -8,7 +8,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace TaskBook.DomainModel
 {
-    public class User: IdentityUser
+    public class TbUser: IdentityUser
     {
         [Required]
         [MaxLength(25, ErrorMessage = "FirstName shall be from 1 to 25 characters long.")]

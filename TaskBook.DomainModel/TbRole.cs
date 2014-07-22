@@ -8,7 +8,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace TaskBook.DomainModel
 {
-    public class Role: IdentityRole
+    public class TbRole: IdentityRole
     {
         [Required]
         [MaxLength(256, ErrorMessage = "Description should be up to 256 characters long.")]
