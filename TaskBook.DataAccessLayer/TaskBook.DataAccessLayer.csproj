@@ -81,21 +81,20 @@
   <ItemGroup>
     <Compile Include="AuthManagers\TbRoleManager.cs" />
     <Compile Include="AuthManagers\TbUserManager.cs" />
-    <Compile Include="AuthMigrations\201407170830546_Initial.cs" />
-    <Compile Include="AuthMigrations\201407170830546_Initial.Designer.cs">
-      <DependentUpon>201407170830546_Initial.cs</DependentUpon>
+    <Compile Include="AuthMigrations\201407221649540_Initial.cs" />
+    <Compile Include="AuthMigrations\201407221649540_Initial.Designer.cs">
+      <DependentUpon>201407221649540_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AuthMigrations\201407221657563_TasksAdded.cs" />
+    <Compile Include="AuthMigrations\201407221657563_TasksAdded.Designer.cs">
+      <DependentUpon>201407221657563_TasksAdded.cs</DependentUpon>
     </Compile>
     <Compile Include="AuthMigrations\Configuration.cs" />
+    <Compile Include="Configurations\UserConfiguration.cs" />
     <Compile Include="Repositories\RoleRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
-    <Compile Include="AuthDbContext.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaskBookDbContext.cs" />
-    <Compile Include="TaskBookMigrations\201407170833275_Initial.cs" />
-    <Compile Include="TaskBookMigrations\201407170833275_Initial.Designer.cs">
-      <DependentUpon>201407170833275_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TaskBookMigrations\Configuration.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TaskBook.DomainModel\TaskBook.DomainModel.csproj">
@@ -108,11 +107,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="AuthMigrations\201407170830546_Initial.resx">
-      <DependentUpon>201407170830546_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="AuthMigrations\201407221649540_Initial.resx">
+      <DependentUpon>201407221649540_Initial.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TaskBookMigrations\201407170833275_Initial.resx">
-      <DependentUpon>201407170833275_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="AuthMigrations\201407221657563_TasksAdded.resx">
+      <DependentUpon>201407221657563_TasksAdded.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -4,8 +4,8 @@
             <h2>Log in</h2>
             <form class="form-horizontal" role="form">
                 <hr />
-                <ul class="text-danger"">
-                    <li data-ng-show="false"></li>
+                <ul class="text-danger">
+                    <li data-ng-hide="message == ''" data-ng-bind="message"></li>
                 </ul>
 
                 <div class="form-group">

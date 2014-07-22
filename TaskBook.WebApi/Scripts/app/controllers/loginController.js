@@ -7,16 +7,16 @@ app.controller('loginController', ['$scope', '$location', 'authService', functio
         rememberMe: true
     };
 
-    //$scope.login = function () {
+    $scope.login = function () {
 
-    //    authService.login($scope.loginData).then(function (response) {
+        authService.login($scope.loginData).then(function (response) {
 
-    //        $location.path('/orders');
+            $location.path('api/admin');
 
-    //    },
-    //     function (err) {
-    //         $scope.message = err.error_description;
-    //     });
-    //};
+        },
+         function (err) {
+             $scope.message = err.error_description;
+         });
+    };
 
 }]);

@@ -198,7 +198,9 @@
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\app\app.js" />
+    <Content Include="Scripts\app\controllers\adminController.js" />
     <Content Include="Scripts\app\controllers\forgotPasswordController.js" />
+    <Content Include="Scripts\app\services\projectService.js" />
     <Content Include="Scripts\app\services\authService.js" />
     <Content Include="Scripts\app\controllers\homeController.js" />
     <Content Include="Scripts\app\controllers\loginController.js" />

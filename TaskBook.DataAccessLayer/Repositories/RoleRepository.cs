@@ -11,10 +11,10 @@ namespace TaskBook.DataAccessLayer.Repositories
 {
     public class RoleRepository: IDisposable
     {
-        private AuthDbContext _db;
+        private TaskBookDbContext _db;
         private RoleManager<TbRole> _roleManager;
 
-        public RoleRepository(AuthDbContext database)
+        public RoleRepository(TaskBookDbContext database)
         {
             _db = database;
             _roleManager = new RoleManager<TbRole>(new RoleStore<TbRole>(_db));

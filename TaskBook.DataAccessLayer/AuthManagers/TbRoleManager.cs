@@ -20,7 +20,7 @@ namespace TaskBook.DataAccessLayer.AuthManagers
 
         public static TbRoleManager Create(IdentityFactoryOptions<TbRoleManager> options, IOwinContext context)
         {
-            var roleManager = new TbRoleManager(new RoleStore<TbRole>(context.Get<AuthDbContext>()));
+            var roleManager = new TbRoleManager(new RoleStore<TbRole>(context.Get<TaskBookDbContext>()));
             return roleManager;
         }
     }

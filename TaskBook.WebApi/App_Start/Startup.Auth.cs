@@ -20,7 +20,7 @@ namespace TaskBook.WebApi
         public void ConfigureAuth(IAppBuilder app)
         {
             // Configure the db auth context, user manager and role manager to use a single instance per request
-            app.CreatePerOwinContext(AuthDbContext.Create);
+            app.CreatePerOwinContext(TaskBookDbContext.Create);
             app.CreatePerOwinContext<TbUserManager>(TbUserManager.Create);
             app.CreatePerOwinContext<TbRoleManager>(TbRoleManager.Create);
 

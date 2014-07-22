@@ -8,10 +8,10 @@ namespace TaskBook.DataAccessLayer.Repositories
 {
     public class UserRepository: IDisposable
     {
-        private AuthDbContext _db;
+        private TaskBookDbContext _db;
         private UserManager<TbUser> _userManager;
 
-        public UserRepository(AuthDbContext database)
+        public UserRepository(TaskBookDbContext database)
         {
             _db = database;
             _userManager = new UserManager<TbUser>(new UserStore<TbUser>(_db));

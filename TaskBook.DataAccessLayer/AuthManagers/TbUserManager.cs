@@ -20,7 +20,7 @@ namespace TaskBook.DataAccessLayer.AuthManagers
 
         public static TbUserManager Create(IdentityFactoryOptions<TbUserManager> options, IOwinContext context)
         {
-            var userManager = new TbUserManager(new UserStore<TbUser>(context.Get<AuthDbContext>()));
+            var userManager = new TbUserManager(new UserStore<TbUser>(context.Get<TaskBookDbContext>()));
             return userManager;
         }
     }

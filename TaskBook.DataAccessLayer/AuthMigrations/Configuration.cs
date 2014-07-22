@@ -16,7 +16,7 @@ namespace TaskBook.DataAccessLayer.AuthMigrations
     using TaskBook.DataAccessLayer.Repositories;
     using TaskBook.DomainModel;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<AuthDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<TaskBookDbContext>
     {
         public Configuration()
         {
@@ -24,11 +24,8 @@ namespace TaskBook.DataAccessLayer.AuthMigrations
             MigrationsDirectory = @"AuthMigrations";
         }
 
-        protected override void Seed(AuthDbContext context)
+        protected override void Seed(TaskBookDbContext context)
         {
-            var userManager = new TbUserManager(new UserStore<TbUser>(context));
-            var roleManager = new TbRoleManager(new RoleStore<TbRole>(context));
-
             List<TbRole> roles = new List<TbRole>()
             {
                 new TbRole()
@@ -53,12 +50,15 @@ namespace TaskBook.DataAccessLayer.AuthMigrations
                 }
             };
 
-            foreach(var role in roles)
+            using(var roleManager = new TbRoleManager(new RoleStore<TbRole>(context)))
             {
-                bool roleExists = roleManager.RoleExists(role.Name);
-                if(!roleExists)
+                foreach(var role in roles)
                 {
-                    roleManager.Create(role);
+                    bool roleExists = roleManager.RoleExists(role.Name);
+                    if(!roleExists)
+                    {
+                        roleManager.Create(role);
+                    }
                 }
             }
 
@@ -66,38 +66,28 @@ namespace TaskBook.DataAccessLayer.AuthMigrations
             const string password = "admin1";
             const string email = "admin@example.com";
 
-            var user = userManager.FindByName(userName);
-            if(user == null)
+            using(var userManager = new TbUserManager(new UserStore<TbUser>(context)))
             {
-                user = new TbUser()
+                var user = userManager.FindByName(userName);
+                if(user == null)
                 {
-                    UserName = userName,
-                    Email = email,
-                    FirstName = "Admin",
-                    LastName = "Admin",
-                };
-                userManager.Create(user, password);
+                    user = new TbUser()
+                    {
+                        UserName = userName,
+                        Email = email,
+                        FirstName = "Admin",
+                        LastName = "Admin",
+                    };
+                    userManager.Create(user, password);
+                }
+
+                var adminRole = roles.First(r => r.Name == "Admin");
+                var rolesForUser = userManager.GetRoles(user.Id);
+                if(!rolesForUser.Contains(adminRole.Name))
+                {
+                    var result = userManager.AddToRole(user.Id, adminRole.Name);
+                }
             }
-
-            var adminRole = roles.First(r => r.Name == "Admin");
-            var rolesForUser = userManager.GetRoles(user.Id);
-            if(!rolesForUser.Contains(adminRole.Name))
-            {
-                var result = userManager.AddToRole(user.Id, adminRole.Name);
-            }
-
-            //  This method will be called after migrating to the latest version.
-
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data. E.g.
-            //
-            //    context.People.AddOrUpdate(
-            //      p => p.FullName,
-            //      new Person { FullName = "Andrew Peters" },
-            //      new Person { FullName = "Brice Lambson" },
-            //      new Person { FullName = "Rowan Miller" }
-            //    );
-            //
         }
     }
 }
