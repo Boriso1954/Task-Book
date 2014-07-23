@@ -13,5 +13,6 @@ namespace TaskBook.DomainModel
         [Required]
         [MaxLength(256, ErrorMessage = "Description should be up to 256 characters long.")]
         public string Description { get; set; }
+        public ICollection<Permission> Permissions { get; set; }
     }
 }

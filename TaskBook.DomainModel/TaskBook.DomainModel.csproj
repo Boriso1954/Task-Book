@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entity.cs" />
+    <Compile Include="Permission.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="TaskStatus.cs" />
     <Compile Include="TbRole.cs" />
