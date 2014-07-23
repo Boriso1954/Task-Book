@@ -15,9 +15,10 @@ namespace TaskBook.DataAccessLayer
         public TaskBookDbContext()
             : base("TaskBookDbContext")
         {
+            Configuration.ProxyCreationEnabled = false;
         }
 
-        public DbSet<TbTask> Tasks { get; set; }
+        //public DbSet<TbTask> Tasks { get; set; }
         public DbSet<Project> Projects { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -25,7 +26,7 @@ namespace TaskBook.DataAccessLayer
             base.OnModelCreating(modelBuilder);
 
             // Other schema configurations here
-            modelBuilder.Configurations.Add(new UserConfiguration());
+            //modelBuilder.Configurations.Add(new UserConfiguration());
         }
 
         public static TaskBookDbContext Create()

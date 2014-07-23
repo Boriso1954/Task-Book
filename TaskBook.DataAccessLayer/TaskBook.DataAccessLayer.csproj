@@ -81,16 +81,16 @@
   <ItemGroup>
     <Compile Include="AuthManagers\TbRoleManager.cs" />
     <Compile Include="AuthManagers\TbUserManager.cs" />
-    <Compile Include="AuthMigrations\201407221649540_Initial.cs" />
-    <Compile Include="AuthMigrations\201407221649540_Initial.Designer.cs">
-      <DependentUpon>201407221649540_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="AuthMigrations\201407221657563_TasksAdded.cs" />
-    <Compile Include="AuthMigrations\201407221657563_TasksAdded.Designer.cs">
-      <DependentUpon>201407221657563_TasksAdded.cs</DependentUpon>
-    </Compile>
-    <Compile Include="AuthMigrations\Configuration.cs" />
     <Compile Include="Configurations\UserConfiguration.cs" />
+    <Compile Include="Migrations\201407231327001_Initial.cs" />
+    <Compile Include="Migrations\201407231327001_Initial.Designer.cs">
+      <DependentUpon>201407231327001_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201407231332213_Project.cs" />
+    <Compile Include="Migrations\201407231332213_Project.Designer.cs">
+      <DependentUpon>201407231332213_Project.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Repositories\RoleRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
     <Compile Include="TaskBookDbContext.cs" />
@@ -107,11 +107,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="AuthMigrations\201407221649540_Initial.resx">
-      <DependentUpon>201407221649540_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201407231327001_Initial.resx">
+      <DependentUpon>201407231327001_Initial.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AuthMigrations\201407221657563_TasksAdded.resx">
-      <DependentUpon>201407221657563_TasksAdded.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201407231332213_Project.resx">
+      <DependentUpon>201407231332213_Project.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

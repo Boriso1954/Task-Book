@@ -10,12 +10,12 @@ namespace TaskBook.DataAccessLayer.Configurations
 {
     public class UserConfiguration: EntityTypeConfiguration<TbUser>
     {
-        public UserConfiguration()
-        {
-            HasOptional(u => u.Project)
-                   .WithMany(u => u.Users)
-                   .HasForeignKey(u => u.ProjectId)
-                   .WillCascadeOnDelete(false);
-        }
+        //public UserConfiguration()
+        //{
+        //    HasOptional(u => u.Project)
+        //           .WithMany()
+        //           .HasForeignKey(u => u.ProjectId)
+        //           .WillCascadeOnDelete(false);
+        //}
     }
 }
