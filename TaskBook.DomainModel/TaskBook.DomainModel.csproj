@@ -56,6 +56,7 @@
   <ItemGroup>
     <Compile Include="Entity.cs" />
     <Compile Include="Project.cs" />
+    <Compile Include="TaskStatus.cs" />
     <Compile Include="TbRole.cs" />
     <Compile Include="TbTask.cs" />
     <Compile Include="TbUser.cs" />

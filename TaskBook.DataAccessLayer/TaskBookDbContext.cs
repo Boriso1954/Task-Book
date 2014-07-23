@@ -18,7 +18,7 @@ namespace TaskBook.DataAccessLayer
             Configuration.ProxyCreationEnabled = false;
         }
 
-        //public DbSet<TbTask> Tasks { get; set; }
+        public DbSet<TbTask> Tasks { get; set; }
         public DbSet<Project> Projects { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

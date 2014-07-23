@@ -8,12 +8,29 @@ using System.Threading.Tasks;
 
 namespace TaskBook.DomainModel
 {
-    //[Table("Tasks")]
-    //public class TbTask: Entity
-    //{
-    //    [Required(ErrorMessage = "Title is required.")]
-    //    [MaxLength(64, ErrorMessage = "Title should be from 1 to 64 characters long.")]
-    //    [RegularExpression(@"^.+$", ErrorMessage = "Any characters allowed.")]
-    //    public string Title { get; set; }
-    //}
+    [Table("Tasks")]
+    public class TbTask: Entity
+    {
+        [Required(ErrorMessage = "Title is required.")]
+        [MaxLength(64, ErrorMessage = "Title should be from 1 to 64 characters long.")]
+        public string Title { get; set; }
+
+        [Required(ErrorMessage = "Description is required.")]
+        [MaxLength(512, ErrorMessage = "Description should be from 1 to 512 characters long.")]
+        public string Description { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTimeOffset CreatedDate { get; set; }
+
+        public string CreatedById { get; set; }
+        public TbUser CreatedBy { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTimeOffset DueDate { get; set; }
+
+        public TaskStatus Status { get; set; }
+
+        public string AssigneToId { get; set; }
+        public TbUser AssigneTo { get; set; }
+    }
 }

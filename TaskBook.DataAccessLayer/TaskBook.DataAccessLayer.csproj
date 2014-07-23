@@ -90,6 +90,10 @@
     <Compile Include="Migrations\201407231332213_Project.Designer.cs">
       <DependentUpon>201407231332213_Project.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201407231526568_Task.cs" />
+    <Compile Include="Migrations\201407231526568_Task.Designer.cs">
+      <DependentUpon>201407231526568_Task.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Repositories\RoleRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
@@ -112,6 +116,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201407231332213_Project.resx">
       <DependentUpon>201407231332213_Project.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407231526568_Task.resx">
+      <DependentUpon>201407231526568_Task.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

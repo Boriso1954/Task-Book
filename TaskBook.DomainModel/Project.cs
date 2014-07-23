@@ -13,6 +13,9 @@ namespace TaskBook.DomainModel
         [MaxLength(32, ErrorMessage = "Title should be from 1 to 32 characters long.")]
         [RegularExpression(@"^.+$", ErrorMessage = "Any characters allowed.")]
         public string Title { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTimeOffset CreatedDate { get; set; }
         public ICollection<TbUser> Users { get; set; }
     }
 }
