@@ -20,6 +20,7 @@ namespace TaskBook.DataAccessLayer
 
         public DbSet<TbTask> Tasks { get; set; }
         public DbSet<Project> Projects { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -27,6 +28,7 @@ namespace TaskBook.DataAccessLayer
 
             // Other schema configurations here
             //modelBuilder.Configurations.Add(new UserConfiguration());
+            modelBuilder.Configurations.Add(new PermissionConfiguration());
         }
 
         public static TaskBookDbContext Create()

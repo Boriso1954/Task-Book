@@ -81,22 +81,11 @@
   <ItemGroup>
     <Compile Include="AuthManagers\TbRoleManager.cs" />
     <Compile Include="AuthManagers\TbUserManager.cs" />
+    <Compile Include="Configurations\PermissionConfiguration.cs" />
     <Compile Include="Configurations\UserConfiguration.cs" />
-    <Compile Include="Migrations\201407231327001_Initial.cs" />
-    <Compile Include="Migrations\201407231327001_Initial.Designer.cs">
-      <DependentUpon>201407231327001_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201407231332213_Project.cs" />
-    <Compile Include="Migrations\201407231332213_Project.Designer.cs">
-      <DependentUpon>201407231332213_Project.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201407231526568_Task.cs" />
-    <Compile Include="Migrations\201407231526568_Task.Designer.cs">
-      <DependentUpon>201407231526568_Task.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201407231553090_Permission.cs" />
-    <Compile Include="Migrations\201407231553090_Permission.Designer.cs">
-      <DependentUpon>201407231553090_Permission.cs</DependentUpon>
+    <Compile Include="Migrations\201407231803026_Initial.cs" />
+    <Compile Include="Migrations\201407231803026_Initial.Designer.cs">
+      <DependentUpon>201407231803026_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Repositories\RoleRepository.cs" />
@@ -115,17 +104,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201407231327001_Initial.resx">
-      <DependentUpon>201407231327001_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201407231332213_Project.resx">
-      <DependentUpon>201407231332213_Project.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201407231526568_Task.resx">
-      <DependentUpon>201407231526568_Task.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201407231553090_Permission.resx">
-      <DependentUpon>201407231553090_Permission.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201407231803026_Initial.resx">
+      <DependentUpon>201407231803026_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
