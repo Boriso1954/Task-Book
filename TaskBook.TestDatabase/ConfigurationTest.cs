@@ -1,4 +1,4 @@
-namespace TaskBook.DataAccessLayer.Migrations
+namespace TaskBook.TestDatabase
 {
     using System.Collections.Generic;
     using System.Data.Entity.Migrations;
@@ -8,19 +8,19 @@ namespace TaskBook.DataAccessLayer.Migrations
     using TaskBook.DataAccessLayer.AuthManagers;
     using TaskBook.DomainModel;
 
-    internal sealed class Configuration: DbMigrationsConfiguration<TaskBookDbContext>
+    internal sealed class ConfigurationTest: DbMigrationsConfiguration<TaskBookDbContextTest>
     {
-        public Configuration()
+        public ConfigurationTest()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
         }
 
-        protected override void Seed(TaskBookDbContext context)
+        protected override void Seed(TaskBookDbContextTest context)
         {
             PopulateDb(context);
         }
 
-        private void PopulateDb(TaskBookDbContext context)
+        private void PopulateDb(TaskBookDbContextTest context)
         {
             var permissions = new List<Permission>()
                 {
@@ -87,7 +87,7 @@ namespace TaskBook.DataAccessLayer.Migrations
             {
                 new TbRole()
                 {
-                     Name = RoleKey.Admin,
+                     Name = "Admin",
                      Description = "Administrator of the TaskBook application",
                      Permissions = new List<Permission>()
                      {
@@ -98,7 +98,7 @@ namespace TaskBook.DataAccessLayer.Migrations
                 },
                 new TbRole()
                 {
-                     Name = RoleKey.Manager,
+                     Name = "Manager",
                      Description ="Project manager",
                      Permissions = new List<Permission>()
                      {
@@ -114,7 +114,7 @@ namespace TaskBook.DataAccessLayer.Migrations
                 },
                 new TbRole()
                 {
-                     Name = RoleKey.AdvancedUser,
+                     Name = "AdvancedUser",
                      Description = "Advanced user in the project",
                      Permissions = new List<Permission>()
                      {
@@ -129,7 +129,7 @@ namespace TaskBook.DataAccessLayer.Migrations
                 },
                 new TbRole()
                 {
-                     Name = RoleKey.User,
+                     Name = "User",
                      Description = "Mere user in the project",
                      Permissions = new List<Permission>()
                      {
@@ -154,9 +154,9 @@ namespace TaskBook.DataAccessLayer.Migrations
 
             const string userName = "Admin";
             const string password = "admin1";
-            const string email = "admin@taskbook.com";
+            const string email = "admin@example.com";
 
-            using(var userManager = new TbUserManager(new UserStore<TbUser>(context)))
+            using (var userManager = new TbUserManager(new UserStore<TbUser>(context)))
             {
                 var user = userManager.FindByName(userName);
                 if(user == null)
@@ -171,7 +171,7 @@ namespace TaskBook.DataAccessLayer.Migrations
                     userManager.Create(user, password);
                 }
 
-                var adminRole = roles.First(r => r.Name == RoleKey.Admin);
+                var adminRole = roles.First(r => r.Name == "Admin");
                 var rolesForUser = userManager.GetRoles(user.Id);
                 if(!rolesForUser.Contains(adminRole.Name))
                 {

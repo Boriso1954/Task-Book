@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace TaskBook.DomainModel
 {
-    public enum TaskStatus
+    public enum TbTaskStatus
     {
-        New =0,
+        New = 0,
         InProgress,
         Completed
     }

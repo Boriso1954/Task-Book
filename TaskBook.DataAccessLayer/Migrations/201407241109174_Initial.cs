@@ -12,7 +12,7 @@ namespace TaskBook.DataAccessLayer.Migrations
                 c => new
                     {
                         Id = c.Long(nullable: false, identity: true),
-                        Name = c.String(nullable: false, maxLength: 16),
+                        Name = c.String(nullable: false, maxLength: 32),
                         Description = c.String(nullable: false, maxLength: 128),
                         RowVersion = c.Binary(nullable: false, fixedLength: true, timestamp: true, storeType: "rowversion"),
                     })

@@ -83,11 +83,16 @@
     <Compile Include="AuthManagers\TbUserManager.cs" />
     <Compile Include="Configurations\PermissionConfiguration.cs" />
     <Compile Include="Configurations\UserConfiguration.cs" />
-    <Compile Include="Migrations\201407231803026_Initial.cs" />
-    <Compile Include="Migrations\201407231803026_Initial.Designer.cs">
-      <DependentUpon>201407231803026_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201407241109174_Initial.cs" />
+    <Compile Include="Migrations\201407241109174_Initial.Designer.cs">
+      <DependentUpon>201407241109174_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Repositories\RoleRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
     <Compile Include="TaskBookDbContext.cs" />
@@ -104,8 +109,12 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201407231803026_Initial.resx">
-      <DependentUpon>201407231803026_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201407241109174_Initial.resx">
+      <DependentUpon>201407241109174_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

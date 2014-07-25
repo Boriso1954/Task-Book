@@ -28,7 +28,7 @@ namespace TaskBook.DomainModel
         [DataType(DataType.DateTime)]
         public DateTimeOffset DueDate { get; set; }
 
-        public TaskStatus Status { get; set; }
+        public TbTaskStatus Status { get; set; }
 
         public string AssigneToId { get; set; }
         public TbUser AssigneTo { get; set; }
