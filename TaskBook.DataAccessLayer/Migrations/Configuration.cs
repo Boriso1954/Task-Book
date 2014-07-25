@@ -17,6 +17,9 @@ namespace TaskBook.DataAccessLayer.Migrations
 
         protected override void Seed(TaskBookDbContext context)
         {
+            string sql = Properties.Resources.CreateSP;
+            context.Database.ExecuteSqlCommand(sql);
+
             PopulateDb(context);
         }
 

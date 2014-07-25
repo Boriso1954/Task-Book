@@ -2,6 +2,7 @@ namespace TaskBook.TestDatabase
 {
     using System.Collections.Generic;
     using System.Data.Entity.Migrations;
+    using System.Data.SqlClient;
     using System.Linq;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
@@ -17,6 +18,23 @@ namespace TaskBook.TestDatabase
 
         protected override void Seed(TaskBookDbContextTest context)
         {
+            string sql = string.Empty;
+
+            try
+            {
+                // Drop stored procedures
+                sql = TaskBook.DataAccessLayer.Properties.Resources.DropSP;
+                context.Database.ExecuteSqlCommand(sql);
+            }
+            catch (SqlException)
+            {
+                // Do nothing if SP does not exist
+            }
+
+            // Create stored procedures
+            sql = TaskBook.DataAccessLayer.Properties.Resources.CreateSP;
+            context.Database.ExecuteSqlCommand(sql);
+
             PopulateDb(context);
         }
 
