@@ -11,7 +11,6 @@ namespace TaskBook.DomainModel
     {
         [Required(ErrorMessage = "Title is required.")]
         [MaxLength(32, ErrorMessage = "Title should be from 1 to 32 characters long.")]
-        [RegularExpression(@"^.+$", ErrorMessage = "Any characters allowed.")]
         public string Title { get; set; }
 
         [DataType(DataType.DateTime)]

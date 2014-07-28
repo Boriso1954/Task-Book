@@ -6,12 +6,13 @@ app.controller('loginController', ['$scope', '$location', 'authService', functio
         password: "",
         rememberMe: true
     };
+    $scope.message = "";
 
     $scope.login = function () {
 
         authService.login($scope.loginData).then(function (response) {
 
-            $location.path('api/admin');
+            $location.path('/projectsAndManagers');
 
         },
          function (err) {

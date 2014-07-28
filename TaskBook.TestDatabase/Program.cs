@@ -150,8 +150,25 @@ namespace TaskBook.TestDatabase
                         ProjectId = project2Id
                     }
                 };
-                users.ForEach(x => db.Users.AddOrUpdate(y => y.UserName, x));
-                db.SaveChanges();
+
+                // Add users, add users to role
+                using(var userManager = new TbUserManager(new UserStore<TbUser>(db)))
+                {
+                    foreach(var user in users)
+                    {
+                        if(userManager.FindByName(user.UserName) == null)
+                        {
+                            userManager.Create(user, "user12");
+                            string roleName = GetRoleFromUserName(user);
+                            var role = db.Roles.First(r => r.Name == roleName);
+                            var rolesForUser = userManager.GetRoles(user.Id);
+                            if(!rolesForUser.Contains(role.Name))
+                            {
+                                var result = userManager.AddToRole(user.Id, role.Name);
+                            }
+                        }
+                    }
+                }
 
                 string manager1Id = users.First(x => x.UserName == "Manager1").Id;
                 string advancedUser11Id = users.First(x => x.UserName == "AdvancedUser11").Id;
@@ -163,21 +180,6 @@ namespace TaskBook.TestDatabase
                 string advancedUser12Id = users.First(x => x.UserName == "AdvancedUser12").Id;
                 string user12Id = users.First(x => x.UserName == "User12").Id;
                 string user22Id = users.First(x => x.UserName == "User22").Id;
-
-                // Add users to role
-                using(var userManager = new TbUserManager(new UserStore<TbUser>(db)))
-                {
-                    foreach(var user in users)
-                    {
-                        string roleName = GetRoleFromUserName(user);
-                        var role = db.Roles.First(r => r.Name == roleName);
-                        var rolesForUser = userManager.GetRoles(user.Id);
-                        if(!rolesForUser.Contains(role.Name))
-                        {
-                            var result = userManager.AddToRole(user.Id, role.Name);
-                        }
-                    }
-                }
 
                 // Add Tasks
                 var tasks = new List<TbTask>()

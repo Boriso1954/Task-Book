@@ -198,15 +198,17 @@
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\app\app.js" />
-    <Content Include="Scripts\app\controllers\adminController.js" />
+    <Content Include="Scripts\app\controllers\projectsController.js" />
     <Content Include="Scripts\app\controllers\forgotPasswordController.js" />
-    <Content Include="Scripts\app\services\projectService.js" />
+    <Content Include="Scripts\app\services\authInterceptorService.js" />
+    <Content Include="Scripts\app\services\projectsService.js" />
     <Content Include="Scripts\app\services\authService.js" />
     <Content Include="Scripts\app\controllers\homeController.js" />
     <Content Include="Scripts\app\controllers\loginController.js" />
     <Content Include="Scripts\app\views\forgotPassword.html" />
     <Content Include="Scripts\app\views\home.html" />
     <Content Include="Scripts\app\views\login.html" />
+    <Content Include="Scripts\app\views\projectsAndMangers.html" />
     <Content Include="Scripts\errors.json" />
     <Content Include="Scripts\angular-touch.min.js.map" />
     <Content Include="Scripts\angular-sanitize.min.js.map" />
@@ -512,6 +514,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ProjectsController.cs" />
     <Compile Include="Controllers\TasksController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -543,6 +546,10 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DataAccessReader\TaskBook.DataAccessReader.csproj">
+      <Project>{a04e2ecc-faeb-41cc-9b3f-809057dbbd41}</Project>
+      <Name>TaskBook.DataAccessReader</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TaskBook.DataAccessLayer\TaskBook.DataAccessLayer.csproj">
       <Project>{bd70db56-cc9d-4040-8dcd-1a12c3548f73}</Project>
       <Name>TaskBook.DataAccessLayer</Name>

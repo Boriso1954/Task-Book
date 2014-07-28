@@ -13,7 +13,7 @@ using TaskBook.DataAccessLayer;
 
 namespace TaskBook.WebApi.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [RoutePrefix("api/Tasks")]
     public class TasksController : ApiController
     {
@@ -25,12 +25,12 @@ namespace TaskBook.WebApi.Controllers
         }
 
 
-        //// GET api/Tasks
-        //[Route("")]
-        //public IQueryable<TbTask> GetTasks()
-        //{
-        //    return _db.Tasks;
-        //}
+        // GET api/Tasks
+        [Route("")]
+        public IQueryable<TbTask> GetTasks()
+        {
+            return _db.Tasks;
+        }
 
         //// GET api/Tasks/{id}
         //[Route("{id:long}")]

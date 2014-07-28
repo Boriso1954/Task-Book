@@ -17,5 +17,17 @@ app.config(function ($routeProvider) {
         templateUrl: "/Scripts/app/views/forgotPassword.html"
     });
 
+    $routeProvider.when("/projectsAndManagers", {
+        controller: "projectsController",
+        templateUrl: "/Scripts/app/views/projectsAndMangers.html"
+    });
+
     $routeProvider.otherwise({ redirectTo: "/home" });
 });
+    app.config(function ($httpProvider) {
+        $httpProvider.interceptors.push('authInterceptorService');
+    });
+
+    app.run(['authService', function (authService) {
+    authService.fillAuthData();
+}]);

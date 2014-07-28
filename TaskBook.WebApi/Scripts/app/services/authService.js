@@ -41,9 +41,11 @@ app.factory('authService', ['$http', '$q', 'localStorageService', function ($htt
             deferred.reject(err);
         });
 
-        var getRole = function (userName) {
+        return deferred.promise;
+    };
 
-        };
+    var getRole = function (userName) {
+
     };
 
     authServiceFactory.fillAuthData = function () {

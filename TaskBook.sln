@@ -16,6 +16,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskBook.DataAccessLayer", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskBook.TestDatabase", "TaskBook.TestDatabase\TaskBook.TestDatabase.csproj", "{EC948BB6-243C-4EE0-A4E6-85208DBB7E2C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskBook.DataAccessReader", "DataAccessReader\TaskBook.DataAccessReader.csproj", "{A04E2ECC-FAEB-41CC-9B3F-809057DBBD41}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +40,10 @@ Global
 		{EC948BB6-243C-4EE0-A4E6-85208DBB7E2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC948BB6-243C-4EE0-A4E6-85208DBB7E2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC948BB6-243C-4EE0-A4E6-85208DBB7E2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A04E2ECC-FAEB-41CC-9B3F-809057DBBD41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A04E2ECC-FAEB-41CC-9B3F-809057DBBD41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A04E2ECC-FAEB-41CC-9B3F-809057DBBD41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A04E2ECC-FAEB-41CC-9B3F-809057DBBD41}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

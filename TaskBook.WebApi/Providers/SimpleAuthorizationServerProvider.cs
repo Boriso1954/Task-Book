@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web;
 using Microsoft.Owin.Security.OAuth;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 
-using TaskBook.DataAccessLayer.Repositories;
-using TaskBook.DomainModel;
 using TaskBook.DataAccessLayer.AuthManagers;
 
 namespace TaskBook.WebApi.Providers
@@ -35,11 +30,14 @@ namespace TaskBook.WebApi.Providers
             }
 
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);
-            identity.AddClaim(new Claim("sub", context.UserName));
-            identity.AddClaim(new Claim("role", "user"));
+
+            identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
+            foreach(var role in userManager.GetRoles(user.Id))
+            {
+                identity.AddClaim(new Claim(ClaimTypes.Role, role));
+            }
 
             context.Validated(identity);
-
         }
     }
 }
