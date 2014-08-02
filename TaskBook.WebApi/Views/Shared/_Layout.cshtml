@@ -16,7 +16,7 @@
      <!--[if lt IE 7]>
         <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
     <![endif]-->
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation" data-ng-controller="layoutController">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -30,18 +30,19 @@
 
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-left">
-                    <li data-ng-show="false"><a href="#">Project & Managers</a></li>
-                    <li data-ng-show="false"><a href="#">Add Project</a></li>
-                    <li data-ng-show="false"><a href="#">Add Manager</a></li>
+                    <li data-ng-show="authentication.role=='Admin'"><a href="#">Project & Managers</a></li>
+                    <li data-ng-show="authentication.role=='Admin'"><a href="#">Add Project</a></li>
+                    <li data-ng-show="authentication.role=='Admin'"><a href="#">Add Manager</a></li>
                     <li data-ng-show="false"><a href="#">Users & Tasks</a></li>
                     <li data-ng-show="false"><a href="#">Add User</a></li>
                     <li data-ng-show="false"><a href="#">Add Task</a></li>
                     <li data-ng-show="false"><a href="#">Tasks</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li data-ng-show="true"><a href="#">Welcome</a></li>
-                    <li data-ng-show="true"> <a href="#/login">Login</a></li>
-                    <li data-ng-show="false"> <a href="#/logout">Logout</a></li>
+                    <!--<li data-ng-show="authentication.isAuth"><a href="#">Welcome {{authentication.userName}}</a></li>-->
+                    <li><p data-ng-show="authentication.isAuth" class="navbar-text">Signed in as <a href="#" class="navbar-link">{{authentication.userName}}</a></p></li>
+                    <li data-ng-show="!authentication.isAuth"><a href="#/login">Login</a></li>
+                    <li data-ng-show="authentication.isAuth"><a href="" data-ng-click="logOut()">Logout</a></li>
                     <li data-ng-show="true"> <a href="#/language">Language</a></li>
                 </ul>
             </div>

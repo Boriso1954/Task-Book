@@ -19,7 +19,8 @@ namespace TaskBook.WebApi
                        "~/Scripts/angular-ng-grid.js",
                        "~/Scripts/angular-resource.js",
                        "~/Scripts/angular-route.js",
-                       "~/Scripts/angular-local-storage.js"
+                       "~/Scripts/angular-local-storage.js",
+                       "~/Scripts/loading-bar.js"
                        ));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
@@ -33,6 +34,7 @@ namespace TaskBook.WebApi
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
+                      "~/Content/loading-bar.css",
                       "~/Content/site.css",
                       "~/Content/app.css"
                       ));

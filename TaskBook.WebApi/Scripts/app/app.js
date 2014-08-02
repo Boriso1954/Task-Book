@@ -1,6 +1,11 @@
-﻿var app = angular.module('TaskBookApp', ['ngRoute', 'LocalStorageModule']);
+﻿var app = angular.module("TaskBookApp", ["ngRoute", "LocalStorageModule", "angular-loading-bar"]);
 
 app.config(function ($routeProvider) {
+
+    $routeProvider.when("/", {
+        controller: "indexController",
+        templateUrl: "/Scripts/app/views/index.html"
+    });
 
     $routeProvider.when("/home", {
         controller: "homeController",
@@ -22,12 +27,13 @@ app.config(function ($routeProvider) {
         templateUrl: "/Scripts/app/views/projectsAndMangers.html"
     });
 
-    $routeProvider.otherwise({ redirectTo: "/home" });
+    $routeProvider.otherwise({ redirectTo: "/" });
 });
-    app.config(function ($httpProvider) {
-        $httpProvider.interceptors.push('authInterceptorService');
-    });
 
-    app.run(['authService', function (authService) {
+app.config(function ($httpProvider) {
+    $httpProvider.interceptors.push('authInterceptorService');
+});
+
+app.run(['authService', function (authService) {
     authService.fillAuthData();
 }]);

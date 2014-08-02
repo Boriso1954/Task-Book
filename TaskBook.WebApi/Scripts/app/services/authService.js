@@ -28,12 +28,11 @@ app.factory('authService', ['$http', '$q', 'localStorageService', function ($htt
                     userName: loginData.userName
                 };
 
-                localStorageService.set('authTbData', value);
+                localStorageService.set("authTbData", value);
 
                 _authData.isAuth = true;
                 _authData.userName = loginData.userName;
                 _authData.firstName = "";
-                _authData.role = "Admin";
 
                 deferred.resolve(response);
             })
@@ -44,8 +43,36 @@ app.factory('authService', ['$http', '$q', 'localStorageService', function ($htt
         return deferred.promise;
     };
 
-    var getRole = function (userName) {
+    var tbRoles = ["Admin", "Manager", "AdvancrdUser", "User"];
+    authServiceFactory.getRole = function (userName) {
+        return $http.get("api/Account/GetUserRoles/" + userName)
+            .then(function (response) {
+                var roles = response.data;
+                var i = -1;
+                var role = "";
 
+                for (var r in tbRoles) {
+                    i = roles.indexOf(tbRoles[r]);
+                    if (i >= 0) {
+                        role = tbRoles[r];
+                        break;
+                    }
+                }
+                _authData.role = role;
+                return role;
+            },
+            function (response) {
+                // Error
+            });
+    };
+
+    authServiceFactory.logOut = function () {
+
+        localStorageService.remove("authTbData");
+
+        _authData.isAuth = false;
+        _authData.userName = "";
+        _authData.role = "";
     };
 
     authServiceFactory.fillAuthData = function () {
@@ -57,7 +84,7 @@ app.factory('authService', ['$http', '$q', 'localStorageService', function ($htt
         }
     };
 
-    authServiceFactory.authData=_authData;
+    authServiceFactory.authData =_authData;
 
     return authServiceFactory;
 

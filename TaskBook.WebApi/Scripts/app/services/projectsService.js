@@ -5,7 +5,7 @@ app.factory('projectsService', ['$http', function ($http) {
 
     projectsServiceFactory.getProjectsAndManagers = function () {
 
-        return $http.get('api/ProjectsAndManagers').then(function (results) {
+        return $http.get('api/Projects/ProjectsAndManagers').then(function (results) {
             return results;
         });
     };

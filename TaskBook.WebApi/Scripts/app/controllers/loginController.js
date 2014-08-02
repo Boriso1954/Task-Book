@@ -10,14 +10,28 @@ app.controller('loginController', ['$scope', '$location', 'authService', functio
 
     $scope.login = function () {
 
-        authService.login($scope.loginData).then(function (response) {
-
-            $location.path('/projectsAndManagers');
-
-        },
-         function (err) {
-             $scope.message = err.error_description;
-         });
+        authService.login($scope.loginData)
+            .then(function (response) {
+                authService.getRole($scope.loginData.userName)
+                .then(function (result) {
+                    var role = result;
+                    if (role == "Admin") {
+                        $location.path('/projectsAndManagers');
+                    }
+                    else if (response == "Manager") {
+                        // TODO
+                    }
+                    else if (response == "AdvancedUser") {
+                        // TODO
+                    }
+                    else { // User
+                        // TODO
+                    }
+                });
+            },
+            function (err) {
+                $scope.message = err.error_description;
+            });
     };
 
 }]);

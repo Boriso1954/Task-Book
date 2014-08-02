@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Description;
 using TaskBook.DataAccessReader;
 using TaskBook.DataAccessReader.ViewModels;
 
@@ -20,11 +21,13 @@ namespace TaskBook.WebApi.Controllers
             _readerRepository = readerRepository;
         }
 
-        // GET api/ProjectsAndManagers
-        [Route("~/api/ProjectsAndManagers")]
-        public IEnumerable<ProjectManagerVm> GetProjectsAndManagers()
+        // GET api/Projects/ProjectsAndManagers
+        [Route("ProjectsAndManagers")]
+        [ResponseType(typeof(IQueryable<ProjectManagerVm>))]
+        public IHttpActionResult GetProjectsAndManagers()
         {
-            return _readerRepository.GetProjectsAndManagers();
+            var projectsAndManagers = _readerRepository.GetProjectsAndManagers();
+            return Ok(projectsAndManagers);
         }
 
         protected override void Dispose(bool disposing)

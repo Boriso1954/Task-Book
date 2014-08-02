@@ -32,19 +32,19 @@ namespace TaskBook.WebApi.Controllers
             return _db.Tasks;
         }
 
-        //// GET api/Tasks/{id}
-        //[Route("{id:long}")]
-        //[ResponseType(typeof(TbTask))]
-        //public IHttpActionResult GetTask(long id)
-        //{
-        //    TbTask tbtask = _db.Tasks.Find(id);
-        //    if(tbtask == null)
-        //    {
-        //        return NotFound();
-        //    }
+        // GET api/Tasks/{id}
+        [Route("{id:long}")]
+        [ResponseType(typeof(TbTask))]
+        public IHttpActionResult GetTask(long id)
+        {
+            TbTask tbtask = _db.Tasks.Find(id);
+            if(tbtask == null)
+            {
+                return NotFound();
+            }
 
-        //    return Ok(tbtask);
-        //}
+            return Ok(tbtask);
+        }
 
         //// PUT api/Tasks/5
         //public IHttpActionResult PutTbTask(long id, TbTask tbtask)
