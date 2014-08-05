@@ -12,11 +12,11 @@ namespace TaskBook.WebApi.Controllers
 {
     //[Authorize]
     [RoutePrefix("api/Users")]
-    public class UsersController: ApiController
+    public class UserDetailsController: ApiController
     {
         private readonly ReaderRepository _readerRepository;
 
-        public UsersController(ReaderRepository readerRepository)
+        public UserDetailsController(ReaderRepository readerRepository)
         {
             _readerRepository = readerRepository;
         }

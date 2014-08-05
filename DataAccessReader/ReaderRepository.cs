@@ -35,7 +35,7 @@ namespace TaskBook.DataAccessReader
                     }
                 };
 
-            var reader = _dataReader.ExecuteReader(CommandType.StoredProcedure, SpNames.spGetUserByUserName, parameters);
+            var reader = _dataReader.ExecuteReader(CommandType.StoredProcedure, SpNames.spGetUserDetailsByUserName, parameters);
             return reader.Select(Projections.TbUserVmFromReader);
         }
 

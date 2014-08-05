@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -39,7 +40,15 @@ namespace TaskBook.TestDatabase
                         db.Database.Connection.Close();
                         Thread.Sleep(500);
                     }
-                    db.Database.Delete();
+                    try
+                    {
+                        db.Database.Delete();
+                    }
+                    catch(SqlException ex)
+                    {
+                        Console.WriteLine("Unable to delete the database.\nERROR: {0}\n Try to delete the database nanually.", ex.Message);
+                        return;
+                    }
                 }
             }
 

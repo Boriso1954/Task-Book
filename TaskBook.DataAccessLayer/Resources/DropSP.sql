@@ -1,1 +1,3 @@
 DROP PROCEDURE spGetProjectsAndManagers
+GO
+DROP PROCEDURE spGetUserDetailsByUserName

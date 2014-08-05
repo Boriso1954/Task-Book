@@ -1,5 +1,6 @@
 namespace TaskBook.TestDatabase
 {
+    using System;
     using System.Collections.Generic;
     using System.Data.Entity.Migrations;
     using System.Data.SqlClient;
@@ -7,6 +8,7 @@ namespace TaskBook.TestDatabase
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
     using TaskBook.DataAccessLayer.AuthManagers;
+    using TaskBook.DataAccessLayer.Properties;
     using TaskBook.DomainModel;
 
     internal sealed class ConfigurationTest: DbMigrationsConfiguration<TaskBookDbContextTest>
@@ -19,21 +21,39 @@ namespace TaskBook.TestDatabase
         protected override void Seed(TaskBookDbContextTest context)
         {
             string sql = string.Empty;
+            string[] commandTexts = null;
 
+            commandTexts = Resources.DropSP.Split(new string[] { "\nGO" }, System.StringSplitOptions.RemoveEmptyEntries);
             try
             {
                 // Drop stored procedures
-                sql = TaskBook.DataAccessLayer.Properties.Resources.DropSP;
-                context.Database.ExecuteSqlCommand(sql);
+                for(int i = 0; i < commandTexts.Length; i++)
+                {
+                    context.Database.ExecuteSqlCommand(commandTexts[i]);
+                }
             }
             catch (SqlException ex)
             {
+                // Do nithing if SP already exists
                 string error = ex.Message;
             }
 
             // Create stored procedures
-            sql = TaskBook.DataAccessLayer.Properties.Resources.CreateSP;
-            context.Database.ExecuteSqlCommand(sql);
+            commandTexts = Resources.CreateSP.Split(new string[] { "\nGO" }, System.StringSplitOptions.RemoveEmptyEntries);
+
+            try
+            {
+                for(int i = 0; i < commandTexts.Length; i++)
+                {
+                    context.Database.ExecuteSqlCommand(commandTexts[i]);
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("Error during creating SP: {0}", ex.Message);
+                context.Database.Connection.Close();
+                return;
+            }
 
             PopulateDb(context);
         }
@@ -105,7 +125,7 @@ namespace TaskBook.TestDatabase
             {
                 new TbRole()
                 {
-                     Name = "Admin",
+                     Name = RoleKey.Admin,
                      Description = "Administrator of the TaskBook application",
                      Permissions = new List<Permission>()
                      {
@@ -116,7 +136,7 @@ namespace TaskBook.TestDatabase
                 },
                 new TbRole()
                 {
-                     Name = "Manager",
+                     Name = RoleKey.Manager,
                      Description ="Project manager",
                      Permissions = new List<Permission>()
                      {
@@ -132,7 +152,7 @@ namespace TaskBook.TestDatabase
                 },
                 new TbRole()
                 {
-                     Name = "AdvancedUser",
+                     Name = RoleKey.AdvancedUser,
                      Description = "Advanced user in the project",
                      Permissions = new List<Permission>()
                      {
@@ -147,7 +167,7 @@ namespace TaskBook.TestDatabase
                 },
                 new TbRole()
                 {
-                     Name = "User",
+                     Name = RoleKey.User,
                      Description = "Mere user in the project",
                      Permissions = new List<Permission>()
                      {
@@ -170,9 +190,9 @@ namespace TaskBook.TestDatabase
                 }
             }
 
-            const string userName = "Admin";
+            const string userName = "Admin1";
             const string password = "admin1";
-            const string email = "admin@example.com";
+            const string email = "admin1@example.com";
 
             using (var userManager = new TbUserManager(new UserStore<TbUser>(context)))
             {
@@ -183,13 +203,13 @@ namespace TaskBook.TestDatabase
                     {
                         UserName = userName,
                         Email = email,
-                        FirstName = "Admin",
-                        LastName = "Admin",
+                        FirstName = "Admin1",
+                        LastName = "Admin1",
                     };
                     userManager.Create(user, password);
                 }
 
-                var adminRole = roles.First(r => r.Name == "Admin");
+                var adminRole = roles.First(r => r.Name == RoleKey.Admin);
                 var rolesForUser = userManager.GetRoles(user.Id);
                 if(!rolesForUser.Contains(adminRole.Name))
                 {
