@@ -2,16 +2,16 @@
 app.controller('indexController', ['$scope', '$location', 'authService', function ($scope, $location, authService) {
 
     if (authService.authData.isAuth) {
-        authService.getRole(authService.authData.userName)
+        authService.getRoleByUserName(authService.authData.userName)
         .then(function (result) {
             var role = result;
             if (role == "Admin") {
                 $location.path("/projectsAndManagers");
             }
-            else if (response == "Manager") {
+            else if (role == "Manager") {
                 // TODO
             }
-            else if (response == "AdvancedUser") {
+            else if (role == "AdvancedUser") {
                 // TODO
             }
             else { // User

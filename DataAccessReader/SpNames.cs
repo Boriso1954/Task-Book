@@ -9,5 +9,6 @@ namespace TaskBook.DataAccessReader
     internal sealed class SpNames
     {
         internal const string spGetProjectsAndManagers = "spGetProjectsAndManagers";
+        internal const string spGetUserByUserName = "spGetUserByUserName";
     }
 }

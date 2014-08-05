@@ -41,7 +41,10 @@ namespace TaskBook.DataAccessReader
             try
             {
                 _sqlConnection = new SqlConnection(ConnectionString);
-                SqlCommand sqlCommand = new SqlCommand(commandText, _sqlConnection);
+                var sqlCommand = _sqlConnection.CreateCommand();
+                sqlCommand.CommandType = commandType;
+                sqlCommand.CommandText = commandText;
+
                 if(parameters != null)
                 {
                     sqlCommand.Parameters.AddRange(parameters.ToArray());

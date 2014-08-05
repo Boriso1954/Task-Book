@@ -2,7 +2,7 @@
 app.controller('loginController', ['$scope', '$location', 'authService', function ($scope, $location, authService) {
 
     $scope.loginData = {
-        userName: "Admin",
+        userName: "Admin1",
         password: "admin1",
         rememberMe: true
     };
@@ -12,7 +12,7 @@ app.controller('loginController', ['$scope', '$location', 'authService', functio
 
         authService.login($scope.loginData)
             .then(function (response) {
-                authService.getRole($scope.loginData.userName)
+                authService.getRoleByUserName($scope.loginData.userName)
                 .then(function (result) {
                     var role = result;
                     if (role == "Admin") {

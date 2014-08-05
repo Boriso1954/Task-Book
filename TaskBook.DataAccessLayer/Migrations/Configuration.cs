@@ -155,9 +155,9 @@ namespace TaskBook.DataAccessLayer.Migrations
                 }
             }
 
-            const string userName = "Admin";
+            const string userName = "Admin1";
             const string password = "admin1";
-            const string email = "admin@taskbook.com";
+            const string email = "admin1@taskbook.com";
 
             using(var userManager = new TbUserManager(new UserStore<TbUser>(context)))
             {
@@ -168,8 +168,8 @@ namespace TaskBook.DataAccessLayer.Migrations
                     {
                         UserName = userName,
                         Email = email,
-                        FirstName = "Admin",
-                        LastName = "Admin",
+                        FirstName = "Admin1",
+                        LastName = "Admin1",
                     };
                     userManager.Create(user, password);
                 }

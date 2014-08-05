@@ -11,7 +11,6 @@ using TaskBook.DataAccessLayer.Repositories;
 using TaskBook.DomainModel;
 using TaskBook.WebApi.Models;
 
-
 namespace TaskBook.WebApi.Controllers
 {
     [RoutePrefix("api/Account")]
@@ -22,6 +21,51 @@ namespace TaskBook.WebApi.Controllers
         public AccountController(IUserStore<TbUser> userStore)
         {
             _userManager = new UserManager<TbUser>(userStore);
+        }
+
+        // GET api/Account/GetUser/{userName}
+        [Route("GetUser/{userName}")]
+        [ResponseType(typeof(TbUser))]
+        public IHttpActionResult GetUser(string userName)
+        {
+            var user = _userManager.FindByName(userName);
+            if(user == null)
+            {
+                return NotFound();
+            }
+            return Ok(user);
+        }
+
+        // GET api/Account/GetUserRolesByUserName/{userName}
+        [Route("GetUserRolesByUserName/{userName}")]
+        [ResponseType(typeof(IQueryable<string>))]
+        public IHttpActionResult GetUserRolesByUserName(string userName)
+        {
+            var user = _userManager.FindByName(userName);
+            if(user == null)
+            {
+                return NotFound();
+            }
+
+            var rolesForUser = _userManager.GetRoles(user.Id);
+            if(rolesForUser == null)
+            {
+                return BadRequest(string.Format("The role for user {} is not found.", userName));
+            }
+            return Ok(rolesForUser);
+        }
+
+        // GET api/Account/GetUserRolesByUserId/{id}
+        [Route("GetUserRolesByUserId/{id}")]
+        [ResponseType(typeof(IQueryable<string>))]
+        public IHttpActionResult GetUserRolesByUserId(string id)
+        {
+            var rolesForUser = _userManager.GetRoles(id);
+            if(rolesForUser == null)
+            {
+                return BadRequest(string.Format("The role for user ID {} is not found.", id));
+            }
+            return Ok(rolesForUser);
         }
 
         // POST api/Account/Register
@@ -49,25 +93,6 @@ namespace TaskBook.WebApi.Controllers
                 return errorResult;
             }
             return Ok();
-        }
-
-        // GET api/Account/GetUserRoles/{userName}
-        [Route("GetUserRoles/{userName}")]
-        [ResponseType(typeof(IQueryable<string>))]
-        public IHttpActionResult GetUserRoles(string userName)
-        {
-            var user = _userManager.FindByName(userName);
-            if(user == null)
-            {
-                return BadRequest(string.Format("User {} is not found.", userName));
-            }
-
-            var rolesForUser = _userManager.GetRoles(user.Id);
-            if(rolesForUser == null)
-            {
-                return BadRequest(string.Format("The role for user {} is not found.", userName));
-            }
-            return Ok(rolesForUser);
         }
 
         private IHttpActionResult GetErrorResult(IdentityResult result)

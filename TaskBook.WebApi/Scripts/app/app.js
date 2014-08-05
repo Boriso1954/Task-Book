@@ -2,11 +2,6 @@
 
 app.config(function ($routeProvider) {
 
-    $routeProvider.when("/", {
-        controller: "indexController",
-        templateUrl: "/Scripts/app/views/index.html"
-    });
-
     $routeProvider.when("/home", {
         controller: "homeController",
         templateUrl: "/Scripts/app/views/home.html"
@@ -25,6 +20,11 @@ app.config(function ($routeProvider) {
     $routeProvider.when("/projectsAndManagers", {
         controller: "projectsController",
         templateUrl: "/Scripts/app/views/projectsAndMangers.html"
+    });
+
+    $routeProvider.when("/userDetails/:userName", {
+        controller: "userDetailsController",
+        templateUrl: "/Scripts/app/views/userDetails.html"
     });
 
     $routeProvider.otherwise({ redirectTo: "/" });

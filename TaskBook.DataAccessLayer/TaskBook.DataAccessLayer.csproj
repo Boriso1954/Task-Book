@@ -118,10 +118,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\CreateSP.sql" />
+    <Content Include="Resources\CreateSP.sql" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\DropSP.sql" />
+    <Content Include="Resources\DropSP.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

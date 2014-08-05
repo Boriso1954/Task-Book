@@ -135,31 +135,6 @@ namespace TaskBook.DataAccessLayer.Migrations
                 .ForeignKey("dbo.AspNetRoles", t => t.UserID, cascadeDelete: true)
                 .Index(t => t.PermissionId)
                 .Index(t => t.UserID);
-
-//            CreateStoredProcedure(
-//                "dbo.spGetProjectsAndManagers",
-//                @"SELECT Projects.Id AS [ProjectID], Projects.Title, AspNetUsers.Id AS [UserID], AspNetUsers.UserName
-//	            FROM dbo.Projects INNER JOIN
-//                dbo.AspNetUsers ON dbo.Projects.Id = dbo.AspNetUsers.ProjectId INNER JOIN
-//                dbo.AspNetUserRoles ON dbo.AspNetUsers.Id = dbo.AspNetUserRoles.UserId INNER JOIN
-//                dbo.AspNetRoles ON dbo.AspNetUserRoles.RoleId = dbo.AspNetRoles.Id
-//                WHERE dbo.AspNetRoles.Name = N'Manager'"
-//                );
-
-//            Sql(
-//@"
-//CREATE PROCEDURE [dbo].[spGetProjectsAndManagers]
-//AS
-//BEGIN
-//	SELECT Projects.Id AS [ProjectID], Projects.Title, AspNetUsers.Id AS [UserID], AspNetUsers.UserName
-//	FROM   dbo.Projects INNER JOIN
-//           dbo.AspNetUsers ON dbo.Projects.Id = dbo.AspNetUsers.ProjectId INNER JOIN
-//           dbo.AspNetUserRoles ON dbo.AspNetUsers.Id = dbo.AspNetUserRoles.UserId INNER JOIN
-//           dbo.AspNetRoles ON dbo.AspNetUserRoles.RoleId = dbo.AspNetRoles.Id
-//WHERE      dbo.AspNetRoles.Name = N'Manager'
-//END
-//"
-//                );
         }
         
         public override void Down()
@@ -193,10 +168,6 @@ namespace TaskBook.DataAccessLayer.Migrations
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.AspNetRoles");
             DropTable("dbo.Permissions");
-
-            string sql = Properties.Resources.DropSP;
-            Sql(sql);
-
         }
     }
 }

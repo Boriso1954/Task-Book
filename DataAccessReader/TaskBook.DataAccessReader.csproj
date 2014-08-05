@@ -48,6 +48,7 @@
     <Compile Include="TbExtensions.cs" />
     <Compile Include="TbParameters.cs" />
     <Compile Include="ViewModels\ProjectManagerVm.cs" />
+    <Compile Include="ViewModels\TbUserVm.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

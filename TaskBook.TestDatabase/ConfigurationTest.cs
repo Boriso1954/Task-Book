@@ -26,9 +26,9 @@ namespace TaskBook.TestDatabase
                 sql = TaskBook.DataAccessLayer.Properties.Resources.DropSP;
                 context.Database.ExecuteSqlCommand(sql);
             }
-            catch (SqlException)
+            catch (SqlException ex)
             {
-                // Do nothing if SP does not exist
+                string error = ex.Message;
             }
 
             // Create stored procedures

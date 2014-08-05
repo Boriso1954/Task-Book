@@ -3,8 +3,8 @@ app.controller('projectsController', ['$scope', 'projectsService', function ($sc
 
     $scope.projectsAndManagers = [];
 
-    projectsService.getProjectsAndManagers().then(function (results) {
-        $scope.projectsAndManagers = results.data;
+    projectsService.getProjectsAndManagers().then(function (result) {
+        $scope.projectsAndManagers = result.data;
 
     }, function (error) {
         //alert(error.data.message);
