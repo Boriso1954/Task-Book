@@ -8,6 +8,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using TaskBook.DataAccessLayer.AuthManagers;
 using TaskBook.DataAccessLayer.Repositories;
+using TaskBook.DataAccessReader.ViewModels;
 using TaskBook.DomainModel;
 using TaskBook.WebApi.Models;
 
@@ -61,9 +62,10 @@ namespace TaskBook.WebApi.Controllers
         public IHttpActionResult GetUserRolesByUserId(string id)
         {
             var rolesForUser = _userManager.GetRoles(id);
+            rolesForUser = null;
             if(rolesForUser == null)
             {
-                return BadRequest(string.Format("The role for user ID {} is not found.", id));
+                return BadRequest(string.Format("The role for user ID {0} has not been found.", id));
             }
             return Ok(rolesForUser);
         }
@@ -86,8 +88,45 @@ namespace TaskBook.WebApi.Controllers
                 Email = userModel.Email
             };
 
-            IdentityResult result = await _userManager.CreateAsync(user, userModel.Password);
-            IHttpActionResult errorResult = GetErrorResult(result);
+            var result = await _userManager.CreateAsync(user, userModel.Password);
+            var errorResult = GetErrorResult(result);
+            if(errorResult != null)
+            {
+                return errorResult;
+            }
+            return Ok();
+        }
+
+        // PUT api/Account/UpdateUser/{id}
+        [Route("UpdateUser/{id}")]
+        [HttpPut]
+        public async Task<IHttpActionResult> UpdateUser(string id, TbUserVm userVm)
+        {
+            if(id != userVm.UserId)
+            {
+                return BadRequest("User ID conflict.");
+            }
+
+            var user = await _userManager.FindByIdAsync(userVm.UserId);
+            if(user == null)
+            {
+                return BadRequest(string.Format("The user {0} is not found.", userVm.UserName));
+            }
+
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+           
+            // TODO consider mapping
+            user.UserName = userVm.UserName;
+            user.Email = userVm.Email;
+            user.FirstName = userVm.FirstName;
+            user.LastName = userVm.LastName;
+
+            var result = await _userManager.UpdateAsync(user);
+
+            var errorResult = GetErrorResult(result);
             if(errorResult != null)
             {
                 return errorResult;

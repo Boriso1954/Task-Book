@@ -18,7 +18,7 @@ namespace TaskBook.DataAccessLayer.Configurations
                {
                    m.ToTable("PermissionRoles");
                    m.MapLeftKey("PermissionId");
-                   m.MapRightKey("UserID");
+                   m.MapRightKey("RoleID");
                });
         }
     }

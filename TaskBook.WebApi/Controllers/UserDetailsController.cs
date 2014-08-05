@@ -27,10 +27,10 @@ namespace TaskBook.WebApi.Controllers
         public IHttpActionResult GetUserDetailsByUserName(string userName)
         {
             var user = _readerRepository.GetUserDetailsByUserName(userName).FirstOrDefault();
-
+            
             if(user == null)
             {
-                return NotFound();
+                return BadRequest(string.Format("User '{0}' has not been found.", userName));
             }
             return Ok(user);
         }

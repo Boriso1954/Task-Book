@@ -16,7 +16,7 @@ app.controller('loginController', ['$scope', '$location', 'authService', functio
                 .then(function (result) {
                     var role = result;
                     if (role == "Admin") {
-                        $location.path('/projectsAndManagers');
+                        $location.path("/projectsAndManagers");
                     }
                     else if (response == "Manager") {
                         // TODO

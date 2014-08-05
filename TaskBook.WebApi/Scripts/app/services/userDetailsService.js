@@ -10,5 +10,11 @@ app.factory("userDetailsService", ["$http", function ($http) {
         });
     };
 
+    userDetailsServiceFactory.putUserDetails = function (user) {
+        return $http.put("api/Account/UpdateUser/" + user.UserId, user).then(function (result) {
+            return result;
+        });
+    }
+
     return userDetailsServiceFactory;
 }]);

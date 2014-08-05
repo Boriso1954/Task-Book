@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TaskBook.DomainModel
 {
-    public class Permission:Entity
+    public class Permission: Entity
     {
         [Required(ErrorMessage = "Name is required.")]
         [MaxLength(32, ErrorMessage = "Name should be from 1 to 24 characters long.")]
