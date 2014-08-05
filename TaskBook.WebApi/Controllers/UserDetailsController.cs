@@ -11,7 +11,7 @@ using TaskBook.DataAccessReader.ViewModels;
 namespace TaskBook.WebApi.Controllers
 {
     //[Authorize]
-    [RoutePrefix("api/Users")]
+    [RoutePrefix("api/UserDetails")]
     public class UserDetailsController: ApiController
     {
         private readonly ReaderRepository _readerRepository;
@@ -21,7 +21,7 @@ namespace TaskBook.WebApi.Controllers
             _readerRepository = readerRepository;
         }
 
-        // GET api/Users/GetUserDetailsByUserName/{userName}
+        // GET api/UserDetails/GetUserDetailsByUserName/{userName}
         [Route("GetUserDetailsByUserName/{userName}")]
         [ResponseType(typeof(TbUserVm))]
         public IHttpActionResult GetUserDetailsByUserName(string userName)

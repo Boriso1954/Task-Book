@@ -5,7 +5,7 @@ app.factory("userDetailsService", ["$http", function ($http) {
 
     userDetailsServiceFactory.getUserDetailsByUserName = function (userName) {
 
-        return $http.get("api/userDetails/GetUserDetailsByUserName/" + userName).then(function (result) {
+        return $http.get("api/UserDetails/GetUserDetailsByUserName/" + userName).then(function (result) {
             return result;
         });
     };
