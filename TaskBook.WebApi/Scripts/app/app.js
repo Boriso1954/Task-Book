@@ -1,4 +1,4 @@
-﻿var app = angular.module("TaskBookApp", ["ngRoute", "LocalStorageModule", "angular-loading-bar"]);
+﻿var app = angular.module("TaskBookApp", ["ngRoute", "LocalStorageModule", "angular-loading-bar", "ui.bootstrap"]);
 
 app.config(function ($routeProvider) {
 
@@ -18,8 +18,13 @@ app.config(function ($routeProvider) {
     });
 
     $routeProvider.when("/projectsAndManagers", {
+        controller: "projectsAndManagersController",
+        templateUrl: "/Scripts/app/views/projectsAndManagers.html"
+    });
+
+    $routeProvider.when("/projects/:projectId", {
         controller: "projectsController",
-        templateUrl: "/Scripts/app/views/projectsAndMangers.html"
+        templateUrl: "/Scripts/app/views/project.html"
     });
 
     $routeProvider.when("/userDetails/:userName", {

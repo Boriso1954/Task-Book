@@ -1,0 +1,54 @@
+﻿<div class="row">
+    <section class="col-md-offset-3 col-md-6">
+        <h2>Projects and Managers</h2>
+        <hr />
+
+        <div data-ng-hide="message == ''" data-ng-class="(successful) ? 'alert alert-success' : 'alert alert-danger'">
+            <button type="button" class="close" data-ng-click="message = ''">&times;</button>
+            <span data-ng-bind="message"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="FindProject" class="col-md-2 control-label">Find for</label>
+            <div class="col-md-5">
+                <select id="FindProject" class="form-control" data-ng-model="searchFor" data-ng-change="clearSearch()">
+                    <option value="$">All</option>
+                    <option data-ng-bind ="fields[0].name" value={{fields[0].value}}></option>
+                    <option data-ng-bind ="fields[1].name" value={{fields[1].value}}></option>
+                </select>
+            </div>
+            <div class="col-md-5">
+                <input type="text" data-ng-model="search[searchFor]" class="form-control" placeholder="Enter text to find"/>
+            </div>
+        </div>
+    
+        <div class="form-group">
+            <label for="SelectProject" class="col-md-2 control-label">Filter by</label>
+            <div class="col-md-5">
+                <select id="SelectProject" class="form-control" data-ng-model="project" data-ng-options="p as p.ProjectTitle for p in projectsAndManagers">
+                    <option value="">All</option>
+                </select>
+            </div>
+            <div class="col-md-5">
+                <select  id="SelectManager" class="form-control" data-ng-model="manager" data-ng-options="m as m.ManagerName for m in projectsAndManagers">
+                    <option value="">All</option>
+                </select>
+            </div>
+        </div>
+    
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th class="col-md-6" data-ng-repeat="(i,h) in fields" data-ng-click="toggleSort(i)"><span data-ng-class="selectIconClass(i)"></span> {{h.name}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="p in projectsAndManagers | orderBy: sort.column:sort.reverse | filter: project | filter: manager | filter: search">
+                    <td><a href="#/projects/{{p.ProjectId}}">{{p.ProjectTitle}}</a></td>
+                    <td><a href="#/users/{{p.ManagerId}}">{{p.ManagerName}}</a></td>
+                    <!--<td data-ng-bind="p.ManagerName"></td>-->
+                </tr>
+            </tbody>
+        </table>
+    </section>
+</div>

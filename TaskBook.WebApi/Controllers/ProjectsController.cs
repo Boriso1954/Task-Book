@@ -21,14 +21,30 @@ namespace TaskBook.WebApi.Controllers
             _readerRepository = readerRepository;
         }
 
-        // GET api/Projects/ProjectsAndManagers
-        [Route("ProjectsAndManagers")]
+        // GET api/Projects/GetProjectsAndManagers
+        [Route("GetProjectsAndManagers")]
         [ResponseType(typeof(IQueryable<ProjectManagerVm>))]
         public IHttpActionResult GetProjectsAndManagers()
         {
             var projectsAndManagers = _readerRepository.GetProjectsAndManagers();
+            //return BadRequest("Error in GetProjectsAndManagers");
             return Ok(projectsAndManagers);
         }
+
+        // GET api/Projects/GetProjectsAndManagers/{projectId}
+        [Route("GetProjectsAndManagers/{projectId:long}")]
+        [ResponseType(typeof(ProjectManagerVm))]
+        public IHttpActionResult GetProjectsAndManagers(long projectId)
+        {
+            var project = _readerRepository.GetProjectsAndManagers(projectId).FirstOrDefault();
+            
+            if(project == null)
+            {
+                return BadRequest("Unable to find the project.");
+            }
+            return Ok(project);
+        }
+
 
         protected override void Dispose(bool disposing)
         {

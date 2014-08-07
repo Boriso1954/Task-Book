@@ -62,7 +62,7 @@ namespace TaskBook.WebApi.Controllers
         public IHttpActionResult GetUserRolesByUserId(string id)
         {
             var rolesForUser = _userManager.GetRoles(id);
-            rolesForUser = null;
+            
             if(rolesForUser == null)
             {
                 return BadRequest(string.Format("The role for user ID {0} has not been found.", id));

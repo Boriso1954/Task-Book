@@ -18,13 +18,31 @@ namespace TaskBook.DataAccessReader
             _dataReader = dataReader;
         }
 
-        public IEnumerable<ProjectManagerVm> GetProjectsAndManagers()
+        public IQueryable<ProjectManagerVm> GetProjectsAndManagers(long? projectId = null)
         {
-            var reader = _dataReader.ExecuteReader(CommandType.StoredProcedure, SpNames.spGetProjectsAndManagers);
-            return reader.Select(Projections.ProjectManagerVmFromReader);
+            SqlDataReader reader = null;
+
+            if(projectId == null)
+            {
+                reader = _dataReader.ExecuteReader(CommandType.StoredProcedure, SpNames.spGetProjectsAndManagers);
+            }
+            else
+            {
+                var parameters = new TbParameters()
+                {
+                    new SqlParameter()
+                    {
+                        ParameterName = "@projectId",
+                        Value = projectId
+                    }
+                };
+
+                reader = _dataReader.ExecuteReader(CommandType.StoredProcedure, SpNames.spGetProjectsAndManagers, parameters);
+            }
+            return reader.Select(Projections.ProjectManagerVmFromReader).AsQueryable();
         }
 
-        public IEnumerable<TbUserVm> GetUserDetailsByUserName(string userName)
+        public IQueryable<TbUserVm> GetUserDetailsByUserName(string userName)
         {
             var parameters = new TbParameters()
                 {
@@ -36,7 +54,37 @@ namespace TaskBook.DataAccessReader
                 };
 
             var reader = _dataReader.ExecuteReader(CommandType.StoredProcedure, SpNames.spGetUserDetailsByUserName, parameters);
-            return reader.Select(Projections.TbUserVmFromReader);
+            return reader.Select(Projections.TbUserVmFromReader).AsQueryable();
+        }
+
+        public IQueryable<PermissionVm> GetUserPermissionsByUserName(string userName)
+        {
+            var parameters = new TbParameters()
+                {
+                    new SqlParameter()
+                    {
+                        ParameterName = "@userName",
+                        Value = userName
+                    }
+                };
+
+            var reader = _dataReader.ExecuteReader(CommandType.StoredProcedure, SpNames.spGetUserPermissionsByUserName, parameters);
+            return reader.Select(Projections.PermissionVmFromReader).AsQueryable();
+        }
+
+        public IQueryable<ProjectManagerVm> GetProjectByManagerName(string managerName)
+        {
+            var parameters = new TbParameters()
+                {
+                    new SqlParameter()
+                    {
+                        ParameterName = "@userName",
+                        Value = managerName
+                    }
+                };
+
+            var reader = _dataReader.ExecuteReader(CommandType.StoredProcedure, SpNames.spGetProjectsAndManagers, parameters);
+            return reader.Select(Projections.ProjectManagerVmFromReader).AsQueryable();
         }
 
         public void Dispose()

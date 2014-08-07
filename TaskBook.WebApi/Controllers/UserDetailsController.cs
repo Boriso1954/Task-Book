@@ -35,6 +35,16 @@ namespace TaskBook.WebApi.Controllers
             return Ok(user);
         }
 
+        // GET api/UserDetails/GetUserPermissionsByUserName
+        [Route("GetUserPermissionsByUserName/{userName}")]
+        [ResponseType(typeof(IQueryable<PermissionVm>))]
+        public IHttpActionResult GetUserPermissionsByUserName(string userName)
+        {
+            var userPermissions = _readerRepository.GetUserPermissionsByUserName(userName);
+            //return BadRequest("Bad request");
+            return Ok(userPermissions);
+        }
+
         protected override void Dispose(bool disposing)
         {
             _readerRepository.Dispose();

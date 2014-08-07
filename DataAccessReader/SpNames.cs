@@ -10,5 +10,6 @@ namespace TaskBook.DataAccessReader
     {
         internal const string spGetProjectsAndManagers = "spGetProjectsAndManagers";
         internal const string spGetUserDetailsByUserName = "spGetUserDetailsByUserName";
+        internal const string spGetUserPermissionsByUserName = "spGetUserPermissionsByUserName";
     }
 }

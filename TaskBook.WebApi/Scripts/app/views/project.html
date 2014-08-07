@@ -1,0 +1,33 @@
+﻿<div class="row">
+    <section class="col-md-offset-3 col-md-6">
+        <div class = "well">
+            <h2>Project details</h2>
+            <hr />
+            <form name="projectForm" class="form-horizontal" role="form" data-ng-submit="send()" novalidate>
+
+                <div data-ng-hide="message == ''" data-ng-class="(successful) ? 'alert alert-success' : 'alert alert-danger'">
+                  <button type="button" class="close" data-ng-click="message = ''">&times;</button>
+                  <span data-ng-bind="message"></span>
+                </div>
+
+                <div class="form-group" data-ng-class="{ 'has-error' : projectForm.projectTitle.$invalid && projectForm.projectTitle.$dirty }">
+                    <label for="ProjectTitle" class="col-md-3 control-label">Title</label>
+                    <div class="col-md-9">
+                        <input type="text" id="ProjectTitle" name ="projectTitle" class="form-control" placeholder="Enter project title" data-ng-model="project.ProjectTitle" required autofocus/>
+                        <span data-ng-show="projectForm.projectTitle.$invalid && projectForm.projectTitle.$dirty" class="help-block">Project title is required.</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="ManagerName" class="col-md-3 control-label">Manager</label>
+                    <div class="col-md-9">
+                        <input type="text" id="ManagerName" name ="managerName" class="form-control" data-ng-model="project.ManagerName" data-ng-disabled="true"/>
+                    </div>
+                </div>
+
+                <button type="submit" data-ng-disabled="projectForm.$pristine || projectForm.$invalid" class="btn btn-primary">Save</button>
+
+            </form>
+        </div>
+    </section>
+</div>

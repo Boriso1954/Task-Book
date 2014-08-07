@@ -1,13 +1,14 @@
-﻿'use strict';
-app.factory('projectsService', ['$http', function ($http) {
+﻿"use strict";
+app.factory("projectsService", ["$http", function ($http) {
 
     var projectsServiceFactory = {};
 
     projectsServiceFactory.getProjectsAndManagers = function () {
+        return $http.get("api/Projects/GetProjectsAndManagers")
+    };
 
-        return $http.get('api/Projects/ProjectsAndManagers').then(function (result) {
-            return result;
-        });
+    projectsServiceFactory.getProjectByProjectId = function (projectId) {
+        return $http.get("api/Projects/GetProjectsAndManagers/" + projectId)
     };
 
     return projectsServiceFactory;

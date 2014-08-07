@@ -20,7 +20,8 @@ namespace TaskBook.WebApi
                        "~/Scripts/angular-resource.js",
                        "~/Scripts/angular-route.js",
                        "~/Scripts/angular-local-storage.js",
-                       "~/Scripts/loading-bar.js"
+                       "~/Scripts/loading-bar.js",
+                       "~/Scripts/ui-bootstrap-tpls-0.11.0.js"
                        ));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(

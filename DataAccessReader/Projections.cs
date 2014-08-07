@@ -28,5 +28,11 @@ namespace TaskBook.DataAccessReader
             ProjectId = r["ProjectId"] != DBNull.Value ? (long?)r["ProjectId"] : null,
             ProjectTitle = r["ProjectTitle"] != DBNull.Value ? (string)r["ProjectTitle"] : "N/A"
         };
+
+        internal static Func<SqlDataReader, PermissionVm> PermissionVmFromReader = (r) => new PermissionVm()
+        {
+            Name = (string)r["Name"],
+            Description = (string)r["Description"]
+        };
     }
 }
