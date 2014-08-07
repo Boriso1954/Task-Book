@@ -1,5 +1,5 @@
 
-ALTER PROCEDURE spGetProjectsAndManagers
+CREATE PROCEDURE spGetProjectsAndManagers
 	@projectId bigint = NULL
 AS
 BEGIN

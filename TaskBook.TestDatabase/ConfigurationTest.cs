@@ -34,7 +34,7 @@ namespace TaskBook.TestDatabase
             }
             catch (SqlException ex)
             {
-                // Do nithing if SP already exists
+                // Do nothing if SP already exists
                 string error = ex.Message;
             }
 
