@@ -20,6 +20,12 @@ namespace TaskBook.TestDatabase
 
         protected override void Seed(TaskBookDbContextTest context)
         {
+            CreateSP(context);
+            PopulateDb(context);
+        }
+
+        private void CreateSP(TaskBookDbContextTest context)
+        {
             string sql = string.Empty;
             string[] commandTexts = null;
 
@@ -32,7 +38,7 @@ namespace TaskBook.TestDatabase
                     context.Database.ExecuteSqlCommand(commandTexts[i]);
                 }
             }
-            catch (SqlException ex)
+            catch(SqlException ex)
             {
                 // Do nothing if SP already exists
                 string error = ex.Message;
@@ -54,8 +60,6 @@ namespace TaskBook.TestDatabase
                 context.Database.Connection.Close();
                 return;
             }
-
-            PopulateDb(context);
         }
 
         private void PopulateDb(TaskBookDbContextTest context)

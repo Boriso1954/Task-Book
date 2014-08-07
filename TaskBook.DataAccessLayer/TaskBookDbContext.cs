@@ -13,7 +13,7 @@ namespace TaskBook.DataAccessLayer
     public class TaskBookDbContext: IdentityDbContext<TbUser>
     {
         public TaskBookDbContext()
-            : base("TaskBookDbContextTest")
+            : base("TaskBookDbContext")
         {
             Configuration.ProxyCreationEnabled = false;
         }

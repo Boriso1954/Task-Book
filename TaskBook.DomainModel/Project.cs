@@ -15,6 +15,10 @@ namespace TaskBook.DomainModel
 
         [DataType(DataType.DateTime)]
         public DateTimeOffset CreatedDate { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTimeOffset? DeletedDate { get; set; }
+
         public ICollection<TbUser> Users { get; set; }
     }
 }

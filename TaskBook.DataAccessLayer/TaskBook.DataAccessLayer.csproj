@@ -87,6 +87,10 @@
     <Compile Include="Migrations\201407241109174_Initial.Designer.cs">
       <DependentUpon>201407241109174_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201408071416183_DeletedDate.cs" />
+    <Compile Include="Migrations\201408071416183_DeletedDate.Designer.cs">
+      <DependentUpon>201408071416183_DeletedDate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -111,6 +115,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201407241109174_Initial.resx">
       <DependentUpon>201407241109174_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408071416183_DeletedDate.resx">
+      <DependentUpon>201408071416183_DeletedDate.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

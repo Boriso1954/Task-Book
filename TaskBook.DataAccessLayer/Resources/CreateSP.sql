@@ -9,7 +9,7 @@ BEGIN
 			   AspNetUsers ON Projects.Id = AspNetUsers.ProjectId INNER JOIN
 			   AspNetUserRoles ON AspNetUsers.Id = AspNetUserRoles.UserId INNER JOIN
 			   AspNetRoles ON AspNetUserRoles.RoleId = AspNetRoles.Id
-		WHERE  AspNetRoles.Name = N'Manager'
+		WHERE  AspNetRoles.Name = N'Manager' AND Projects.DeletedDate IS NULL
 	ELSE
 		SELECT Projects.Id AS [ProjectID], Projects.Title, AspNetUsers.Id AS [UserID], AspNetUsers.UserName
 		FROM   Projects INNER JOIN

@@ -21,5 +21,9 @@ namespace TaskBook.DomainModel
 
         public long? ProjectId { get; set; }
         public Project Project { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTimeOffset? DeletedDate { get; set; }
+
     }
 }

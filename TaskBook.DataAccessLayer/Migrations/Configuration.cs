@@ -1,7 +1,10 @@
 namespace TaskBook.DataAccessLayer.Migrations
 {
+    using System;
     using System.Collections.Generic;
     using System.Data.Entity.Migrations;
+    using System.Data.SqlClient;
+    using System.Diagnostics;
     using System.Linq;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
@@ -17,10 +20,46 @@ namespace TaskBook.DataAccessLayer.Migrations
 
         protected override void Seed(TaskBookDbContext context)
         {
-            string sql = Properties.Resources.CreateSP;
-            context.Database.ExecuteSqlCommand(sql);
-
+            CreateSP(context);
             PopulateDb(context);
+        }
+
+        private void CreateSP(TaskBookDbContext context)
+        {
+            string sql = string.Empty;
+            string[] commandTexts = null;
+
+            commandTexts = Properties.Resources.DropSP.Split(new string[] { "\nGO" }, System.StringSplitOptions.RemoveEmptyEntries);
+            try
+            {
+                // Drop stored procedures
+                for(int i = 0; i < commandTexts.Length; i++)
+                {
+                    context.Database.ExecuteSqlCommand(commandTexts[i]);
+                }
+            }
+            catch(SqlException ex)
+            {
+                // Do nothing if SP already exists
+                string error = ex.Message;
+            }
+
+            // Create stored procedures
+            commandTexts = Properties.Resources.CreateSP.Split(new string[] { "\nGO" }, System.StringSplitOptions.RemoveEmptyEntries);
+
+            try
+            {
+                for(int i = 0; i < commandTexts.Length; i++)
+                {
+                    context.Database.ExecuteSqlCommand(commandTexts[i]);
+                }
+            }
+            catch(Exception ex)
+            {
+                Debug.WriteLine("Error during creating SP: {0}", ex.Message);
+                context.Database.Connection.Close();
+                return;
+            }
         }
 
         private void PopulateDb(TaskBookDbContext context)
