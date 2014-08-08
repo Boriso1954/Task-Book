@@ -3,7 +3,7 @@ app.controller("projectsAndManagersController", ["$scope", "projectsService", fu
 
     $scope.projectsAndManagers = [];
     $scope.message = 0;
-    $scope.successful = false;
+    $scope.successful = true;
 
     projectsService.getProjectsAndManagers().then(function (result) {
         $scope.successful = true;

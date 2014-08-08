@@ -4,7 +4,7 @@ app.controller("userDetailsController", ["$scope", "$routeParams", "userDetailsS
     $scope.user = {};
 
     $scope.user.UserName = $routeParams.userName;
-    $scope.successful = false;
+    $scope.successful = true;
     $scope.message = "";
 
     userDetailsService.getUserDetailsByUserName($scope.user.UserName)
@@ -36,4 +36,5 @@ app.controller("userDetailsController", ["$scope", "$routeParams", "userDetailsS
             $scope.message = error.data.Message;
         });
     }
+
 }]);

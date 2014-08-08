@@ -17,7 +17,8 @@ namespace TaskBook.DataAccessReader
         {
             get
             {
-                return ConfigurationManager.ConnectionStrings["TaskBookDbContextTest"].ToString();
+                //return ConfigurationManager.ConnectionStrings["TaskBookDbContext"].ToString();
+                return ConfigurationManager.ConnectionStrings["TaskBookDbContextTest"].ToString(); // Only for test goal
             }
         }
 
@@ -36,6 +37,7 @@ namespace TaskBook.DataAccessReader
             }
         }
 
+        // TODO Make is async
         public SqlDataReader ExecuteReader(CommandType commandType, string commandText, TbParameters parameters = null)
         {
             try
@@ -63,6 +65,11 @@ namespace TaskBook.DataAccessReader
 
         public void Dispose()
         {
+            if(_sqlConnection == null)
+            {
+                return;
+            }
+
             try
             {
                 if(_sqlConnection.State != ConnectionState.Closed)
