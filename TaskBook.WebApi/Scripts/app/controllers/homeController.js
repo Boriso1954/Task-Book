@@ -1,3 +1,3 @@
-﻿'use strict';
-app.controller('homeController', ['$scope', function ($scope) {
+﻿"use strict";
+app.controller("homeController", ["$scope", function ($scope) {
 }]);

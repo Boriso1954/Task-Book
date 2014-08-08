@@ -20,9 +20,11 @@ namespace TaskBook.DataAccessLayer.Repositories
             {
                 throw new ArgumentNullException("UnitOfWork");
             }
-            this._unitOfWork = unitOfWork;
+            _unitOfWork = unitOfWork;
             _dbset = unitOfWork.Database.Set<T>();
         }
+
+
 
         public virtual T GetById(object id)
         {

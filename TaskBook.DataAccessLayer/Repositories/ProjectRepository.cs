@@ -20,5 +20,11 @@ namespace TaskBook.DataAccessLayer.Repositories
         {
             await Task.Run(() => Add(entity));
         }
+
+        public override object Delete(Project project)
+        {
+            project.DeletedDate = DateTimeOffset.UtcNow;
+            return project.Id;
+        }
     }
 }

@@ -88,6 +88,29 @@ namespace TaskBook.WebApi.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
+         // DELETE api/Projects/DeleteProject/{id}
+        [Route("DeleteProject/{id:long}")]
+        [HttpDelete]
+        public IHttpActionResult DeleteProject(long id)
+        {
+            var existing = _projectRepository.GetById(id);
+            if(existing == null)
+            {
+                return BadRequest("Project is not found");
+            }
+
+            try
+            {
+                _projectRepository.Delete(existing);
+                _projectRepository.SaveChanges();
+            }
+            catch(DataAccessLayerException ex)
+            {
+                return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
+            }
+            return Ok();
+        }
+
         protected override void Dispose(bool disposing)
         {
             _readerRepository.Dispose();

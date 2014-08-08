@@ -202,6 +202,7 @@
     <Content Include="Scripts\app\app.js" />
     <Content Include="Scripts\app\controllers\indexController.js" />
     <Content Include="Scripts\app\controllers\layoutController.js" />
+    <Content Include="Scripts\app\controllers\modalDeleteProjectContraoller.js" />
     <Content Include="Scripts\app\controllers\projectsAndManagersController.js" />
     <Content Include="Scripts\app\controllers\forgotPasswordController.js" />
     <Content Include="Scripts\app\controllers\projectsController.js" />
@@ -215,6 +216,7 @@
     <Content Include="Scripts\app\views\forgotPassword.html" />
     <Content Include="Scripts\app\views\home.html" />
     <Content Include="Scripts\app\views\login.html" />
+    <Content Include="Scripts\app\views\modalDeleteProject.html" />
     <Content Include="Scripts\app\views\project.html" />
     <Content Include="Scripts\app\views\projectsAndManagers.html" />
     <Content Include="Scripts\app\views\userDetails.html" />
