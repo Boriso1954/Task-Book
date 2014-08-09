@@ -11,6 +11,13 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="Role" class="col-md-3 control-label">Role</label>
+                    <div class="col-md-9">
+                        <input type="text" id="Role" name ="role" class="form-control" data-ng-model="user.Role" data-ng-disabled="true"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <label for="ProjectTitle" class="col-md-3 control-label">Project</label>
                     <div class="col-md-9">
                         <input type="text" id="ProjectTitle" name ="projectTitle" class="form-control" data-ng-model="user.ProjectTitle" data-ng-disabled="true"/>
@@ -57,7 +64,7 @@
         <accordion>
             <accordion-group is-open="status.open">
                 <accordion-heading>
-                    Effective permissions <i class="pull-right glyphicon" data-ng-class="{'glyphicon-chevron-down': !status.open, 'glyphicon-chevron-up': status.open}"></i>
+                    Effective permissions for {{user.Role}} <i class="pull-right glyphicon" data-ng-class="{'glyphicon-chevron-down': !status.open, 'glyphicon-chevron-up': status.open}"></i>
                 </accordion-heading>
                 <ul data-ng-repeat="permission in user.Permissions">
                     <li data-ng-bind="permission.Description"></li>

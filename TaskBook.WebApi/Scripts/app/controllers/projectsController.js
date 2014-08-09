@@ -49,7 +49,7 @@ app.controller("projectsController", ["$scope", "$routeParams", "$modal", "$loca
         var project = $scope.project;
         projectsService.deleteProject(project)
         .then(function (result) {
-            $scope.message = "Project has been deleted successfully. You will be redicted to the project list in 3 seconds.";
+            $scope.message = "Project has been deleted successfully. You will be redirected to the project list in 3 seconds.";
             startTimer();
         }, function (error) {
             $scope.successful = false;

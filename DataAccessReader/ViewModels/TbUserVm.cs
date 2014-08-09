@@ -13,6 +13,7 @@ namespace TaskBook.DataAccessReader.ViewModels
         public string Email { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string Role { get; set; }
         public long? ProjectId { get; set; }
         public string ProjectTitle { get; set; }
     }

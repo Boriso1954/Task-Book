@@ -20,8 +20,13 @@
 
                 <div class="form-group">
                     <label for="ManagerName" class="col-md-3 control-label">Manager</label>
-                    <div class="col-md-9">
-                        <input type="text" id="ManagerName" name ="managerName" class="form-control" data-ng-model="project.ManagerName" data-ng-disabled="true"/>
+                    <div class="col-md-9 row">
+                        <div class="col-md-10">
+                            <input type="text" id="ManagerName" name ="managerName" class="form-control inline" data-ng-model="project.ManagerName" data-ng-disabled="true"/>
+                        </div>
+                        <div class="col-md-2">
+                            <a href="#/userDetails/{{project.ManagerName}}" class="btn btn-primary" role="button">Edit</a>
+                        </div>
                     </div>
                 </div>
 

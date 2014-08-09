@@ -25,6 +25,7 @@ namespace TaskBook.DataAccessReader
             Email = (string)r["Email"],
             FirstName = (string)r["FirstName"],
             LastName = (string)r["LastName"],
+            Role = (string)r["Role"],
             ProjectId = r["ProjectId"] != DBNull.Value ? (long?)r["ProjectId"] : null,
             ProjectTitle = r["ProjectTitle"] != DBNull.Value ? (string)r["ProjectTitle"] : "N/A"
         };

@@ -12,20 +12,21 @@ namespace TaskBook.WebApi
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js"));
+                        "~/Scripts/vendor/jquery-{version}.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/angular").Include(
-                       "~/Scripts/angular.js",
-                       "~/Scripts/angular-ng-grid.js",
-                       "~/Scripts/angular-resource.js",
-                       "~/Scripts/angular-route.js",
-                       "~/Scripts/angular-local-storage.js",
-                       "~/Scripts/loading-bar.js",
-                       "~/Scripts/ui-bootstrap-tpls-0.11.0.js"
+                       "~/Scripts/vendor/angular.js",
+                       "~/Scripts/vendor/angular-ng-grid.js",
+                       "~/Scripts/vendor/angular-resource.js",
+                       "~/Scripts/vendor/angular-route.js",
+                       "~/Scripts/vendor/angular-local-storage.js",
+                       "~/Scripts/vendor/loading-bar.js",
+                       "~/Scripts/vendor/ui-bootstrap-tpls-0.11.0.js"
                        ));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js"));
+                      "~/Scripts/vendor/bootstrap.js"
+                      ));
 
             bundles.Add(new ScriptBundle("~/bundles/app").Include(
                        "~/Scripts/app/app.js",

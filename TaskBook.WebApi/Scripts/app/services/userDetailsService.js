@@ -7,14 +7,13 @@ app.factory("userDetailsService", ["$http", function ($http) {
         return $http.get("api/UserDetails/GetUserDetailsByUserName/" + userName)
     };
 
-    //userDetailsServiceFactory.getUserPermissionsByUserName = function (userName) {
-    //    return $http.get("api/UserDetails/GetUserPermissionsByUserName/" + userName).then(function (result) {
-    //        return result;
-    //    });
-    //};
-
+    // TODO Obsolete
     userDetailsServiceFactory.getUserPermissionsByUserName = function (userName) {
         return $http.get("api/UserDetails/GetUserPermissionsByUserName/" + userName)
+    };
+
+    userDetailsServiceFactory.getPermissionsByRole = function (roleName) {
+        return $http.get("api/UserDetails/GetPermissionsByRole/" + roleName)
     };
 
     userDetailsServiceFactory.putUserDetails = function (user) {

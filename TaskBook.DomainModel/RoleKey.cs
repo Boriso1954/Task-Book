@@ -9,8 +9,8 @@ namespace TaskBook.DomainModel
     public static class RoleKey
     {
         public const string Admin = "Admin";
-        public const string Manager = "Manager";
-        public const string AdvancedUser = "AdvancedUser";
+        public const string Manager = "Project Manager";
+        public const string AdvancedUser = "Advanced User";
         public const string User = "User";
     }
 }

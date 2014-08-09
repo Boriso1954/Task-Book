@@ -23,22 +23,35 @@ CREATE PROCEDURE spGetUserDetailsByUserName
 	@userName nvarchar(256) = NULL
 AS
 BEGIN
-	SELECT  dbo.AspNetUsers.Id AS UserId, dbo.AspNetUsers.UserName, dbo.AspNetUsers.Email, dbo.AspNetUsers.FirstName, dbo.AspNetUsers.LastName, 
-            dbo.AspNetUsers.ProjectId, dbo.Projects.Title AS ProjectTitle
-	FROM    dbo.Projects RIGHT OUTER JOIN
-            dbo.AspNetUsers ON dbo.Projects.Id = dbo.AspNetUsers.ProjectId
+	SELECT  AspNetUsers.Id AS UserId, AspNetUsers.UserName, AspNetUsers.Email, AspNetUsers.FirstName, AspNetUsers.LastName, 
+            AspNetRoles.Name AS Role, Projects.Id AS ProjectId, Projects.Title AS ProjectTitle
+	FROM    Projects RIGHT OUTER JOIN
+            AspNetUsers ON dbo.Projects.Id = AspNetUsers.ProjectId INNER JOIN
+            AspNetUserRoles ON AspNetUsers.Id = AspNetUserRoles.UserId INNER JOIN
+            AspNetRoles ON AspNetUserRoles.RoleId = AspNetRoles.Id
 	WHERE   dbo.AspNetUsers.UserName = @userName
 END
 GO
-CREATE PROCEDURE spGetUserPermissionsByUserName
+CREATE PROCEDURE spGetUserPermissionsByUserName /* TODO Obsolete*/
 	@userName nvarchar(256) = NULL
 AS
 BEGIN
-	SELECT  dbo.Permissions.Name, dbo.Permissions.Description
-	FROM    dbo.AspNetUserRoles INNER JOIN
-            dbo.AspNetUsers ON dbo.AspNetUserRoles.UserId = dbo.AspNetUsers.Id INNER JOIN
-            dbo.AspNetRoles ON dbo.AspNetUserRoles.RoleId = dbo.AspNetRoles.Id INNER JOIN
-            dbo.Permissions INNER JOIN
-            dbo.PermissionRoles ON dbo.Permissions.Id = dbo.PermissionRoles.PermissionId ON dbo.AspNetRoles.Id = dbo.PermissionRoles.RoleID
-	WHERE   dbo.AspNetUsers.UserName = @userName
+	SELECT  Permissions.Name, Permissions.Description
+	FROM    AspNetUserRoles INNER JOIN
+            AspNetUsers ON AspNetUserRoles.UserId = AspNetUsers.Id INNER JOIN
+            AspNetRoles ON AspNetUserRoles.RoleId = AspNetRoles.Id INNER JOIN
+            Permissions INNER JOIN
+            PermissionRoles ON Permissions.Id = PermissionRoles.PermissionId ON AspNetRoles.Id = PermissionRoles.RoleID
+	WHERE   AspNetUsers.UserName = @userName
+END
+GO
+CREATE PROCEDURE spGetPermissionsByRole
+	@roleName nvarchar(256) = NULL
+AS
+BEGIN
+	SELECT  Permissions.Name, Permissions.Description
+	FROM    Permissions INNER JOIN
+            PermissionRoles ON Permissions.Id = PermissionRoles.PermissionId INNER JOIN
+            AspNetRoles ON PermissionRoles.RoleID = AspNetRoles.Id
+	WHERE   AspNetRoles.Name = @roleName
 END
