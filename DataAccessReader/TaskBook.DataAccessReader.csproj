@@ -49,6 +49,7 @@
     <Compile Include="TbParameters.cs" />
     <Compile Include="ViewModels\PermissionVm.cs" />
     <Compile Include="ViewModels\ProjectManagerVm.cs" />
+    <Compile Include="ViewModels\ProjectVm.cs" />
     <Compile Include="ViewModels\TbUserVm.cs" />
   </ItemGroup>
   <ItemGroup>

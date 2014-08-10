@@ -24,7 +24,7 @@ app.controller("userDetailsController", ["$scope", "$routeParams", "userDetailsS
                    $scope.message = error.data.Message;
                });
 
-    $scope.send = function () {
+    $scope.editUser = function () {
         var user = $scope.user;
         userDetailsService.putUserDetails(user)
         .then(function (result) {

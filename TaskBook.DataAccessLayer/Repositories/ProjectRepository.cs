@@ -16,11 +16,6 @@ namespace TaskBook.DataAccessLayer.Repositories
         {
         }
 
-        public async Task AddAsync(Project entity)
-        {
-            await Task.Run(() => Add(entity));
-        }
-
         public override object Delete(Project project)
         {
             project.DeletedDate = DateTimeOffset.UtcNow;

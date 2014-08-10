@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using TaskBook.DataAccessLayer;
@@ -86,6 +87,35 @@ namespace TaskBook.WebApi.Controllers
             }
 
             return StatusCode(HttpStatusCode.NoContent);
+        }
+
+        // PUT api/Projects/AddProject
+        [Route("AddProject")]
+        [HttpPost]
+        public async Task<IHttpActionResult> AddProject(ProjectVm projectVm)
+        {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var project = new Project()
+            {
+                Title = projectVm.Title,
+                CreatedDate = DateTimeOffset.UtcNow
+            };
+
+            try
+            {
+               await _projectRepository.AddAsync(project);
+                _projectRepository.SaveChanges();
+            }
+            catch(DataAccessLayerException ex)
+            {
+                return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
+            }
+
+            return Ok(project);
         }
 
          // DELETE api/Projects/DeleteProject/{id}

@@ -15,6 +15,10 @@ app.factory("projectsService", ["$http", function ($http) {
         return $http.put("api/projects/UpdateProject/" + project.ProjectId, project)
     };
 
+    projectsServiceFactory.postProject = function (project) {
+        return $http.put("api/projects/AddProject/" + project)
+    };
+
     projectsServiceFactory.deleteProject = function (project) {
         return $http.delete("api/projects/DeleteProject/" + project.ProjectId)
     };

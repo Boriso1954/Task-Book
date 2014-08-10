@@ -10,6 +10,7 @@ namespace TaskBook.DataAccessLayer.Repositories.Interfaces
     public interface IRepository<T> where T: Entity
     {
         object Add(T t);
+        Task<object> AddAsync(T t);
         object Delete(T entity);
         void DeleteByPredicate(Func<T, bool> predicate);
         void Update(T t);

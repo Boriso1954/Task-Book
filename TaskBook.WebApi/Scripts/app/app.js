@@ -22,9 +22,14 @@ app.config(function ($routeProvider) {
         templateUrl: "/Scripts/app/views/projectsAndManagers.html"
     });
 
-    $routeProvider.when("/projects/:projectId", {
-        controller: "projectsController",
-        templateUrl: "/Scripts/app/views/project.html"
+    $routeProvider.when("/projects/edit/:projectId", {
+        controller: "editProjectController",
+        templateUrl: "/Scripts/app/views/editProject.html"
+    });
+
+    $routeProvider.when("/projects/new", {
+        controller: "createProjectController",
+        templateUrl: "/Scripts/app/views/createProject.html"
     });
 
     $routeProvider.when("/userDetails/:userName", {

@@ -52,6 +52,15 @@ namespace TaskBook.DataAccessLayer.Repositories
             return obj.Id;
         }
 
+        public virtual Task<object> AddAsync(T t)
+        {
+            return Task.Run(() =>
+            {
+                var key = Add(t);
+                return key;
+            });
+        }
+
         public virtual void Update(T entity)
         {
              _dbset.Attach(entity);

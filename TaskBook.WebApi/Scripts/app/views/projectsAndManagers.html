@@ -44,7 +44,7 @@
             </thead>
             <tbody>
                 <tr data-ng-repeat="p in projectsAndManagers | orderBy: sort.column:sort.reverse | filter: project | filter: manager | filter: search">
-                    <td><a href="#/projects/{{p.ProjectId}}">{{p.ProjectTitle}}</a></td>
+                    <td><a href="#/projects/edit/{{p.ProjectId}}">{{p.ProjectTitle}}</a></td>
                     <td><a href="#/userDetails/{{p.ManagerName}}">{{p.ManagerName}}</a></td>
                     <!--<td data-ng-bind="p.ManagerName"></td>-->
                 </tr>
