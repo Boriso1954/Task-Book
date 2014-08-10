@@ -158,6 +158,7 @@ namespace TaskBook.WebApi.Controllers
 
         protected override void Dispose(bool disposing)
         {
+            _userManager.Dispose();
             base.Dispose(disposing);
         }
     }

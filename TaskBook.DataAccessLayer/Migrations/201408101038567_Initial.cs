@@ -1,7 +1,8 @@
 namespace TaskBook.DataAccessLayer.Migrations
 {
+    using System;
     using System.Data.Entity.Migrations;
-
+    
     public partial class Initial : DbMigration
     {
         public override void Up()
@@ -49,6 +50,7 @@ namespace TaskBook.DataAccessLayer.Migrations
                         Id = c.Long(nullable: false, identity: true),
                         Title = c.String(nullable: false, maxLength: 32),
                         CreatedDate = c.DateTimeOffset(nullable: false, precision: 7),
+                        DeletedDate = c.DateTimeOffset(precision: 7),
                         RowVersion = c.Binary(nullable: false, fixedLength: true, timestamp: true, storeType: "rowversion"),
                     })
                 .PrimaryKey(t => t.Id);
@@ -60,7 +62,7 @@ namespace TaskBook.DataAccessLayer.Migrations
                         Id = c.String(nullable: false, maxLength: 128),
                         FirstName = c.String(nullable: false, maxLength: 25),
                         LastName = c.String(nullable: false, maxLength: 25),
-                        ProjectId = c.Long(),
+                        DeletedDate = c.DateTimeOffset(precision: 7),
                         Email = c.String(maxLength: 256),
                         EmailConfirmed = c.Boolean(nullable: false),
                         PasswordHash = c.String(),
@@ -74,8 +76,6 @@ namespace TaskBook.DataAccessLayer.Migrations
                         UserName = c.String(nullable: false, maxLength: 256),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Projects", t => t.ProjectId)
-                .Index(t => t.ProjectId)
                 .Index(t => t.UserName, unique: true, name: "UserNameIndex");
             
             CreateTable(
@@ -102,20 +102,20 @@ namespace TaskBook.DataAccessLayer.Migrations
                 .PrimaryKey(t => new { t.LoginProvider, t.ProviderKey, t.UserId })
                 .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
                 .Index(t => t.UserId);
-
+            
             CreateTable(
                 "dbo.Tasks",
                 c => new
                     {
-                        Id = c.Long(nullable : false, identity : true),
-                        Title = c.String(nullable : false, maxLength : 64),
-                        Description = c.String(nullable : false, maxLength : 512),
-                        CreatedDate = c.DateTimeOffset(nullable : false, precision : 7),
-                        CreatedById = c.String(maxLength : 128),
-                        DueDate = c.DateTimeOffset(nullable : false, precision : 7),
-                        Status = c.Int(nullable : false),
-                        AssigneToId = c.String(maxLength : 128),
-                        RowVersion = c.Binary(nullable : false, fixedLength : true, timestamp : true, storeType : "rowversion"),
+                        Id = c.Long(nullable: false, identity: true),
+                        Title = c.String(nullable: false, maxLength: 64),
+                        Description = c.String(nullable: false, maxLength: 512),
+                        CreatedDate = c.DateTimeOffset(nullable: false, precision: 7),
+                        CreatedById = c.String(maxLength: 128),
+                        DueDate = c.DateTimeOffset(nullable: false, precision: 7),
+                        Status = c.Int(nullable: false),
+                        AssigneToId = c.String(maxLength: 128),
+                        RowVersion = c.Binary(nullable: false, fixedLength: true, timestamp: true, storeType: "rowversion"),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.AspNetUsers", t => t.AssigneToId)
@@ -128,39 +128,56 @@ namespace TaskBook.DataAccessLayer.Migrations
                 c => new
                     {
                         PermissionId = c.Long(nullable: false),
-                        UserID = c.String(nullable: false, maxLength: 128),
+                        RoleID = c.String(nullable: false, maxLength: 128),
                     })
-                .PrimaryKey(t => new { t.PermissionId, t.UserID })
+                .PrimaryKey(t => new { t.PermissionId, t.RoleID })
                 .ForeignKey("dbo.Permissions", t => t.PermissionId, cascadeDelete: true)
-                .ForeignKey("dbo.AspNetRoles", t => t.UserID, cascadeDelete: true)
+                .ForeignKey("dbo.AspNetRoles", t => t.RoleID, cascadeDelete: true)
                 .Index(t => t.PermissionId)
-                .Index(t => t.UserID);
+                .Index(t => t.RoleID);
+            
+            CreateTable(
+                "dbo.ProjectUsers",
+                c => new
+                    {
+                        ProjectId = c.Long(nullable: false),
+                        UserId = c.String(nullable: false, maxLength: 128),
+                    })
+                .PrimaryKey(t => new { t.ProjectId, t.UserId })
+                .ForeignKey("dbo.Projects", t => t.ProjectId, cascadeDelete: true)
+                .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
+                .Index(t => t.ProjectId)
+                .Index(t => t.UserId);
+            
         }
         
         public override void Down()
         {
-            DropForeignKey("dbo.Tasks1", "CreatedById", "dbo.AspNetUsers");
-            DropForeignKey("dbo.Tasks1", "AssigneToId", "dbo.AspNetUsers");
+            DropForeignKey("dbo.Tasks", "CreatedById", "dbo.AspNetUsers");
+            DropForeignKey("dbo.Tasks", "AssigneToId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
+            DropForeignKey("dbo.ProjectUsers", "UserId", "dbo.AspNetUsers");
+            DropForeignKey("dbo.ProjectUsers", "ProjectId", "dbo.Projects");
             DropForeignKey("dbo.AspNetUserRoles", "UserId", "dbo.AspNetUsers");
-            DropForeignKey("dbo.AspNetUsers", "ProjectId", "dbo.Projects");
             DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
-            DropForeignKey("dbo.PermissionRoles", "UserID", "dbo.AspNetRoles");
+            DropForeignKey("dbo.PermissionRoles", "RoleID", "dbo.AspNetRoles");
             DropForeignKey("dbo.PermissionRoles", "PermissionId", "dbo.Permissions");
-            DropIndex("dbo.PermissionRoles", new[] { "UserID" });
+            DropIndex("dbo.ProjectUsers", new[] { "UserId" });
+            DropIndex("dbo.ProjectUsers", new[] { "ProjectId" });
+            DropIndex("dbo.PermissionRoles", new[] { "RoleID" });
             DropIndex("dbo.PermissionRoles", new[] { "PermissionId" });
-            DropIndex("dbo.Tasks1", new[] { "AssigneToId" });
-            DropIndex("dbo.Tasks1", new[] { "CreatedById" });
+            DropIndex("dbo.Tasks", new[] { "AssigneToId" });
+            DropIndex("dbo.Tasks", new[] { "CreatedById" });
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
             DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
             DropIndex("dbo.AspNetUsers", "UserNameIndex");
-            DropIndex("dbo.AspNetUsers", new[] { "ProjectId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
+            DropTable("dbo.ProjectUsers");
             DropTable("dbo.PermissionRoles");
-            DropTable("dbo.Tasks1");
+            DropTable("dbo.Tasks");
             DropTable("dbo.AspNetUserLogins");
             DropTable("dbo.AspNetUserClaims");
             DropTable("dbo.AspNetUsers");

@@ -2,6 +2,4 @@ DROP PROCEDURE spGetProjectsAndManagers
 GO
 DROP PROCEDURE spGetUserDetailsByUserName
 GO
-DROP PROCEDURE spGetUserPermissionsByUserName
-GO
 DROP PROCEDURE spGetPermissionsByRole

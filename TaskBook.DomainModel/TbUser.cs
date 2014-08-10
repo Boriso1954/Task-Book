@@ -19,11 +19,10 @@ namespace TaskBook.DomainModel
         [MaxLength(25, ErrorMessage = "LastName shall be from 1 to 25 characters long.")]
         public string LastName { get; set; }
 
-        public long? ProjectId { get; set; }
-        public Project Project { get; set; }
-
         [DataType(DataType.Date)]
         public DateTimeOffset? DeletedDate { get; set; }
+
+        public ICollection<Project> Projects { get; set; }
 
     }
 }

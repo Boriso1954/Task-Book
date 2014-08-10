@@ -82,16 +82,13 @@
     <Compile Include="AuthManagers\TbRoleManager.cs" />
     <Compile Include="AuthManagers\TbUserManager.cs" />
     <Compile Include="Configurations\PermissionConfiguration.cs" />
+    <Compile Include="Configurations\ProjectConfiguration.cs" />
     <Compile Include="Configurations\UserConfiguration.cs" />
     <Compile Include="Exceptions\DataAccessLayerException.cs" />
     <Compile Include="IUnitOfWork.cs" />
-    <Compile Include="Migrations\201407241109174_Initial.cs" />
-    <Compile Include="Migrations\201407241109174_Initial.Designer.cs">
-      <DependentUpon>201407241109174_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201408071416183_DeletedDate.cs" />
-    <Compile Include="Migrations\201408071416183_DeletedDate.Designer.cs">
-      <DependentUpon>201408071416183_DeletedDate.cs</DependentUpon>
+    <Compile Include="Migrations\201408101038567_Initial.cs" />
+    <Compile Include="Migrations\201408101038567_Initial.Designer.cs">
+      <DependentUpon>201408101038567_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -118,11 +115,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201407241109174_Initial.resx">
-      <DependentUpon>201407241109174_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201408071416183_DeletedDate.resx">
-      <DependentUpon>201408071416183_DeletedDate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201408101038567_Initial.resx">
+      <DependentUpon>201408101038567_Initial.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

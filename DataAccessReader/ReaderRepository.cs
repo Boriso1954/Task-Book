@@ -57,22 +57,6 @@ namespace TaskBook.DataAccessReader
             return reader.Select(Projections.TbUserVmFromReader).AsQueryable();
         }
 
-        // TODO Obsolete
-        public IQueryable<PermissionVm> GetUserPermissionsByUserName(string userName)
-        {
-            var parameters = new TbParameters()
-                {
-                    new SqlParameter()
-                    {
-                        ParameterName = "@userName",
-                        Value = userName
-                    }
-                };
-
-            var reader = _dataReader.ExecuteReader(CommandType.StoredProcedure, SpNames.spGetUserPermissionsByUserName, parameters);
-            return reader.Select(Projections.PermissionVmFromReader).AsQueryable();
-        }
-
         public IQueryable<PermissionVm> GetPermissionsByRole(string roleName)
         {
             var parameters = new TbParameters()

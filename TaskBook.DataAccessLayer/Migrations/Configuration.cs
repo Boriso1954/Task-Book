@@ -4,21 +4,21 @@ namespace TaskBook.DataAccessLayer.Migrations
     using System.Collections.Generic;
     using System.Data.Entity.Migrations;
     using System.Data.SqlClient;
-    using System.Diagnostics;
     using System.Linq;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
     using TaskBook.DataAccessLayer.AuthManagers;
+    using TaskBook.DataAccessLayer.Properties;
     using TaskBook.DomainModel;
 
-    internal sealed class Configuration: DbMigrationsConfiguration<TaskBookDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<TaskBook.DataAccessLayer.TaskBookDbContext>
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
         }
 
-        protected override void Seed(TaskBookDbContext context)
+        protected override void Seed(TaskBook.DataAccessLayer.TaskBookDbContext context)
         {
             CreateSP(context);
             PopulateDb(context);
@@ -29,7 +29,7 @@ namespace TaskBook.DataAccessLayer.Migrations
             string sql = string.Empty;
             string[] commandTexts = null;
 
-            commandTexts = Properties.Resources.DropSP.Split(new string[] { "\nGO" }, System.StringSplitOptions.RemoveEmptyEntries);
+            commandTexts = Resources.DropSP.Split(new string[] { "\nGO" }, System.StringSplitOptions.RemoveEmptyEntries);
             try
             {
                 // Drop stored procedures
@@ -45,7 +45,7 @@ namespace TaskBook.DataAccessLayer.Migrations
             }
 
             // Create stored procedures
-            commandTexts = Properties.Resources.CreateSP.Split(new string[] { "\nGO" }, System.StringSplitOptions.RemoveEmptyEntries);
+            commandTexts = Resources.CreateSP.Split(new string[] { "\nGO" }, System.StringSplitOptions.RemoveEmptyEntries);
 
             try
             {
@@ -56,7 +56,7 @@ namespace TaskBook.DataAccessLayer.Migrations
             }
             catch(Exception ex)
             {
-                Debug.WriteLine("Error during creating SP: {0}", ex.Message);
+                Console.WriteLine("Error during creating SP: {0}", ex.Message);
                 context.Database.Connection.Close();
                 return;
             }
@@ -194,30 +194,47 @@ namespace TaskBook.DataAccessLayer.Migrations
                 }
             }
 
-            const string userName = "Admin1";
-            const string password = "admin1";
-            const string email = "admin1@taskbook.com";
-
             using(var userManager = new TbUserManager(new UserStore<TbUser>(context)))
             {
-                var user = userManager.FindByName(userName);
+                string adminName = "Admin1";
+                var user = userManager.FindByName(adminName);
                 if(user == null)
                 {
                     user = new TbUser()
                     {
-                        UserName = userName,
-                        Email = email,
+                        UserName = adminName,
+                        Email = "admin1@taskbook.com",
                         FirstName = "Admin1",
                         LastName = "Admin1",
                     };
-                    userManager.Create(user, password);
+                    userManager.Create(user, "admin1");
                 }
 
-                var adminRole = roles.First(r => r.Name == RoleKey.Admin);
+                var role = roles.First(r => r.Name == RoleKey.Admin);
                 var rolesForUser = userManager.GetRoles(user.Id);
-                if(!rolesForUser.Contains(adminRole.Name))
+                if(!rolesForUser.Contains(role.Name))
                 {
-                    var result = userManager.AddToRole(user.Id, adminRole.Name);
+                    var result = userManager.AddToRole(user.Id, role.Name);
+                }
+
+                string notAssignedName = "NotAssigned"; // W/o spaces!
+                user = userManager.FindByName(notAssignedName);
+                if(user == null)
+                {
+                    user = new TbUser()
+                    {
+                        UserName = notAssignedName,
+                        FirstName = "Not Assigned",
+                        LastName = "Not Assigned",
+                    };
+                    userManager.Create(user, "notassigned");
+                }
+
+                role = roles.First(r => r.Name == RoleKey.Admin);
+                rolesForUser = userManager.GetRoles(user.Id);
+                if(!rolesForUser.Contains(role.Name))
+                {
+                    var result = userManager.AddToRole(user.Id, role.Name);
                 }
             }
         }

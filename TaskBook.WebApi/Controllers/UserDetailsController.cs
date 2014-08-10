@@ -35,17 +35,6 @@ namespace TaskBook.WebApi.Controllers
             return Ok(user);
         }
 
-        // TODO Obsolete
-        // GET api/UserDetails/GetUserPermissionsByUserName
-        [Route("GetUserPermissionsByUserName/{userName}")]
-        [ResponseType(typeof(IQueryable<PermissionVm>))]
-        public IHttpActionResult GetUserPermissionsByUserName(string userName)
-        {
-            var userPermissions = _readerRepository.GetUserPermissionsByUserName(userName);
-            //return BadRequest("Bad request");
-            return Ok(userPermissions);
-        }
-
         [Route("GetPermissionsByRole/{roleName}")]
         [ResponseType(typeof(IQueryable<PermissionVm>))]
         public IHttpActionResult GetPermissionsByRole(string roleName)

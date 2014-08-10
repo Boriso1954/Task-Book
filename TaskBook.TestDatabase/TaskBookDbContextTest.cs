@@ -29,6 +29,7 @@ namespace TaskBook.TestDatabase
             // Other schema configurations here
             //modelBuilder.Configurations.Add(new UserConfiguration());
             modelBuilder.Configurations.Add(new PermissionConfiguration());
+            modelBuilder.Configurations.Add(new ProjectConfiguration());
         }
     }
 }

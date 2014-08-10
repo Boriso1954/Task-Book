@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using Microsoft.AspNet.Identity;
 using TaskBook.DataAccessLayer;
 using TaskBook.DataAccessLayer.Exceptions;
 using TaskBook.DataAccessLayer.Repositories.Interfaces;

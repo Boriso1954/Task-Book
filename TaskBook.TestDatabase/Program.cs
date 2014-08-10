@@ -92,7 +92,10 @@ namespace TaskBook.TestDatabase
                         Email = "manager1@taskbook.com",
                         FirstName = "Manager 1",
                         LastName = "Manager 1",
-                        ProjectId = project1Id
+                        Projects = new List<Project>()
+                        {
+                            projects.First(x => x.Title == "Project 1")
+                        }
                     },
                     new TbUser()
                     {
@@ -100,7 +103,10 @@ namespace TaskBook.TestDatabase
                         Email = "AdvancedUser11@taskbook.com",
                         FirstName = "AdvancedUser11",
                         LastName = "AdvancedUser11",
-                        ProjectId = project1Id
+                        Projects = new List<Project>()
+                        {
+                            projects.First(x => x.Title == "Project 1")
+                        }
                     },
                     new TbUser()
                     {
@@ -108,7 +114,10 @@ namespace TaskBook.TestDatabase
                         Email = "AdvancedUser21@taskbook.com",
                         FirstName = "AdvancedUser21",
                         LastName = "AdvancedUser21",
-                        ProjectId = project1Id
+                        Projects = new List<Project>()
+                        {
+                            projects.First(x => x.Title == "Project 1")
+                        }
                     },
                     new TbUser()
                     {
@@ -116,7 +125,10 @@ namespace TaskBook.TestDatabase
                         Email = "User11@taskbook.com",
                         FirstName = "User11",
                         LastName = "User11",
-                        ProjectId = project1Id
+                        Projects = new List<Project>()
+                        {
+                            projects.First(x => x.Title == "Project 1")
+                        }
                     },
                     new TbUser()
                     {
@@ -124,7 +136,10 @@ namespace TaskBook.TestDatabase
                         Email = "User21@taskbook.com",
                         FirstName = "User21",
                         LastName = "User21",
-                        ProjectId = project1Id
+                        Projects = new List<Project>()
+                        {
+                            projects.First(x => x.Title == "Project 1")
+                        }
                     },
                     new TbUser()
                     {
@@ -132,7 +147,10 @@ namespace TaskBook.TestDatabase
                         Email = "manager2@taskbook.com",
                         FirstName = "Manager 2",
                         LastName = "Manager 2",
-                        ProjectId = project2Id
+                        Projects = new List<Project>()
+                        {
+                            projects.First(x => x.Title == "Project 2")
+                        }
                     },
                     new TbUser()
                     {
@@ -140,7 +158,10 @@ namespace TaskBook.TestDatabase
                         Email = "AdvancedUser12@taskbook.com",
                         FirstName = "AdvancedUser12",
                         LastName = "AdvancedUser12",
-                        ProjectId = project2Id
+                        Projects = new List<Project>()
+                        {
+                            projects.First(x => x.Title == "Project 2")
+                        }
                     },
                      new TbUser()
                     {
@@ -148,7 +169,10 @@ namespace TaskBook.TestDatabase
                         Email = "User12@taskbook.com",
                         FirstName = "User12",
                         LastName = "User12",
-                        ProjectId = project2Id
+                        Projects = new List<Project>()
+                        {
+                            projects.First(x => x.Title == "Project 2")
+                        }
                     },
                     new TbUser()
                     {
@@ -156,7 +180,10 @@ namespace TaskBook.TestDatabase
                         Email = "User22@taskbook.com",
                         FirstName = "User22",
                         LastName = "User22",
-                        ProjectId = project2Id
+                        Projects = new List<Project>()
+                        {
+                            projects.First(x => x.Title == "Project 2")
+                        }
                     }
                 };
 

@@ -194,30 +194,47 @@ namespace TaskBook.TestDatabase
                 }
             }
 
-            const string userName = "Admin1";
-            const string password = "admin1";
-            const string email = "admin1@example.com";
-
             using (var userManager = new TbUserManager(new UserStore<TbUser>(context)))
             {
-                var user = userManager.FindByName(userName);
+                string adminName = "Admin1";
+                var user = userManager.FindByName(adminName);
                 if(user == null)
                 {
                     user = new TbUser()
                     {
-                        UserName = userName,
-                        Email = email,
+                        UserName = adminName,
+                        Email = "admin1@taskbook.com",
                         FirstName = "Admin1",
                         LastName = "Admin1",
                     };
-                    userManager.Create(user, password);
+                    userManager.Create(user, "admin1");
                 }
 
-                var adminRole = roles.First(r => r.Name == RoleKey.Admin);
+                var role = roles.First(r => r.Name == RoleKey.Admin);
                 var rolesForUser = userManager.GetRoles(user.Id);
-                if(!rolesForUser.Contains(adminRole.Name))
+                if(!rolesForUser.Contains(role.Name))
                 {
-                    var result = userManager.AddToRole(user.Id, adminRole.Name);
+                    var result = userManager.AddToRole(user.Id, role.Name);
+                }
+
+                string notAssignedName = "NotAssigned"; // W/o spaces!
+                user = userManager.FindByName(notAssignedName);
+                if(user == null)
+                {
+                    user = new TbUser()
+                    {
+                        UserName = notAssignedName,
+                        FirstName = "Not Assigned",
+                        LastName = "Not Assigned",
+                    };
+                    userManager.Create(user, "notassigned");
+                }
+
+                role = roles.First(r => r.Name == RoleKey.Admin);
+                rolesForUser = userManager.GetRoles(user.Id);
+                if(!rolesForUser.Contains(role.Name))
+                {
+                    var result = userManager.AddToRole(user.Id, role.Name);
                 }
             }
         }
