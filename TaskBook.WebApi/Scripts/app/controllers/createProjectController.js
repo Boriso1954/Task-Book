@@ -6,8 +6,9 @@ app.controller("createProjectController", ["$scope", "projectsService", function
         $scope.successful = true;
 
         $scope.addProject = function () {
-            var newProject = $scope.project.ProjectTitle;
-            projectsService.postProject(project)
+            var newProject = {}; 
+            newProject.Title = $scope.project.ProjectTitle;
+            projectsService.postProject(newProject)
             .then(function (result) {
                 $scope.successful = true;
                 $scope.message = "New project has been added.";

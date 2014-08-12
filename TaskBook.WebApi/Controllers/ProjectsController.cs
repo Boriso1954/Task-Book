@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Transactions;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Microsoft.AspNet.Identity;
@@ -22,11 +23,19 @@ namespace TaskBook.WebApi.Controllers
     {
         private readonly ReaderRepository _readerRepository;
         private readonly IProjectRepository _projectRepository;
+        private readonly UserManager<TbUser> _userManager;
+        private readonly IProjectUsersRepository _projectUsersRepository;
 
-        public ProjectsController(ReaderRepository readerRepository, IProjectRepository projectRepository)
+        public ProjectsController(ReaderRepository readerRepository, 
+            IProjectRepository projectRepository,
+            IProjectUsersRepository projectUsersRepository,
+            IUserStore<TbUser> userStore)
         {
             _readerRepository = readerRepository;
             _projectRepository = projectRepository;
+            _projectUsersRepository = projectUsersRepository;
+            _userManager = new UserManager<TbUser>(userStore);
+
         }
 
         // GET api/Projects/GetProjectsAndManagers
@@ -51,6 +60,25 @@ namespace TaskBook.WebApi.Controllers
                 return BadRequest("Unable to find the project.");
             }
             return Ok(project);
+        }
+
+        // PUT api/Projects/GetProjectById/{id}
+        [Route("GetProjectById/{id:long}")]
+        [ResponseType(typeof(ProjectVm))]
+        public IHttpActionResult GetProjectById(long id)
+        {
+            var project = _projectRepository.GetById(id);
+
+            if(project == null)
+            {
+                return BadRequest(string.Format("The project ID '{0}' is not found.", id));
+            }
+
+            var projectVm = new ProjectVm()
+            {
+                Title = project.Title
+            };
+            return Ok(projectVm);
         }
 
         // PUT api/Projects/UpdateProject/{id}
@@ -93,7 +121,7 @@ namespace TaskBook.WebApi.Controllers
         // PUT api/Projects/AddProject
         [Route("AddProject")]
         [HttpPost]
-        public async Task<IHttpActionResult> AddProject(ProjectVm projectVm)
+        public IHttpActionResult AddProject(ProjectVm projectVm)
         {
             if(!ModelState.IsValid)
             {
@@ -103,19 +131,33 @@ namespace TaskBook.WebApi.Controllers
             var project = new Project()
             {
                 Title = projectVm.Title,
-                CreatedDate = DateTimeOffset.UtcNow
+                CreatedDate = DateTimeOffset.UtcNow,
             };
 
-            try
-            {
-               await _projectRepository.AddAsync(project);
-                _projectRepository.SaveChanges();
-            }
-            catch(DataAccessLayerException ex)
-            {
-                return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
-            }
+            var user = _userManager.FindByName("NotAssigned");
 
+            using(var transaction = new TransactionScope())
+            {
+                try
+                {
+                    _projectRepository.Add(project);
+                    _projectRepository.SaveChanges();
+
+                    var projectUsers = new ProjectUsers()
+                    {
+                        ProjectId = project.Id,
+                        UserId = user.Id
+                    };
+
+                    _projectUsersRepository.Add(projectUsers);
+                    _projectUsersRepository.SaveChanges();
+                }
+                catch(DataAccessLayerException ex)
+                {
+                    return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
+                }
+                transaction.Complete();
+            }
             return Ok(project);
         }
 
@@ -146,6 +188,7 @@ namespace TaskBook.WebApi.Controllers
         {
             _readerRepository.Dispose();
             _projectRepository.Dispose();
+            _userManager.Dispose();
             base.Dispose(disposing);
         }
     }

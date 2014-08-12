@@ -13,7 +13,7 @@ namespace TaskBook.DataAccessLayer.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201408101038567_Initial"; }
+            get { return "201408110901281_Initial"; }
         }
         
         string IMigrationMetadata.Source

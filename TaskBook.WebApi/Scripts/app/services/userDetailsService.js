@@ -20,5 +20,9 @@ app.factory("userDetailsService", ["$http", function ($http) {
         return $http.put("api/Account/UpdateUser/" + user.UserId, user)
     };
 
+    userDetailsServiceFactory.postUserDetails = function (user) {
+        return $http.post("api/Account/AddUser", user)
+    };
+
     return userDetailsServiceFactory;
 }]);

@@ -88,7 +88,7 @@ namespace TaskBook.DataAccessLayer.Repositories
 
         public void SaveChanges()
         {
-            _unitOfWork.Database.SaveChanges();
+            _unitOfWork.Commit();
         }
 
         public void Dispose()

@@ -58,7 +58,7 @@ namespace TaskBook.TestDatabase
             var migrator = new DbMigrator(configuration);
             migrator.Configuration.AutomaticMigrationDataLossAllowed = true;
             migrator.Update();
-            
+
             // Add test data
 
             // Projects
@@ -92,10 +92,6 @@ namespace TaskBook.TestDatabase
                         Email = "manager1@taskbook.com",
                         FirstName = "Manager 1",
                         LastName = "Manager 1",
-                        Projects = new List<Project>()
-                        {
-                            projects.First(x => x.Title == "Project 1")
-                        }
                     },
                     new TbUser()
                     {
@@ -103,10 +99,6 @@ namespace TaskBook.TestDatabase
                         Email = "AdvancedUser11@taskbook.com",
                         FirstName = "AdvancedUser11",
                         LastName = "AdvancedUser11",
-                        Projects = new List<Project>()
-                        {
-                            projects.First(x => x.Title == "Project 1")
-                        }
                     },
                     new TbUser()
                     {
@@ -114,10 +106,6 @@ namespace TaskBook.TestDatabase
                         Email = "AdvancedUser21@taskbook.com",
                         FirstName = "AdvancedUser21",
                         LastName = "AdvancedUser21",
-                        Projects = new List<Project>()
-                        {
-                            projects.First(x => x.Title == "Project 1")
-                        }
                     },
                     new TbUser()
                     {
@@ -125,10 +113,6 @@ namespace TaskBook.TestDatabase
                         Email = "User11@taskbook.com",
                         FirstName = "User11",
                         LastName = "User11",
-                        Projects = new List<Project>()
-                        {
-                            projects.First(x => x.Title == "Project 1")
-                        }
                     },
                     new TbUser()
                     {
@@ -136,10 +120,6 @@ namespace TaskBook.TestDatabase
                         Email = "User21@taskbook.com",
                         FirstName = "User21",
                         LastName = "User21",
-                        Projects = new List<Project>()
-                        {
-                            projects.First(x => x.Title == "Project 1")
-                        }
                     },
                     new TbUser()
                     {
@@ -147,10 +127,6 @@ namespace TaskBook.TestDatabase
                         Email = "manager2@taskbook.com",
                         FirstName = "Manager 2",
                         LastName = "Manager 2",
-                        Projects = new List<Project>()
-                        {
-                            projects.First(x => x.Title == "Project 2")
-                        }
                     },
                     new TbUser()
                     {
@@ -158,10 +134,6 @@ namespace TaskBook.TestDatabase
                         Email = "AdvancedUser12@taskbook.com",
                         FirstName = "AdvancedUser12",
                         LastName = "AdvancedUser12",
-                        Projects = new List<Project>()
-                        {
-                            projects.First(x => x.Title == "Project 2")
-                        }
                     },
                      new TbUser()
                     {
@@ -169,10 +141,6 @@ namespace TaskBook.TestDatabase
                         Email = "User12@taskbook.com",
                         FirstName = "User12",
                         LastName = "User12",
-                        Projects = new List<Project>()
-                        {
-                            projects.First(x => x.Title == "Project 2")
-                        }
                     },
                     new TbUser()
                     {
@@ -180,10 +148,6 @@ namespace TaskBook.TestDatabase
                         Email = "User22@taskbook.com",
                         FirstName = "User22",
                         LastName = "User22",
-                        Projects = new List<Project>()
-                        {
-                            projects.First(x => x.Title == "Project 2")
-                        }
                     }
                 };
 
@@ -206,16 +170,72 @@ namespace TaskBook.TestDatabase
                     }
                 }
 
+                // For Project 1
                 string manager1Id = users.First(x => x.UserName == "Manager1").Id;
                 string advancedUser11Id = users.First(x => x.UserName == "AdvancedUser11").Id;
                 string advancedUser21Id = users.First(x => x.UserName == "AdvancedUser21").Id;
                 string user11Id = users.First(x => x.UserName == "User11").Id;
                 string user21Id = users.First(x => x.UserName == "User21").Id;
 
+                // For Project 2
                 string manager2Id = users.First(x => x.UserName == "Manager2").Id;
                 string advancedUser12Id = users.First(x => x.UserName == "AdvancedUser12").Id;
                 string user12Id = users.First(x => x.UserName == "User12").Id;
                 string user22Id = users.First(x => x.UserName == "User22").Id;
+
+                var projectUsers = new List<ProjectUsers>()
+                {
+                    // Project 1 members
+                    new ProjectUsers()
+                    {
+                         ProjectId = project1Id,
+                         UserId = manager1Id
+                    },
+                    new ProjectUsers()
+                    {
+                         ProjectId = project1Id,
+                         UserId = advancedUser11Id
+                    },
+                    new ProjectUsers()
+                    {
+                         ProjectId = project1Id,
+                         UserId = advancedUser21Id
+                    },
+                    new ProjectUsers()
+                    {
+                         ProjectId = project1Id,
+                         UserId = user11Id
+                    },
+                    new ProjectUsers()
+                    {
+                         ProjectId = project1Id,
+                         UserId = user21Id
+                    },
+                    // Project 2 members
+                    new ProjectUsers()
+                    {
+                         ProjectId = project2Id,
+                         UserId = manager2Id
+                    },
+                    new ProjectUsers()
+                    {
+                         ProjectId = project2Id,
+                         UserId = advancedUser12Id
+                    },
+                    new ProjectUsers()
+                    {
+                         ProjectId = project2Id,
+                         UserId = user12Id
+                    },
+                    new ProjectUsers()
+                    {
+                         ProjectId = project2Id,
+                         UserId = user22Id
+                    },
+                };
+
+                projectUsers.ForEach(x => db.ProjectUsers.AddOrUpdate(y => y.Id, x));
+                db.SaveChanges();
 
                 // Add Tasks
                 var tasks = new List<TbTask>()
@@ -360,7 +380,7 @@ namespace TaskBook.TestDatabase
             }
             else
             {
-                throw new Exception("User's role is incorrect."); 
+                throw new Exception("User's role is incorrect.");
             }
         }
     }

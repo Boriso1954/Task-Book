@@ -45,7 +45,16 @@
             <tbody>
                 <tr data-ng-repeat="p in projectsAndManagers | orderBy: sort.column:sort.reverse | filter: project | filter: manager | filter: search">
                     <td><a href="#/projects/edit/{{p.ProjectId}}">{{p.ProjectTitle}}</a></td>
-                    <td><a href="#/userDetails/{{p.ManagerName}}">{{p.ManagerName}}</a></td>
+                    
+                    <td data-ng-switch="p.ManagerName"  >
+                        <div data-ng-switch-when="NotAssigned">
+                            <a href="#/managers/new/{{p.ProjectId}}">{{p.ManagerName}}</a>
+                        </div>
+                        <div data-ng-switch-default>
+                            <a href="#/managers/{{p.ManagerName}}">{{p.ManagerName}}</a>
+                        </div>
+                    </td>
+                    
                     <!--<td data-ng-bind="p.ManagerName"></td>-->
                 </tr>
             </tbody>

@@ -230,7 +230,7 @@ namespace TaskBook.TestDatabase
                     userManager.Create(user, "notassigned");
                 }
 
-                role = roles.First(r => r.Name == RoleKey.Admin);
+                role = roles.First(r => r.Name == RoleKey.Manager);
                 rolesForUser = userManager.GetRoles(user.Id);
                 if(!rolesForUser.Contains(role.Name))
                 {

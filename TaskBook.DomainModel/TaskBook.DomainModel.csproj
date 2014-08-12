@@ -58,6 +58,7 @@
     <Compile Include="Permission.cs" />
     <Compile Include="PermissionKey.cs" />
     <Compile Include="Project.cs" />
+    <Compile Include="ProjectUsers.cs" />
     <Compile Include="RoleKey.cs" />
     <Compile Include="TbTaskStatus.cs" />
     <Compile Include="TbRole.cs" />

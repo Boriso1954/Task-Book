@@ -1,5 +1,5 @@
 ﻿"use strict";
-app.controller("userDetailsController", ["$scope", "$routeParams", "userDetailsService", function ($scope, $routeParams, userDetailsService) {
+app.controller("managerDetailsController", ["$scope", "$routeParams", "userDetailsService", function ($scope, $routeParams, userDetailsService) {
 
     $scope.user = {};
 

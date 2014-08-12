@@ -83,12 +83,13 @@
     <Compile Include="AuthManagers\TbUserManager.cs" />
     <Compile Include="Configurations\PermissionConfiguration.cs" />
     <Compile Include="Configurations\ProjectConfiguration.cs" />
+    <Compile Include="Configurations\ProjectUsersConfiguration.cs" />
     <Compile Include="Configurations\UserConfiguration.cs" />
     <Compile Include="Exceptions\DataAccessLayerException.cs" />
     <Compile Include="IUnitOfWork.cs" />
-    <Compile Include="Migrations\201408101038567_Initial.cs" />
-    <Compile Include="Migrations\201408101038567_Initial.Designer.cs">
-      <DependentUpon>201408101038567_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201408110901281_Initial.cs" />
+    <Compile Include="Migrations\201408110901281_Initial.Designer.cs">
+      <DependentUpon>201408110901281_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -97,8 +98,10 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Repositories\Interfaces\IProjectRepository.cs" />
+    <Compile Include="Repositories\Interfaces\IProjectUsersRepository.cs" />
     <Compile Include="Repositories\Interfaces\IRepository.cs" />
     <Compile Include="Repositories\ProjectRepository.cs" />
+    <Compile Include="Repositories\ProjectUsersRepository.cs" />
     <Compile Include="Repositories\Repository.cs" />
     <Compile Include="TaskBookDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -115,8 +118,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201408101038567_Initial.resx">
-      <DependentUpon>201408101038567_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201408110901281_Initial.resx">
+      <DependentUpon>201408110901281_Initial.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

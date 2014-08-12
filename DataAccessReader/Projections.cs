@@ -22,7 +22,7 @@ namespace TaskBook.DataAccessReader
         {
             UserId = (string)r["UserId"],
             UserName = (string)r["UserName"],
-            Email = (string)r["Email"],
+            Email = r["Email"] != DBNull.Value ? (string)r["Email"] : string.Empty,
             FirstName = (string)r["FirstName"],
             LastName = (string)r["LastName"],
             Role = (string)r["Role"],

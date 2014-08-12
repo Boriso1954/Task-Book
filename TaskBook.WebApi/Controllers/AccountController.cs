@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using TaskBook.DataAccessLayer.AuthManagers;
+using TaskBook.DataAccessLayer.Exceptions;
 using TaskBook.DataAccessLayer.Repositories;
+using TaskBook.DataAccessLayer.Repositories.Interfaces;
 using TaskBook.DataAccessReader.ViewModels;
 using TaskBook.DomainModel;
 using TaskBook.WebApi.Models;
@@ -18,10 +21,13 @@ namespace TaskBook.WebApi.Controllers
     public class AccountController : ApiController
     {
         private readonly UserManager<TbUser> _userManager;
+        private readonly IProjectUsersRepository _projectUsersRepository;
 
-        public AccountController(IUserStore<TbUser> userStore)
+        public AccountController(IUserStore<TbUser> userStore, 
+            IProjectUsersRepository projectUsersRepository)
         {
             _userManager = new UserManager<TbUser>(userStore);
+            _projectUsersRepository = projectUsersRepository;
         }
 
         // GET api/Account/GetUser/{userName}
@@ -70,9 +76,9 @@ namespace TaskBook.WebApi.Controllers
             return Ok(rolesForUser);
         }
 
-        // POST api/Account/Register
-        [Route("Register")]
-        public async Task<IHttpActionResult> Register(RegisterUserViewModel userModel)
+        // POST api/Account/AddUser
+        [Route("AddUser")]
+        public IHttpActionResult AddUser(TbUserVm userModel)
         {
             if(!ModelState.IsValid)
             {
@@ -88,11 +94,48 @@ namespace TaskBook.WebApi.Controllers
                 Email = userModel.Email
             };
 
-            var result = await _userManager.CreateAsync(user, userModel.Password);
-            var errorResult = GetErrorResult(result);
-            if(errorResult != null)
+            using(var transaction = new TransactionScope())
             {
-                return errorResult;
+                try
+                {
+                    var result = _userManager.Create(user, "123456");
+                    var errorResult = GetErrorResult(result);
+                    if(errorResult != null)
+                    {
+                        return errorResult;
+                    }
+
+                    string role = userModel.Role;
+                    long projectId = (long)userModel.ProjectId;
+                    string userId = user.Id;
+                    var rolesForUser = _userManager.GetRoles(userId);
+                    if(!rolesForUser.Contains(role))
+                    {
+                        result = _userManager.AddToRole(userId, role);
+                        errorResult = GetErrorResult(result);
+                        if(errorResult != null)
+                        {
+                            return errorResult;
+                        }
+                    }
+
+                    var projectUsers = new ProjectUsers()
+                    {
+                        ProjectId = projectId,
+                        UserId = userId
+                    };
+                    _projectUsersRepository.Add(projectUsers);
+                    _projectUsersRepository.SaveChanges();
+
+                    var notAssignedUser = _userManager.FindByName("NotAssigned");
+                    _projectUsersRepository.DeleteByPredicate(x => x.UserId == notAssignedUser.Id && x.ProjectId == projectId);
+                    _projectUsersRepository.SaveChanges();
+                }
+                catch(DataAccessLayerException ex)
+                {
+                    return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
+                }
+                transaction.Complete();
             }
             return Ok();
         }
@@ -159,6 +202,7 @@ namespace TaskBook.WebApi.Controllers
         protected override void Dispose(bool disposing)
         {
             _userManager.Dispose();
+            _projectUsersRepository.Dispose();
             base.Dispose(disposing);
         }
     }

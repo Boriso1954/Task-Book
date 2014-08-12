@@ -97,6 +97,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.0\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -178,8 +179,10 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Scripts\app\controllers\addManagerController.js" />
     <Content Include="Scripts\app\controllers\createProjectController.js" />
     <Content Include="Scripts\app\controllers\editProjectController.js" />
+    <Content Include="Scripts\app\views\addManager.html" />
     <Content Include="Scripts\app\views\createProject.html" />
     <Content Include="Scripts\vendor\angular-animate.js" />
     <Content Include="Scripts\vendor\angular-animate.min.js" />
@@ -208,7 +211,7 @@
     <Content Include="Scripts\app\controllers\modalDeleteProjectContraoller.js" />
     <Content Include="Scripts\app\controllers\projectsAndManagersController.js" />
     <Content Include="Scripts\app\controllers\forgotPasswordController.js" />
-    <Content Include="Scripts\app\controllers\userDetailsController.js" />
+    <Content Include="Scripts\app\controllers\managerDetailsController.js" />
     <Content Include="Scripts\app\services\authInterceptorService.js" />
     <Content Include="Scripts\app\services\projectsService.js" />
     <Content Include="Scripts\app\services\authService.js" />
@@ -221,7 +224,7 @@
     <Content Include="Scripts\app\views\modalDeleteProject.html" />
     <Content Include="Scripts\app\views\editProject.html" />
     <Content Include="Scripts\app\views\projectsAndManagers.html" />
-    <Content Include="Scripts\app\views\userDetails.html" />
+    <Content Include="Scripts\app\views\managerDetails.html" />
     <Content Include="Scripts\vendor\errors.json" />
     <Content Include="Scripts\vendor\angular-touch.min.js.map" />
     <Content Include="Scripts\vendor\angular-sanitize.min.js.map" />

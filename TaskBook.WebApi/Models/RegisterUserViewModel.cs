@@ -6,6 +6,7 @@ using System.Web;
 
 namespace TaskBook.WebApi.Models
 {
+    // TODO obsolete
     public class RegisterUserViewModel
     {
         [Required]

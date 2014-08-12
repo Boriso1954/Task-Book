@@ -10,16 +10,16 @@ namespace TaskBook.DataAccessLayer.Configurations
 {
     public class ProjectConfiguration: EntityTypeConfiguration<Project>
     {
-        public ProjectConfiguration()
-        {
-            HasMany(x => x.Users)
-               .WithMany(x => x.Projects)
-               .Map(m =>
-               {
-                   m.ToTable("ProjectUsers");
-                   m.MapLeftKey("ProjectId");
-                   m.MapRightKey("UserId");
-               });
-        }
+        //public ProjectConfiguration()
+        //{
+        //    HasMany(x => x.Users)
+        //       .WithMany(x => x.Projects)
+        //       .Map(m =>
+        //       {
+        //           m.ToTable("ProjectUsers");
+        //           m.MapLeftKey("ProjectId");
+        //           m.MapRightKey("UserId");
+        //       });
+        //}
     }
 }
