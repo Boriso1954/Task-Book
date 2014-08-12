@@ -12,7 +12,7 @@ app.controller("createProjectController", ["$scope", "projectsService", function
             .then(function (result) {
                 $scope.successful = true;
                 $scope.message = "New project has been added.";
-                $scope.projectForm.$setPristine();
+                $scope.createProjectForm.$setPristine();
             }, function (error) {
                 $scope.successful = false;
                 $scope.message = error.data.Message;

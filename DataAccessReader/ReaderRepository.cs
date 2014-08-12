@@ -5,7 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TaskBook.DataAccessReader.ViewModels;
+using TaskBook.DomainModel.ViewModels;
 
 namespace TaskBook.DataAccessReader
 {
@@ -42,7 +42,7 @@ namespace TaskBook.DataAccessReader
             return reader.Select(Projections.ProjectManagerVmFromReader).AsQueryable();
         }
 
-        public IQueryable<TbUserVm> GetUserDetailsByUserName(string userName)
+        public IQueryable<TbUserVm> GetUserByUserName(string userName)
         {
             var parameters = new TbParameters()
                 {

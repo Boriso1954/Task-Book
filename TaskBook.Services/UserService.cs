@@ -1,0 +1,119 @@
+﻿using System;
+using System.Linq;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Transactions;
+using Microsoft.AspNet.Identity;
+using TaskBook.DataAccessLayer.Exceptions;
+using TaskBook.DomainModel;
+using TaskBook.Services.Interfaces;
+using TaskBook.DomainModel.ViewModels;
+using TaskBook.DataAccessReader;
+
+namespace TaskBook.Services
+{
+    public sealed class UserService: IUserService
+    {
+        private readonly UserManager<TbUser> _userManager;
+        private readonly IProjectAccessService _projectAccessService;
+        private readonly ReaderRepository _readerRepository;
+
+        public UserService(IUserStore<TbUser> userStore,
+            IProjectAccessService projectAccessService,
+            ReaderRepository readerRepository)
+        {
+            _userManager = new UserManager<TbUser>(userStore);
+            _projectAccessService = projectAccessService;
+            _readerRepository = readerRepository;
+        }
+
+        public TbUserVm GetUserByUserName(string userName)
+        {
+            var user = _readerRepository.GetUserByUserName(userName).FirstOrDefault();
+            return user;
+        }
+
+        public void AddUser(TbUserVm userModel)
+        {
+            // TODO: introduce mapping
+            var user = new TbUser()
+            {
+                UserName = userModel.UserName,
+                FirstName = userModel.FirstName,
+                LastName = userModel.LastName,
+                Email = userModel.Email
+            };
+
+            using(var transaction = new TransactionScope())
+            {
+                try
+                {
+                    var result = _userManager.Create(user, "123456");
+                    if(result == null || !result.Succeeded)
+                    {
+                        throw new TbIdentityException("Create user error", result);
+                    }
+
+                    string role = userModel.Role;
+                    long projectId = (long)userModel.ProjectId;
+                    string userId = user.Id;
+                    var rolesForUser = _userManager.GetRoles(userId);
+                    if(!rolesForUser.Contains(role))
+                    {
+                        result = _userManager.AddToRole(userId, role);
+                        if(result == null || !result.Succeeded)
+                        {
+                            throw new TbIdentityException("Add to role error", result);
+                        }
+                    }
+
+                    _projectAccessService.AddUserToProject(projectId, userId);
+
+                    string notAssignedUserId = _userManager.FindByName("NotAssigned").Id;
+                    _projectAccessService.RemoveUserFromRoject(projectId, notAssignedUserId);
+                }
+                catch(DataAccessLayerException)
+                {
+                    throw;
+                }
+                catch(TbIdentityException)
+                {
+                    throw;
+                }
+                transaction.Complete();
+            }
+        }
+
+        public async Task UpdateUserAsync(string id, TbUserVm userVm)
+        {
+            if(id != userVm.UserId)
+            {
+                throw new Exception("User ID conflict.");
+            }
+
+            var user = await _userManager.FindByIdAsync(userVm.UserId);
+            if(user == null)
+            {
+                throw new Exception(string.Format("The user {0} is not found.", userVm.UserName));
+            }
+
+            // TODO consider mapping
+            user.UserName = userVm.UserName;
+            user.Email = userVm.Email;
+            user.FirstName = userVm.FirstName;
+            user.LastName = userVm.LastName;
+
+            var result = await _userManager.UpdateAsync(user);
+            if(result == null || !result.Succeeded)
+            {
+                throw new TbIdentityException("Update user error", result);
+            }
+        }
+
+        public void Dispose()
+        {
+            _userManager.Dispose();
+            _projectAccessService.Dispose();
+        }
+    }
+}

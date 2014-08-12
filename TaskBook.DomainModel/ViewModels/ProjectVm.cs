@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaskBook.DataAccessReader.ViewModels
+namespace TaskBook.DomainModel.ViewModels
 {
     public sealed class ProjectVm
     {

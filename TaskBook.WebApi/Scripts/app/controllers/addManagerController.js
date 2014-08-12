@@ -1,6 +1,6 @@
 ﻿"use strict";
-app.controller("addManagerController", ["$scope", "$routeParams", "userDetailsService", "projectsService",
-    function ($scope, $routeParams, userDetailsService, projectsService) {
+app.controller("addManagerController", ["$scope", "$routeParams", "permissionsService", "projectsService", "accountService",
+    function ($scope, $routeParams, permissionsService, projectsService, accountService) {
 
     $scope.user = {};
     $scope.user.ProjectId = $routeParams.projectId;
@@ -17,18 +17,18 @@ app.controller("addManagerController", ["$scope", "$routeParams", "userDetailsSe
             $scope.message = error.data.Message;
         });
 
-    userDetailsService.getPermissionsByRole($scope.user.Role)
-          .then(function (result) {
-              $scope.successful = true;
-              $scope.user.Permissions = result.data;
-          }, function (error) {
-              $scope.successful = false;
-              $scope.message = error.data.Message;
-          });
+    permissionsService.getPermissionsByRole($scope.user.Role)
+        .then(function (result) {
+            $scope.successful = true;
+            $scope.user.Permissions = result.data;
+        }, function (error) {
+            $scope.successful = false;
+            $scope.message = error.data.Message;
+        });
 
     $scope.add = function () {
         var user = $scope.user;
-        userDetailsService.postUserDetails(user)
+        accountService.postUserDetails(user)
         .then(function (result) {
             $scope.successful = true;
             $scope.message = "Manager details have been added.";

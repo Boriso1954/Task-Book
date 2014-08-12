@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E324A2EE-A49F-4B96-80C6-5E87FAAB474A}</ProjectGuid>
+    <ProjectGuid>{78570F18-1CC8-457E-A862-010732E5D3B2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TaskBook.DomainModel</RootNamespace>
-    <AssemblyName>TaskBook.DomainModel</AssemblyName>
+    <RootNamespace>TaskBook.Services</RootNamespace>
+    <AssemblyName>TaskBook.Services</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -32,21 +32,25 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework">
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.AspNet.Identity.Core">
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.0.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.0.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -54,21 +58,32 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entity.cs" />
-    <Compile Include="Permission.cs" />
-    <Compile Include="PermissionKey.cs" />
-    <Compile Include="Project.cs" />
-    <Compile Include="ProjectUsers.cs" />
-    <Compile Include="RoleKey.cs" />
-    <Compile Include="TbTaskStatus.cs" />
-    <Compile Include="TbRole.cs" />
-    <Compile Include="TbTask.cs" />
-    <Compile Include="TbUser.cs" />
+    <Compile Include="Exceptions\TbIdentityException.cs" />
+    <Compile Include="Interfaces\IPermissionService.cs" />
+    <Compile Include="Interfaces\IProjectAccessService.cs" />
+    <Compile Include="Interfaces\IProjectService.cs" />
+    <Compile Include="Interfaces\IRoleService.cs" />
+    <Compile Include="Interfaces\IUserService.cs" />
+    <Compile Include="PermissionService.cs" />
+    <Compile Include="ProjectAccessService.cs" />
+    <Compile Include="ProjectService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\PermissionVm.cs" />
-    <Compile Include="ViewModels\ProjectManagerVm.cs" />
-    <Compile Include="ViewModels\ProjectVm.cs" />
-    <Compile Include="ViewModels\TbUserVm.cs" />
+    <Compile Include="RoleService.cs" />
+    <Compile Include="UserService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DataAccessReader\TaskBook.DataAccessReader.csproj">
+      <Project>{a04e2ecc-faeb-41cc-9b3f-809057dbbd41}</Project>
+      <Name>TaskBook.DataAccessReader</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TaskBook.DataAccessLayer\TaskBook.DataAccessLayer.csproj">
+      <Project>{bd70db56-cc9d-4040-8dcd-1a12c3548f73}</Project>
+      <Name>TaskBook.DataAccessLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TaskBook.DomainModel\TaskBook.DomainModel.csproj">
+      <Project>{e324a2ee-a49f-4b96-80c6-5e87faab474a}</Project>
+      <Name>TaskBook.DomainModel</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

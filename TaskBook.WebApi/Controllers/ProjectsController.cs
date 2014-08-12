@@ -12,8 +12,9 @@ using TaskBook.DataAccessLayer;
 using TaskBook.DataAccessLayer.Exceptions;
 using TaskBook.DataAccessLayer.Repositories.Interfaces;
 using TaskBook.DataAccessReader;
-using TaskBook.DataAccessReader.ViewModels;
 using TaskBook.DomainModel;
+using TaskBook.Services.Interfaces;
+using TaskBook.DomainModel.ViewModels;
 
 namespace TaskBook.WebApi.Controllers
 {
@@ -21,21 +22,11 @@ namespace TaskBook.WebApi.Controllers
     [RoutePrefix("api/Projects")]
     public class ProjectsController : ApiController
     {
-        private readonly ReaderRepository _readerRepository;
-        private readonly IProjectRepository _projectRepository;
-        private readonly UserManager<TbUser> _userManager;
-        private readonly IProjectUsersRepository _projectUsersRepository;
+        private readonly IProjectService _projectService;
 
-        public ProjectsController(ReaderRepository readerRepository, 
-            IProjectRepository projectRepository,
-            IProjectUsersRepository projectUsersRepository,
-            IUserStore<TbUser> userStore)
+        public ProjectsController(IProjectService projectService)
         {
-            _readerRepository = readerRepository;
-            _projectRepository = projectRepository;
-            _projectUsersRepository = projectUsersRepository;
-            _userManager = new UserManager<TbUser>(userStore);
-
+            _projectService = projectService;
         }
 
         // GET api/Projects/GetProjectsAndManagers
@@ -43,8 +34,11 @@ namespace TaskBook.WebApi.Controllers
         [ResponseType(typeof(IQueryable<ProjectManagerVm>))]
         public IHttpActionResult GetProjectsAndManagers()
         {
-            var projectsAndManagers = _readerRepository.GetProjectsAndManagers();
-            //return BadRequest("Error in GetProjectsAndManagers");
+            var projectsAndManagers = _projectService.GetProjectsAndManagers();
+            if(projectsAndManagers == null)
+            {
+                return BadRequest("Unable to return list of projects and managers.");
+            }
             return Ok(projectsAndManagers);
         }
 
@@ -53,11 +47,10 @@ namespace TaskBook.WebApi.Controllers
         [ResponseType(typeof(ProjectManagerVm))]
         public IHttpActionResult GetProjectsAndManagers(long projectId)
         {
-            var project = _readerRepository.GetProjectsAndManagers(projectId).FirstOrDefault();
-            
+            var project = _projectService.GetProjectsAndManagers(projectId);
             if(project == null)
             {
-                return BadRequest("Unable to find the project.");
+                return BadRequest(string.Format("Unable to return the project anf int amanger for project ID '{0}'", projectId));
             }
             return Ok(project);
         }
@@ -67,55 +60,15 @@ namespace TaskBook.WebApi.Controllers
         [ResponseType(typeof(ProjectVm))]
         public IHttpActionResult GetProjectById(long id)
         {
-            var project = _projectRepository.GetById(id);
-
-            if(project == null)
-            {
-                return BadRequest(string.Format("The project ID '{0}' is not found.", id));
-            }
-
-            var projectVm = new ProjectVm()
-            {
-                Title = project.Title
-            };
-            return Ok(projectVm);
-        }
-
-        // PUT api/Projects/UpdateProject/{id}
-        [Route("UpdateProject/{id:long}")]
-        [HttpPut]
-        public IHttpActionResult UpdateProject(long id, ProjectManagerVm projectVm)
-        {
-            if(id != projectVm.ProjectId)
-            {
-                return BadRequest("Project ID conflict.");
-            }
-
-            var toBeUpdated = _projectRepository.GetById(id);
-            
-            if(toBeUpdated == null)
-            {
-                return BadRequest(string.Format("The project {0} is not found.", projectVm.ProjectTitle));
-            }
-
-            if(!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            toBeUpdated.Title = projectVm.ProjectTitle;
-
             try
             {
-                _projectRepository.Update(toBeUpdated);
-                _projectRepository.SaveChanges();
+                var projectVm = _projectService.GetById(id);
+                return Ok(projectVm);
             }
-            catch(DataAccessLayerException ex)
+            catch(Exception ex)
             {
-                return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
+                return BadRequest(ex.Message);
             }
-
-            return StatusCode(HttpStatusCode.NoContent);
         }
 
         // PUT api/Projects/AddProject
@@ -128,37 +81,42 @@ namespace TaskBook.WebApi.Controllers
                 return BadRequest(ModelState);
             }
 
-            var project = new Project()
+            try
             {
-                Title = projectVm.Title,
-                CreatedDate = DateTimeOffset.UtcNow,
-            };
-
-            var user = _userManager.FindByName("NotAssigned");
-
-            using(var transaction = new TransactionScope())
-            {
-                try
-                {
-                    _projectRepository.Add(project);
-                    _projectRepository.SaveChanges();
-
-                    var projectUsers = new ProjectUsers()
-                    {
-                        ProjectId = project.Id,
-                        UserId = user.Id
-                    };
-
-                    _projectUsersRepository.Add(projectUsers);
-                    _projectUsersRepository.SaveChanges();
-                }
-                catch(DataAccessLayerException ex)
-                {
-                    return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
-                }
-                transaction.Complete();
+                _projectService.AddProject(projectVm);
             }
-            return Ok(project);
+            catch(DataAccessLayerException ex)
+            {
+                return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
+            }
+           
+            return Ok();
+        }
+
+        // PUT api/Projects/UpdateProject/{id}
+        [Route("UpdateProject/{id:long}")]
+        [HttpPut]
+        public IHttpActionResult UpdateProject(long id, ProjectManagerVm projectVm)
+        {
+             if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                _projectService.UpdateProject(id, projectVm);
+            }
+            catch(DataAccessLayerException ex)
+            {
+                return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
+            }
+            
+            return Ok();
         }
 
          // DELETE api/Projects/DeleteProject/{id}
@@ -166,29 +124,25 @@ namespace TaskBook.WebApi.Controllers
         [HttpDelete]
         public IHttpActionResult DeleteProject(long id)
         {
-            var existing = _projectRepository.GetById(id);
-            if(existing == null)
-            {
-                return BadRequest("Project is not found");
-            }
-
             try
             {
-                _projectRepository.Delete(existing);
-                _projectRepository.SaveChanges();
+                _projectService.DeleteProject(id);
             }
             catch(DataAccessLayerException ex)
             {
                 return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
             }
+            catch(Exception ex)
+            {
+                return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
+            }
+            
             return Ok();
         }
 
         protected override void Dispose(bool disposing)
         {
-            _readerRepository.Dispose();
-            _projectRepository.Dispose();
-            _userManager.Dispose();
+            _projectService.Dispose();
             base.Dispose(disposing);
         }
     }

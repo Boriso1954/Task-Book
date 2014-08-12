@@ -39,7 +39,7 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <!--<li data-ng-show="authentication.isAuth"><a href="#">Welcome {{authentication.userName}}</a></li>-->
-                    <li><p data-ng-show="authentication.isAuth" class="navbar-text">Signed in as <a href="#/userDetails/{{authentication.userName}}" class="navbar-link">{{authentication.userName}}</a></p></li>
+                    <li><p data-ng-show="authentication.isAuth" class="navbar-text">Signed in as <a href="#/managers/{{authentication.userName}}" class="navbar-link">{{authentication.userName}}</a></p></li>
                     <li data-ng-show="!authentication.isAuth"><a href="#/login">Login</a></li>
                     <li data-ng-show="authentication.isAuth"><a href="" data-ng-click="logOut()">Logout</a></li>
                     <li data-ng-show="true"> <a href="#/language">Language</a></li>

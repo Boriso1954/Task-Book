@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TaskBook.DataAccessReader.ViewModels;
+using TaskBook.DomainModel.ViewModels;
 
 namespace TaskBook.DataAccessReader
 {

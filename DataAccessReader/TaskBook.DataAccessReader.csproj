@@ -47,13 +47,15 @@
     <Compile Include="TbDataReader.cs" />
     <Compile Include="TbExtensions.cs" />
     <Compile Include="TbParameters.cs" />
-    <Compile Include="ViewModels\PermissionVm.cs" />
-    <Compile Include="ViewModels\ProjectManagerVm.cs" />
-    <Compile Include="ViewModels\ProjectVm.cs" />
-    <Compile Include="ViewModels\TbUserVm.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TaskBook.DomainModel\TaskBook.DomainModel.csproj">
+      <Project>{e324a2ee-a49f-4b96-80c6-5e87faab474a}</Project>
+      <Name>TaskBook.DomainModel</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

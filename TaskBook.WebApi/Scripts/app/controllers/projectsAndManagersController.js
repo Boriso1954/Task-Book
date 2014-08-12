@@ -2,16 +2,17 @@
 app.controller("projectsAndManagersController", ["$scope", "projectsService", function ($scope, projectsService) {
 
     $scope.projectsAndManagers = [];
-    $scope.message = 0;
+    $scope.message = "";
     $scope.successful = true;
 
-    projectsService.getProjectsAndManagers().then(function (result) {
-        $scope.successful = true;
-        $scope.projectsAndManagers = result.data;
-    }, function (error) {
-        $scope.successful = false;
-        $scope.message = error.data.Message;
-    });
+    projectsService.getProjectsAndManagers()
+        .then(function (result) {
+            $scope.successful = true;
+            $scope.projectsAndManagers = result.data;
+        }, function (error) {
+            $scope.successful = false;
+            $scope.message = error.data.Message;
+        });
 
     $scope.fields = [{
         name: "Project",
