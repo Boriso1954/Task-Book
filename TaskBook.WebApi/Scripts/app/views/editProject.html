@@ -24,8 +24,13 @@
                         <div class="col-md-10">
                             <input type="text" id="ManagerName" name ="managerName" class="form-control inline" data-ng-model="project.ManagerName" data-ng-disabled="true"/>
                         </div>
-                        <div class="col-md-2">
-                            <a href="#/managers/{{project.ManagerName}}" class="btn btn-primary" role="button">Edit</a>
+                        <div class="col-md-2" data-ng-switch="project.ManagerName" >
+                            <div data-ng-switch-when="NotAssigned">
+                                <a href="#/managers/new/{{project.ProjectId}}" class="btn btn-primary" role="button">Add</a>
+                            </div>
+                            <div data-ng-switch-default>
+                                <a href="#/managers/edit/{{project.ManagerName}}" class="btn btn-primary" role="button">Edit</a>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -32,7 +32,7 @@ app.config(function ($routeProvider) {
         templateUrl: "/Scripts/app/views/createProject.html"
     });
 
-    $routeProvider.when("/managers/:userName", {
+    $routeProvider.when("/managers/edit/:userName", {
         controller: "managerDetailsController",
         templateUrl: "/Scripts/app/views/managerDetails.html"
     });
