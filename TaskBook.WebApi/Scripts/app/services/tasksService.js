@@ -8,5 +8,9 @@ app.factory("tasksService", ["$http",
         return $http.get("api/Tasks/GetTasks")
     };
 
+    tasksServiceFactory.getTasksByProjectId = function (projectId) {
+        return $http.get("api/Tasks/GetTasks/" + projectId)
+    };
+
     return tasksServiceFactory;
 }]);

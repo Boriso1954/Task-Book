@@ -103,6 +103,10 @@
     <Compile Include="Migrations\201408161627272_TaskCompletedDateNull.Designer.cs">
       <DependentUpon>201408161627272_TaskCompletedDateNull.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201408191239427_ProjectIdInTasksTable.cs" />
+    <Compile Include="Migrations\201408191239427_ProjectIdInTasksTable.Designer.cs">
+      <DependentUpon>201408191239427_ProjectIdInTasksTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -141,6 +145,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201408161627272_TaskCompletedDateNull.resx">
       <DependentUpon>201408161627272_TaskCompletedDateNull.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408191239427_ProjectIdInTasksTable.resx">
+      <DependentUpon>201408191239427_ProjectIdInTasksTable.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

@@ -9,6 +9,7 @@ namespace TaskBook.DomainModel.ViewModels
     public sealed class TaskVm
     {
         public long TaskId { get; set; }
+        public long ProjectId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public DateTimeOffset CreatedDate { get; set; }

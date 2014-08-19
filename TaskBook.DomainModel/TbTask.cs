@@ -19,6 +19,9 @@ namespace TaskBook.DomainModel
         [MaxLength(512, ErrorMessage = "Description should be from 1 to 512 characters long.")]
         public string Description { get; set; }
 
+        public long ProjectId { get; set; }
+        public Project Project { get; set; }
+
         [DataType(DataType.DateTime)]
         public DateTimeOffset CreatedDate { get; set; }
 

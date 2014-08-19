@@ -18,9 +18,18 @@ namespace TaskBook.Services
             _readerRepository = readerRepository;
         }
 
-        public IQueryable<TaskVm> GetTasks()
+        public IQueryable<TaskVm> GetTasks(long? projectId = null)
         {
-            var tasks = _readerRepository.GetTasks();
+            IQueryable<TaskVm> tasks = null;
+
+            if(projectId == null)
+            {
+                tasks = _readerRepository.GetTasks();
+            }
+            else
+            {
+                tasks = _readerRepository.GetTasks(projectId);
+            }
             return tasks;
         }
 

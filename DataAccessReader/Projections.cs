@@ -40,6 +40,7 @@ namespace TaskBook.DataAccessReader
         internal static Func<SqlDataReader, TaskVm> TaskVmFromReader = (r) => new TaskVm()
         {
             TaskId = (long)r["TaskId"],
+            ProjectId = (long)r["ProjectId"],
             Title = (string)r["Title"],
             Description = (string)r["Description"],
             CreatedDate = (DateTimeOffset)r["CreatedDate"],

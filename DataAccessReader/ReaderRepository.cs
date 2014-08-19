@@ -36,7 +36,6 @@ namespace TaskBook.DataAccessReader
                         Value = projectId
                     }
                 };
-
                 reader = _dataReader.ExecuteReader(CommandType.StoredProcedure, SpNames.spGetProjectsAndManagers, parameters);
             }
             return reader.Select(Projections.ProjectManagerVmFromReader).AsQueryable();
@@ -87,9 +86,26 @@ namespace TaskBook.DataAccessReader
             return reader.Select(Projections.ProjectManagerVmFromReader).AsQueryable();
         }
 
-        public IQueryable<TaskVm> GetTasks()
+        public IQueryable<TaskVm> GetTasks(long? projectId = null)
         {
-            var reader = _dataReader.ExecuteReader(CommandType.StoredProcedure, SpNames.spGetTasks);
+            SqlDataReader reader = null;
+
+            if(projectId == null)
+            {
+                reader = _dataReader.ExecuteReader(CommandType.StoredProcedure, SpNames.spGetTasks);
+            }
+            else
+            {
+                var parameters = new TbParameters()
+                {
+                    new SqlParameter()
+                    {
+                        ParameterName = "@projectId",
+                        Value = projectId
+                    }
+                };
+                reader = _dataReader.ExecuteReader(CommandType.StoredProcedure, SpNames.spGetTasks, parameters);
+            }
             return reader.Select(Projections.TaskVmFromReader).AsQueryable();
         }
 

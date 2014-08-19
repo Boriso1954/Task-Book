@@ -46,11 +46,22 @@ BEGIN
 END
 GO
 CREATE PROCEDURE spGetTasks
+	@projectId bigint = NULL
 AS
 BEGIN
-	SELECT  Tasks.Id AS TaskId, Tasks.Title, Tasks.Description, Tasks.CreatedDate, Tasks.DueDate, Tasks.Status, UC.UserName AS CreatedBy, 
-			UA.UserName AS AssignedTo, Tasks.CompletedDate
-	FROM    Tasks INNER JOIN
-			AspNetUsers AS UC ON Tasks.CreatedById = UC.Id INNER JOIN
-			AspNetUsers AS UA ON Tasks.AssignedToId = UA.Id
+	IF @projectId IS NULL
+		SELECT  Tasks.Id AS TaskId, Projects.Id AS ProjectId, Tasks.Title, Tasks.Description, Tasks.CreatedDate, Tasks.DueDate, Tasks.Status, 
+                UC.UserName AS CreatedBy, UA.UserName AS AssignedTo, Tasks.CompletedDate
+		FROM    Tasks INNER JOIN
+                AspNetUsers AS UC ON Tasks.CreatedById = UC.Id INNER JOIN
+                AspNetUsers AS UA ON Tasks.AssignedToId = UA.Id INNER JOIN
+                Projects ON Tasks.ProjectId = Projects.Id
+	ELSE
+		SELECT  Tasks.Id AS TaskId, Projects.Id AS ProjectId, Tasks.Title, Tasks.Description, Tasks.CreatedDate, Tasks.DueDate, Tasks.Status, 
+                UC.UserName AS CreatedBy, UA.UserName AS AssignedTo, Tasks.CompletedDate
+		FROM    Tasks INNER JOIN
+                AspNetUsers AS UC ON Tasks.CreatedById = UC.Id INNER JOIN
+                AspNetUsers AS UA ON Tasks.AssignedToId = UA.Id INNER JOIN
+                Projects ON Tasks.ProjectId = Projects.Id
+		WHERE   Projects.Id = @projectId
 END

@@ -41,25 +41,25 @@ app.controller("usersAndTasksManagerController", ["$scope", "$routeParams", "acc
         $scope.pageSize = 5;
 
         // Manager's data
+        var fullTaskList = null;
         accountService.getUserDetailsByUserName($scope.user.UserName)
             .then(function (result) {
                 $scope.successful = true;
                 $scope.user = result.data;
-            }, function (error) {
-                $scope.successful = false;
-                $scope.message = error.data.Message;
-            });
 
-        var fullTaskList = null;
+                // List of tasks
+                tasksService.getTasksByProjectId($scope.user.ProjectId)
+                    .then(function (result) {
+                        $scope.successful = true;
+                        fullTaskList = result.data;
+                        $scope.totalItems = fullTaskList.length;
+                        $scope.tasks = tbUtil.getItemsForPage(fullTaskList, $scope.currentPage, $scope.pageSize);
+                        prepareData();
+                    }, function (error) {
+                        $scope.successful = false;
+                        $scope.message = error.data.Message;
+                    });
 
-        // List of tasks
-        tasksService.getTasks()
-            .then(function (result) {
-                $scope.successful = true;
-                fullTaskList = result.data;
-                $scope.totalItems = fullTaskList.length;
-                $scope.tasks = tbUtil.getItemsForPage(fullTaskList, $scope.currentPage, $scope.pageSize);
-                prepareData();
             }, function (error) {
                 $scope.successful = false;
                 $scope.message = error.data.Message;

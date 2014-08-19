@@ -244,6 +244,7 @@ namespace TaskBook.TestDatabase
                     new TbTask()
                     {
                          Title  ="Task11",
+                         ProjectId = project1Id,
                          Description = "Task11 description",
                          CreatedDate = DateTimeOffset.UtcNow,
                          CreatedById = manager1Id,
@@ -254,6 +255,7 @@ namespace TaskBook.TestDatabase
                     new TbTask()
                     {
                          Title  ="Task21",
+                         ProjectId = project1Id,
                          Description = "Task21 description",
                          CreatedDate = DateTimeOffset.UtcNow.AddDays(-1),
                          CreatedById = manager1Id,
@@ -264,6 +266,7 @@ namespace TaskBook.TestDatabase
                     new TbTask()
                     {
                          Title  ="Task31",
+                         ProjectId = project1Id,
                          Description = "Task31 description",
                          CreatedDate = DateTimeOffset.UtcNow,
                          CreatedById = manager1Id,
@@ -274,6 +277,7 @@ namespace TaskBook.TestDatabase
                     new TbTask()
                     {
                          Title  ="Task41",
+                         ProjectId = project1Id,
                          Description = "Task41 description",
                          CreatedDate = DateTimeOffset.UtcNow.AddDays(-5),
                          CreatedById = manager1Id,
@@ -285,6 +289,7 @@ namespace TaskBook.TestDatabase
                     new TbTask()
                     {
                          Title  ="Task51",
+                         ProjectId = project1Id,
                          Description = "Task51 description",
                          CreatedDate = DateTimeOffset.UtcNow,
                          CreatedById = manager1Id,
@@ -297,6 +302,7 @@ namespace TaskBook.TestDatabase
                     new TbTask()
                     {
                          Title  ="Task12",
+                         ProjectId = project2Id,
                          Description = "Task12 description",
                          CreatedDate = DateTimeOffset.UtcNow,
                          CreatedById = manager2Id,
@@ -307,6 +313,7 @@ namespace TaskBook.TestDatabase
                     new TbTask()
                     {
                          Title  ="Task22",
+                         ProjectId = project2Id,
                          Description = "Task22 description",
                          CreatedDate = DateTimeOffset.UtcNow,
                          CreatedById = manager2Id,
@@ -317,6 +324,7 @@ namespace TaskBook.TestDatabase
                     new TbTask()
                     {
                          Title  ="Task32",
+                         ProjectId = project2Id,
                          Description = "Task32 description",
                          CreatedDate = DateTimeOffset.UtcNow.AddDays(-5),
                          CreatedById = manager2Id,
@@ -328,6 +336,7 @@ namespace TaskBook.TestDatabase
                     new TbTask()
                     {
                          Title  ="Task42",
+                         ProjectId = project2Id,
                          Description = "Task42 description",
                          CreatedDate = DateTimeOffset.UtcNow.AddDays(-3),
                          CreatedById = manager2Id,
@@ -339,6 +348,7 @@ namespace TaskBook.TestDatabase
                     new TbTask()
                     {
                          Title  ="Task52",
+                         ProjectId = project2Id,
                          Description = "Task52 description",
                          CreatedDate = DateTimeOffset.UtcNow.AddDays(-1),
                          CreatedById = manager2Id,
@@ -349,6 +359,7 @@ namespace TaskBook.TestDatabase
                     new TbTask()
                     {
                          Title  ="Task62",
+                         ProjectId = project2Id,
                          Description = "Task62 description",
                          CreatedDate = DateTimeOffset.UtcNow,
                          CreatedById = manager2Id,

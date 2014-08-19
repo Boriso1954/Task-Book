@@ -37,7 +37,7 @@ namespace TaskBook.DataAccessReader
             }
         }
 
-        // TODO Make is async
+        // TODO Make it async
         public SqlDataReader ExecuteReader(CommandType commandType, string commandText, TbParameters parameters = null)
         {
             try

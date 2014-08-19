@@ -39,6 +39,19 @@ namespace TaskBook.WebApi.Controllers
             return Ok(tasks);
         }
 
+        // GET api/Tasks/GetTasks/{projectId}
+        [Route("GetTasks/{projectId:long}")]
+        [ResponseType(typeof(IQueryable<TaskVm>))]
+        public IHttpActionResult GetTasks(long projectId)
+        {
+            var tasks = _taskService.GetTasks(projectId);
+            if(tasks == null)
+            {
+                return BadRequest("Unable to return tasks");
+            }
+            return Ok(tasks);
+        }
+
         protected override void Dispose(bool disposing)
         {
             _taskService.Dispose();
