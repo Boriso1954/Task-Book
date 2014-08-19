@@ -3,3 +3,5 @@ GO
 DROP PROCEDURE spGetUserDetailsByUserName
 GO
 DROP PROCEDURE spGetPermissionsByRole
+GO
+DROP PROCEDURE spGetTasks

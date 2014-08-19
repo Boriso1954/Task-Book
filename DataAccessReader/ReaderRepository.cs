@@ -87,6 +87,12 @@ namespace TaskBook.DataAccessReader
             return reader.Select(Projections.ProjectManagerVmFromReader).AsQueryable();
         }
 
+        public IQueryable<TaskVm> GetTasks()
+        {
+            var reader = _dataReader.ExecuteReader(CommandType.StoredProcedure, SpNames.spGetTasks);
+            return reader.Select(Projections.TaskVmFromReader).AsQueryable();
+        }
+
         public void Dispose()
         {
             _dataReader.Dispose();

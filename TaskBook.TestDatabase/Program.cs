@@ -249,7 +249,7 @@ namespace TaskBook.TestDatabase
                          CreatedById = manager1Id,
                          DueDate = DateTimeOffset.UtcNow.AddDays(5),
                          Status = TbTaskStatus.New,
-                         AssigneToId = advancedUser11Id
+                         AssignedToId = advancedUser11Id
                     },
                     new TbTask()
                     {
@@ -259,7 +259,7 @@ namespace TaskBook.TestDatabase
                          CreatedById = manager1Id,
                          DueDate = DateTimeOffset.UtcNow.AddDays(3),
                          Status = TbTaskStatus.InProgress,
-                         AssigneToId = advancedUser21Id
+                         AssignedToId = advancedUser21Id
                     },
                     new TbTask()
                     {
@@ -269,7 +269,7 @@ namespace TaskBook.TestDatabase
                          CreatedById = manager1Id,
                          DueDate = DateTimeOffset.UtcNow.AddDays(7),
                          Status = TbTaskStatus.InProgress,
-                         AssigneToId = user11Id
+                         AssignedToId = user11Id
                     },
                     new TbTask()
                     {
@@ -279,7 +279,8 @@ namespace TaskBook.TestDatabase
                          CreatedById = manager1Id,
                          DueDate = DateTimeOffset.UtcNow.AddDays(-1),
                          Status = TbTaskStatus.Completed,
-                         AssigneToId = user11Id
+                         AssignedToId = user11Id,
+                         CompletedDate = DateTimeOffset.UtcNow.AddDays(-1)
                     },
                     new TbTask()
                     {
@@ -289,7 +290,7 @@ namespace TaskBook.TestDatabase
                          CreatedById = manager1Id,
                          DueDate = DateTimeOffset.UtcNow.AddDays(4),
                          Status = TbTaskStatus.New,
-                         AssigneToId = user21Id
+                         AssignedToId = user21Id
                     },
 
                     // Project 2
@@ -301,7 +302,7 @@ namespace TaskBook.TestDatabase
                          CreatedById = manager2Id,
                          DueDate = DateTimeOffset.UtcNow.AddDays(7),
                          Status = TbTaskStatus.InProgress,
-                         AssigneToId = manager2Id
+                         AssignedToId = manager2Id
                     },
                     new TbTask()
                     {
@@ -311,7 +312,7 @@ namespace TaskBook.TestDatabase
                          CreatedById = manager2Id,
                          DueDate = DateTimeOffset.UtcNow.AddDays(4),
                          Status = TbTaskStatus.New,
-                         AssigneToId = advancedUser12Id
+                         AssignedToId = advancedUser12Id
                     },
                     new TbTask()
                     {
@@ -321,7 +322,8 @@ namespace TaskBook.TestDatabase
                          CreatedById = manager2Id,
                          DueDate = DateTimeOffset.UtcNow.AddDays(-1),
                          Status = TbTaskStatus.Completed,
-                         AssigneToId = advancedUser12Id
+                         AssignedToId = advancedUser12Id,
+                         CompletedDate = DateTimeOffset.UtcNow.AddDays(-1)
                     },
                     new TbTask()
                     {
@@ -331,7 +333,8 @@ namespace TaskBook.TestDatabase
                          CreatedById = manager2Id,
                          DueDate = DateTimeOffset.UtcNow.AddDays(-1),
                          Status = TbTaskStatus.Completed,
-                         AssigneToId = user12Id
+                         AssignedToId = user12Id,
+                         CompletedDate = DateTimeOffset.UtcNow.AddDays(-1)
                     },
                     new TbTask()
                     {
@@ -341,7 +344,7 @@ namespace TaskBook.TestDatabase
                          CreatedById = manager2Id,
                          DueDate = DateTimeOffset.UtcNow.AddDays(-3),
                          Status = TbTaskStatus.InProgress,
-                         AssigneToId = user12Id
+                         AssignedToId = user12Id
                     },
                     new TbTask()
                     {
@@ -351,7 +354,7 @@ namespace TaskBook.TestDatabase
                          CreatedById = manager2Id,
                          DueDate = DateTimeOffset.UtcNow.AddDays(8),
                          Status = TbTaskStatus.New,
-                         AssigneToId = user22Id
+                         AssignedToId = user22Id
                     }
                 };
                 tasks.ForEach(x => db.Tasks.AddOrUpdate(y => y.Title, x));

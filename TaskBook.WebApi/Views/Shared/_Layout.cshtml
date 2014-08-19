@@ -32,14 +32,14 @@
                 <ul class="nav navbar-nav navbar-left">
                     <li data-ng-show="authentication.role=='Admin'"><a href="#/projectsAndManagers">Project & Managers</a></li>
                     <li data-ng-show="authentication.role=='Admin'"><a href="#/projects/new">Add Project</a></li>
-                    <li data-ng-show="false"><a href="#">Users & Tasks</a></li>
-                    <li data-ng-show="false"><a href="#">Add User</a></li>
-                    <li data-ng-show="false"><a href="#">Add Task</a></li>
+                    <li data-ng-show="authentication.role=='Project Manager'"><a href="#/usersAndTasks/{{authentication.userName}}">Users & Tasks</a></li>
+                    <li data-ng-show="authentication.role=='Project Manager'"><a href="#">Add User</a></li>
+                    <li data-ng-show="authentication.role=='Project Manager'"><a href="#">Add Task</a></li>
                     <li data-ng-show="false"><a href="#">Tasks</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <!--<li data-ng-show="authentication.isAuth"><a href="#">Welcome {{authentication.userName}}</a></li>-->
-                    <li><p data-ng-show="authentication.isAuth" class="navbar-text">Signed in as <a href="#/managers/{{authentication.userName}}" class="navbar-link">{{authentication.userName}}</a></p></li>
+                    <li><p data-ng-show="authentication.isAuth" class="navbar-text">Signed in as <a href="#/managers/edit/{{authentication.userName}}" class="navbar-link">{{authentication.userName}}</a></p></li>
                     <li data-ng-show="!authentication.isAuth"><a href="#/login">Login</a></li>
                     <li data-ng-show="authentication.isAuth"><a href="" data-ng-click="logOut()">Logout</a></li>
                     <li data-ng-show="true"> <a href="#/language">Language</a></li>

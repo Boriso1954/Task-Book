@@ -95,6 +95,14 @@
     <Compile Include="Migrations\201408140839299_ProjectNameUnique.Designer.cs">
       <DependentUpon>201408140839299_ProjectNameUnique.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201408151339091_TaskCompletedDate.cs" />
+    <Compile Include="Migrations\201408151339091_TaskCompletedDate.Designer.cs">
+      <DependentUpon>201408151339091_TaskCompletedDate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201408161627272_TaskCompletedDateNull.cs" />
+    <Compile Include="Migrations\201408161627272_TaskCompletedDateNull.Designer.cs">
+      <DependentUpon>201408161627272_TaskCompletedDateNull.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -127,6 +135,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201408140839299_ProjectNameUnique.resx">
       <DependentUpon>201408140839299_ProjectNameUnique.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408151339091_TaskCompletedDate.resx">
+      <DependentUpon>201408151339091_TaskCompletedDate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408161627272_TaskCompletedDateNull.resx">
+      <DependentUpon>201408161627272_TaskCompletedDateNull.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

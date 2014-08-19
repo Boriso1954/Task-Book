@@ -3,7 +3,7 @@ app.factory("rolesService", ["$http", "authService", function ($http, authServic
 
     var rolesServiceFactory = {};
 
-    var tbRoles = ["Admin", "Manager", "AdvancrdUser", "User"];
+    var tbRoles = ["Admin", "Project Manager", "Advanced User", "User"];
 
     rolesServiceFactory.getRoleByUserName = function (userName) {
         return $http.get("api/Roles/GetRolesByUserName/" + userName)

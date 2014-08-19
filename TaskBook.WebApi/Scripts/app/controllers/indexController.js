@@ -13,10 +13,10 @@ app.controller("indexController", ["$scope", "$location", "authService", "rolesS
                     if (role == "Admin") {
                         $location.path("/projectsAndManagers");
                     }
-                    else if (role == "Manager") {
-                        // TODO
+                    else if (role == "Project Manager") {
+                        $location.path("/usersAndTasks/" + authService.authData.userName);
                     }
-                    else if (role == "AdvancedUser") {
+                    else if (role == "Advanced User") {
                         // TODO
                     }
                     else { // User

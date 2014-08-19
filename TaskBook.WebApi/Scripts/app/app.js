@@ -1,4 +1,6 @@
-﻿var app = angular.module("TaskBookApp", ["ngRoute", "LocalStorageModule", "angular-loading-bar", "ui.bootstrap"]);
+﻿var app = angular.module("TaskBookApp", ["ngRoute", "LocalStorageModule", "angular-loading-bar", "ui.bootstrap", "angular.filter"]);
+
+
 
 app.config(function ($routeProvider) {
 
@@ -42,6 +44,11 @@ app.config(function ($routeProvider) {
         templateUrl: "/Scripts/app/views/addManager.html"
     });
 
+    $routeProvider.when("/usersAndTasks/:userName", {
+        controller: "usersAndTasksManagerController",
+        templateUrl: "/Scripts/app/views/usersAndTasksManager.html"
+    });
+
 
     $routeProvider.otherwise({ redirectTo: "/" });
 });
@@ -50,6 +57,31 @@ app.config(function ($httpProvider) {
     $httpProvider.interceptors.push('authInterceptorService');
 });
 
-app.run(['authService', function (authService) {
+app.filter("dateRange", function () {
+    return function (items, dateColumn, fromDate, toDate) {
+        var filtered = [];
+
+        var minDate = new Date(-100000000 * 86400000);
+        var maxDate = new Date(100000000 * 86400000);
+
+        var startDate = fromDate ? new Date(fromDate) : minDate;
+        var endDate = toDate ? new Date(toDate) : maxDate;
+
+        for (var i = 0; i < items.length; i++) {
+            if (dateColumn === "$") {
+                filtered.push(items[i]);
+            }
+            else {
+                var currentDate = new Date(items[i][dateColumn]);
+                if (currentDate >= startDate && currentDate <= endDate) {
+                    filtered.push(items[i]);
+                }
+            }
+        }
+        return filtered;
+    };
+});
+
+app.run(["authService", function (authService) {
     authService.fillAuthData();
 }]);

@@ -63,12 +63,14 @@
     <Compile Include="Interfaces\IProjectAccessService.cs" />
     <Compile Include="Interfaces\IProjectService.cs" />
     <Compile Include="Interfaces\IRoleService.cs" />
+    <Compile Include="Interfaces\ITaskService.cs" />
     <Compile Include="Interfaces\IUserService.cs" />
     <Compile Include="PermissionService.cs" />
     <Compile Include="ProjectAccessService.cs" />
     <Compile Include="ProjectService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoleService.cs" />
+    <Compile Include="TaskService.cs" />
     <Compile Include="UserService.cs" />
   </ItemGroup>
   <ItemGroup>

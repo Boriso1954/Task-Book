@@ -3,8 +3,8 @@ app.controller("loginController", ["$scope", "$location", "authService", "rolesS
     function ($scope, $location, authService, rolesService) {
 
     $scope.loginData = {
-        userName: "Admin1",
-        password: "admin1",
+        userName: "Manager1",
+        password: "user12",
         rememberMe: true
     };
 
@@ -12,7 +12,6 @@ app.controller("loginController", ["$scope", "$location", "authService", "rolesS
     $scope.message = "";
 
     $scope.login = function () {
-
         authService.login($scope.loginData)
             .then(function (response) {
                 rolesService.getRoleByUserName($scope.loginData.userName)
@@ -21,10 +20,10 @@ app.controller("loginController", ["$scope", "$location", "authService", "rolesS
                         if (role == "Admin") {
                             $location.path("/projectsAndManagers");
                         }
-                        else if (response == "Manager") {
-                            // TODO
+                        else if (role == "Project Manager") {
+                            $location.path("/usersAndTasks/" + $scope.loginData.userName);
                         }
-                        else if (response == "AdvancedUser") {
+                        else if (role == "Advanced User") {
                             // TODO
                         }
                         else { // User

@@ -68,6 +68,7 @@
     <Compile Include="ViewModels\PermissionVm.cs" />
     <Compile Include="ViewModels\ProjectManagerVm.cs" />
     <Compile Include="ViewModels\ProjectVm.cs" />
+    <Compile Include="ViewModels\TaskVm.cs" />
     <Compile Include="ViewModels\TbUserVm.cs" />
   </ItemGroup>
   <ItemGroup>

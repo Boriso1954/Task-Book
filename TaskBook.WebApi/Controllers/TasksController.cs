@@ -10,6 +10,8 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using TaskBook.DomainModel;
 using TaskBook.DataAccessLayer;
+using TaskBook.Services.Interfaces;
+using TaskBook.DomainModel.ViewModels;
 
 namespace TaskBook.WebApi.Controllers
 {
@@ -17,111 +19,29 @@ namespace TaskBook.WebApi.Controllers
     [RoutePrefix("api/Tasks")]
     public class TasksController : ApiController
     {
-        private readonly TaskBookDbContext _db;
+        private readonly ITaskService _taskService;
 
-        public TasksController(TaskBookDbContext database)
+        public TasksController(ITaskService taskService)
         {
-            _db = database;
+            _taskService = taskService;
         }
 
-
-        // GET api/Tasks
-        [Route("")]
-        public IQueryable<TbTask> GetTasks()
+        // GET api/Tasks/GetTasks
+        [Route("GetTasks")]
+        [ResponseType(typeof(IQueryable<TaskVm>))]
+        public IHttpActionResult GetTasks()
         {
-            return _db.Tasks;
-        }
-
-        // GET api/Tasks/{id}
-        [Route("{id:long}")]
-        [ResponseType(typeof(TbTask))]
-        public IHttpActionResult GetTask(long id)
-        {
-            TbTask tbtask = _db.Tasks.Find(id);
-            if(tbtask == null)
+            var tasks = _taskService.GetTasks();
+            if(tasks == null)
             {
-                return NotFound();
+                return BadRequest("Unable to return tasks");
             }
-
-            return Ok(tbtask);
+            return Ok(tasks);
         }
-
-        //// PUT api/Tasks/5
-        //public IHttpActionResult PutTbTask(long id, TbTask tbtask)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    if (id != tbtask.Id)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    db.Entry(tbtask).State = EntityState.Modified;
-
-        //    try
-        //    {
-        //        db.SaveChanges();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!TbTaskExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-
-        //    return StatusCode(HttpStatusCode.NoContent);
-        //}
-
-        //// POST api/Tasks
-        //[ResponseType(typeof(TbTask))]
-        //public IHttpActionResult PostTbTask(TbTask tbtask)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    db.Tasks.Add(tbtask);
-        //    db.SaveChanges();
-
-        //    return CreatedAtRoute("DefaultApi", new { id = tbtask.Id }, tbtask);
-        //}
-
-        //// DELETE api/Tasks/5
-        //[ResponseType(typeof(TbTask))]
-        //public IHttpActionResult DeleteTbTask(long id)
-        //{
-        //    TbTask tbtask = db.Tasks.Find(id);
-        //    if (tbtask == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    db.Tasks.Remove(tbtask);
-        //    db.SaveChanges();
-
-        //    return Ok(tbtask);
-        //}
-
-        //private bool TbTaskExists(long id)
-        //{
-        //    return db.Tasks.Count(e => e.Id == id) > 0;
-        //}
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                _db.Dispose();
-            }
+            _taskService.Dispose();
             base.Dispose(disposing);
         }
     }

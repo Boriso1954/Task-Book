@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskBook.DomainModel;
 using TaskBook.DomainModel.ViewModels;
 
 namespace TaskBook.DataAccessReader
@@ -35,5 +36,36 @@ namespace TaskBook.DataAccessReader
             Name = (string)r["Name"],
             Description = (string)r["Description"]
         };
+
+        internal static Func<SqlDataReader, TaskVm> TaskVmFromReader = (r) => new TaskVm()
+        {
+            TaskId = (long)r["TaskId"],
+            Title = (string)r["Title"],
+            Description = (string)r["Description"],
+            CreatedDate = (DateTimeOffset)r["CreatedDate"],
+            DueDate = (DateTimeOffset)r["DueDate"],
+            Status = GetStringTaskStatus((int)r["Status"]),
+            CreatedBy = (string)r["CreatedBy"],
+            AssignedTo = (string)r["AssignedTo"],
+            CompletedDate = r["CompletedDate"] != DBNull.Value ? (DateTimeOffset?)r["CompletedDate"] : null
+        };
+
+        private static string GetStringTaskStatus(int taskStatus)
+        {
+            string status = string.Empty;
+            switch(taskStatus)
+            {
+                case 0:
+                    status = "New";
+                    break;
+                case 1:
+                    status = "In Progress";
+                    break;
+                case 2:
+                    status = "Completed";
+                    break;
+            }
+            return status;
+        }
     }
 }

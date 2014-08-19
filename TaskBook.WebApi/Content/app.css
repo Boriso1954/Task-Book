@@ -16,8 +16,12 @@ footer {
   padding-left: 0px;
 }
 
-.table {
-  margin-top: 100px;
+.table.project-manager {
+  margin-top: 70px;
+}
+
+.table.task-user {
+  margin-top: 20px;
 }
 
 thead {

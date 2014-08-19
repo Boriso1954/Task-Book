@@ -44,3 +44,13 @@ BEGIN
             AspNetRoles ON PermissionRoles.RoleID = AspNetRoles.Id
 	WHERE   AspNetRoles.Name = @roleName
 END
+GO
+CREATE PROCEDURE spGetTasks
+AS
+BEGIN
+	SELECT  Tasks.Id AS TaskId, Tasks.Title, Tasks.Description, Tasks.CreatedDate, Tasks.DueDate, Tasks.Status, UC.UserName AS CreatedBy, 
+			UA.UserName AS AssignedTo, Tasks.CompletedDate
+	FROM    Tasks INNER JOIN
+			AspNetUsers AS UC ON Tasks.CreatedById = UC.Id INNER JOIN
+			AspNetUsers AS UA ON Tasks.AssignedToId = UA.Id
+END

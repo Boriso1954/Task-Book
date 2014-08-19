@@ -17,8 +17,8 @@ namespace TaskBook.DataAccessReader
         {
             get
             {
-                //return ConfigurationManager.ConnectionStrings["TaskBookDbContext"].ToString();
-                return ConfigurationManager.ConnectionStrings["TaskBookDbContextTest"].ToString(); // Only for test goal
+                //return ConfigurationManager.ConnectionStrings["TaskBookDbContext"].ConnectionString;
+                return ConfigurationManager.ConnectionStrings["TaskBookDbContextTest"].ConnectionString; // Only for test goal
             }
         }
 

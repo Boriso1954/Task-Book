@@ -1,5 +1,6 @@
 ﻿"use strict";
-app.controller("projectsAndManagersController", ["$scope", "projectsService", function ($scope, projectsService) {
+app.controller("projectsAndManagersController", ["$scope", "projectsService", "tbUtil",
+    function ($scope, projectsService, tbUtil) {
 
     $scope.projectsAndManagers = [];
     $scope.message = "";
@@ -9,6 +10,8 @@ app.controller("projectsAndManagersController", ["$scope", "projectsService", fu
         .then(function (result) {
             $scope.successful = true;
             $scope.projectsAndManagers = result.data;
+            $scope.projects = tbUtil.uniqueBy($scope.projectsAndManagers, function (x) { return x.ProjectTitle }).sort();
+            $scope.managers = tbUtil.uniqueBy($scope.projectsAndManagers, function (x) { return x.ManagerName }).sort();
         }, function (error) {
             $scope.successful = false;
             $scope.message = error.data.Message;
