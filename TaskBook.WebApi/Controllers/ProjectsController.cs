@@ -119,7 +119,7 @@ namespace TaskBook.WebApi.Controllers
             return Ok();
         }
 
-         // DELETE api/Projects/DeleteProject/{id}
+        // DELETE api/Projects/DeleteProject/{id}
         [Route("DeleteProject/{id:long}")]
         [HttpDelete]
         public IHttpActionResult DeleteProject(long id)

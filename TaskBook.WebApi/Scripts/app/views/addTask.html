@@ -1,0 +1,56 @@
+﻿<div class="row">
+    <section class="col-md-offset-3 col-md-6">
+        <div class = "well">
+            <h2>Add task</h2>
+            <hr />
+            <form name="addTaskForm" class="form-horizontal" role="form" data-ng-submit="addTask()" novalidate>
+
+                <div data-ng-hide="message == ''" data-ng-class="(successful) ? 'alert alert-success' : 'alert alert-danger'">
+                  <button type="button" class="close" data-ng-click="message = ''">&times;</button>
+                  <span data-ng-bind="message"></span>
+                </div>
+
+                <div class="form-group" data-ng-class="{ 'has-error' : addTaskForm.title.$invalid && addTaskForm.title.$dirty }">
+                    <label class="col-md-4 control-label">Title</label>
+                    <div class="col-md-7">
+                        <input type="text" name ="title" class="form-control" placeholder="Enter task title" data-ng-model="task.Title" required autofocus/>
+                        <span data-ng-show="addTaskForm.title.$invalid && addTaskForm.title.$dirty" class="help-block">Task title is required.</span>
+                    </div>
+                </div>
+
+                <div class="form-group" data-ng-class="{ 'has-error' : addTaskForm.description.$invalid && addTaskForm.description.$dirty }">
+                    <label class="col-md-4 control-label">Description</label>
+                    <div class="col-md-7">
+                        <textarea rows="3" name ="description" class="form-control" placeholder="Enter task desciption" data-ng-model="task.Description" required/>
+                        <span data-ng-show="addTaskForm.description.$invalid && addTaskForm.description.$dirty" class="help-block">Description is required.</span>
+                    </div>
+                </div>
+
+                <div class="form-group"  data-ng-class="{ 'has-error' : addTaskForm.dueDate.$invalid && addTaskForm.dueDate.$dirty }">
+                    <label class="col-md-4 control-label">Due date</label>
+                    <div class="col-md-7">
+                        <p class="input-group">
+                            <input type="text" name="dueDate" class="form-control"  data-datepicker-popup="yyyy-MM-dd" placeholder="Select due date" data-ng-model="task.DueDate" data-is-open="openedDueDate" data-close-text="Close" required/>
+                            <span data-ng-show="addTaskForm.dueDate.$invalid && addTaskForm.dueDate.$dirty" class="help-block">Due date is required.</span>
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" data-ng-click="openDueDate($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-4 control-label">Assigned to</label>
+                    <div class="col-md-7">
+                        <select  class="form-control" data-ng-model="task.AssignedTo" data-ng-options="u as u for u in usersForProject">
+                            <option value="">Select assignee</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" data-ng-disabled="addTaskForm.$pristine || addTaskForm.$invalid" class="btn btn-primary">Save</button>
+
+            </form>
+        </div>
+    </section>
+</div>

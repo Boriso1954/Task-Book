@@ -21,7 +21,6 @@ namespace TaskBook.WebApi.Controllers
             _userService = userService;
         }
 
-
         // GET api/Account/GetUserByUserName/{userName}
         [Route("GetUserByUserName/{userName}")]
         [ResponseType(typeof(TbUserVm))]
@@ -33,6 +32,19 @@ namespace TaskBook.WebApi.Controllers
                 return BadRequest(string.Format("User '{0}' has not been found.", userName));
             }
             return Ok(userVm);
+        }
+
+        // GET api/Account/GetUsersByProjectId/{projectId}
+        [Route("GetUsersByProjectId/{projectId:long}")]
+        [ResponseType(typeof(IQueryable<UserProjectVm>))]
+        public IHttpActionResult GetUsersByProjectId(long projectId)
+        {
+            var users = _userService.GetUsersByProjectId(projectId);
+            if(users == null)
+            {
+                return BadRequest(string.Format("Unable to return users for the project with ID '{0}'.", projectId));
+            }
+            return Ok(users);
         }
 
         // POST api/Account/AddUser

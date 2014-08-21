@@ -5,3 +5,7 @@ GO
 DROP PROCEDURE spGetPermissionsByRole
 GO
 DROP PROCEDURE spGetTasks
+GO
+DROP PROCEDURE spGetTask
+GO
+DROP PROCEDURE spGetUsersByProjectId

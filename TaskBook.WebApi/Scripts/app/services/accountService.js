@@ -7,6 +7,10 @@ app.factory("accountService", ["$http", function ($http) {
         return $http.get("api/Account/GetUserByUserName/" + userName)
     };
 
+    accountServiceFactory.getUsersByProjectId = function (projectId) {
+        return $http.get("api/Account/GetUsersByProjectId/" + projectId)
+    };
+
     accountServiceFactory.putUserDetails = function (user) {
         return $http.put("api/Account/UpdateUser/" + user.UserId, user)
     };

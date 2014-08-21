@@ -51,6 +51,12 @@ namespace TaskBook.DataAccessReader
             CompletedDate = r["CompletedDate"] != DBNull.Value ? (DateTimeOffset?)r["CompletedDate"] : null
         };
 
+        internal static Func<SqlDataReader, UserProjectVm> UserProjectVmFromReader = (r) => new UserProjectVm()
+        {
+            UserName = (string)r["UserName"],
+            ProjectId = (long)r["ProjectId"]
+        };
+
         private static string GetStringTaskStatus(int taskStatus)
         {
             string status = string.Empty;

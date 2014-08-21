@@ -12,5 +12,7 @@ namespace TaskBook.DataAccessReader
         internal const string spGetUserDetailsByUserName = "spGetUserDetailsByUserName";
         internal const string spGetPermissionsByRole = "spGetPermissionsByRole";
         internal const string spGetTasks = "spGetTasks";
+        internal const string spGetTask = "spGetTask";
+        internal const string spGetUsersByProjectId = "spGetUsersByProjectId";
     }
 }

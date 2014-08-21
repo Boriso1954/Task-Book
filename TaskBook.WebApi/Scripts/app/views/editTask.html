@@ -1,0 +1,84 @@
+﻿<div class="row">
+    <section class="col-md-offset-3 col-md-6">
+        <div class = "well">
+            <h2>Edit or delete task</h2>
+            <hr />
+            <form name="editTaskForm" class="form-horizontal" role="form" data-ng-submit="save()" novalidate>
+
+                <div data-ng-hide="message == ''" data-ng-class="(successful) ? 'alert alert-success' : 'alert alert-danger'">
+                  <button type="button" class="close" data-ng-click="message = ''">&times;</button>
+                  <span data-ng-bind="message"></span>
+                </div>
+
+                <div class="form-group" data-ng-class="{ 'has-error' : editTaskForm.title.$invalid && editTaskForm.title.$dirty }">
+                    <label class="col-md-4 control-label">Title</label>
+                    <div class="col-md-7">
+                        <input type="text" name ="title" class="form-control" placeholder="Enter task title" data-ng-model="task.Title" required autofocus/>
+                        <span data-ng-show="editTaskForm.title.$invalid && editTaskForm.title.$dirty" class="help-block">Task title is required.</span>
+                    </div>
+                </div>
+
+                <div class="form-group" data-ng-class="{ 'has-error' : editTaskForm.description.$invalid && editTaskForm.description.$dirty }">
+                    <label class="col-md-4 control-label">Description</label>
+                    <div class="col-md-7">
+                        <textarea rows="3" name ="description" class="form-control" placeholder="Enter task desciption" data-ng-model="task.Description" required/>
+                        <span data-ng-show="editTaskForm.description.$invalid && editTaskForm.description.$dirty" class="help-block">Description is required.</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-4 control-label">Created date</label>
+                    <div class="col-md-7">
+                        <label class="form-control" data-ng-bind="task.CreatedDate | date:'yyyy-MM-dd'" data-ng-disabled="true"/>
+                    </div>
+                </div>
+
+                 <div class="form-group">
+                    <label class="col-md-4 control-label">Created by</label>
+                    <div class="col-md-7">
+                        <label class="form-control" data-ng-bind="task.CreatedBy" data-ng-disabled="true"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-4 control-label">Due date</label>
+                    <div class="col-md-7">
+                        <p class="input-group">
+                            <input type="text" class="form-control" data-datepicker-popup="yyyy-MM-dd" data-ng-model="task.DueDate" data-is-open="openedDueDate" data-close-text="Close" />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" data-ng-click="openDueDate($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-4 control-label">Completed date</label>
+                    <div class="col-md-7">
+                        <label class="form-control" data-ng-bind="task.CompletedDate | date:'yyyy-MM-dd'" data-ng-disabled="true"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-4 control-label">Status</label>
+                    <div class="col-md-7">
+                        <select  class="form-control" data-ng-change="statusChanged(task.Status)" data-ng-model="task.Status" data-ng-options="s as s for s in statuses">
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-4 control-label">Assigned to</label>
+                    <div class="col-md-7">
+                        <select  class="form-control" data-ng-model="task.AssignedTo" data-ng-options="u as u for u in usersForProject">
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" data-ng-disabled="editTaskForm.$pristine || editTaskForm.$invalid" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-primary" data-ng-click="openModalDeleteTaskDialog('sm')">Delete</button>
+
+            </form>
+        </div>
+    </section>
+</div>

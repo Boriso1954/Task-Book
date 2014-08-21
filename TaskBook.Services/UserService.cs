@@ -27,10 +27,22 @@ namespace TaskBook.Services
             _readerRepository = readerRepository;
         }
 
+        public TbUser GetById(string id)
+        {
+            var user = _userManager.FindById(id);
+            return user;
+        }
+
         public TbUserVm GetUserByUserName(string userName)
         {
             var user = _readerRepository.GetUserByUserName(userName).FirstOrDefault();
             return user;
+        }
+
+        public IQueryable<UserProjectVm> GetUsersByProjectId(long projectId)
+        {
+            var users = _readerRepository.GetUsersByProjectId(projectId);
+            return users;
         }
 
         public void AddUser(TbUserVm userModel)
@@ -94,7 +106,7 @@ namespace TaskBook.Services
             var user = await _userManager.FindByIdAsync(userVm.UserId);
             if(user == null)
             {
-                throw new Exception(string.Format("The user {0} is not found.", userVm.UserName));
+                throw new Exception(string.Format("Unable to find user '{0}'.", userVm.UserName));
             }
 
             // TODO consider mapping

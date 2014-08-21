@@ -30,8 +30,8 @@ app.config(function ($routeProvider) {
     });
 
     $routeProvider.when("/projects/new", {
-        controller: "createProjectController",
-        templateUrl: "/Scripts/app/views/createProject.html"
+        controller: "addProjectController",
+        templateUrl: "/Scripts/app/views/addProject.html"
     });
 
     $routeProvider.when("/managers/edit/:userName", {
@@ -49,6 +49,15 @@ app.config(function ($routeProvider) {
         templateUrl: "/Scripts/app/views/usersAndTasksManager.html"
     });
 
+    $routeProvider.when("/tasks/new/:userName", {
+        controller: "addTaskController",
+        templateUrl: "/Scripts/app/views/addTask.html"
+    });
+
+    $routeProvider.when("/tasks/edit/:id", {
+        controller: "editTaskController",
+        templateUrl: "/Scripts/app/views/editTask.html"
+    });
 
     $routeProvider.otherwise({ redirectTo: "/" });
 });

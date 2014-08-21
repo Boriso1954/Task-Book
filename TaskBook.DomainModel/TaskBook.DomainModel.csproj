@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entity.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="Permission.cs" />
     <Compile Include="PermissionKey.cs" />
     <Compile Include="Project.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="ViewModels\ProjectVm.cs" />
     <Compile Include="ViewModels\TaskVm.cs" />
     <Compile Include="ViewModels\TbUserVm.cs" />
+    <Compile Include="ViewModels\UserProjectVm.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

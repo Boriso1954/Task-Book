@@ -65,3 +65,27 @@ BEGIN
                 Projects ON Tasks.ProjectId = Projects.Id
 		WHERE   Projects.Id = @projectId
 END
+GO
+CREATE PROCEDURE spGetTask
+	@id bigint = NULL
+AS
+BEGIN
+	SELECT  Tasks.Id AS TaskId, Tasks.Title, Tasks.Description, Tasks.ProjectId, Tasks.CreatedDate, Tasks.DueDate, Tasks.CompletedDate, 
+            Tasks.Status, UA.UserName AS AssignedTo, UC.UserName AS CreatedBy
+	FROM    Tasks INNER JOIN
+            Projects ON Tasks.ProjectId = Projects.Id INNER JOIN
+            AspNetUsers AS UC ON Tasks.CreatedById = UC.Id INNER JOIN
+            AspNetUsers AS UA ON Tasks.AssignedToId = UA.Id
+	WHERE   Tasks.Id = @id
+END
+GO
+CREATE PROCEDURE spGetUsersByProjectId
+	@projectId bigint = NULL
+AS
+BEGIN
+	SELECT  AspNetUsers.UserName, Projects.Id AS ProjectId
+	FROM    AspNetUsers INNER JOIN
+            ProjectUsers ON AspNetUsers.Id = ProjectUsers.UserId INNER JOIN
+            Projects ON ProjectUsers.ProjectId = Projects.Id
+	WHERE   Projects.Id = @projectId
+END

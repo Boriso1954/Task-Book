@@ -112,14 +112,14 @@
                         </tr>
 
                         <tr data-ng-repeat="t in tasks | orderBy: sort.column: sort.reverse | filter :title | filter: status | filter: createdBy | filter: assignedTo | filter: search | dateRange: dateFor: fromDate: toDate">
-                            <td><a href="#">{{t.Title}}</a></td>
+                            <td><a href="#/tasks/edit/{{t.TaskId}}">{{t.Title}}</a></td>
                             <td>{{t.Description}}</td>
-                            <td>{{t.CreatedDate | date:'yyyy-MM-dd HH:mm'}}</td>
-                            <td>{{t.DueDate | date:'yyyy-MM-dd HH:mm'}}</td>
+                            <td>{{t.CreatedDate | date:'yyyy-MM-dd'}}</td>
+                            <td>{{t.DueDate | date:'yyyy-MM-dd'}}</td>
                             <td>{{t.Status}}</td>
-                            <td><a href="#">{{t.CreatedBy}}</a></td>
-                            <td><a href="#">{{t.AssignedTo}}</a></td>
-                            <td>{{t.CompletedDate | date:'yyyy-MM-dd HH:mm'}}</td>
+                            <td><a href="#/managers/edit/{{t.CreatedBy}}">{{t.CreatedBy}}</a></td>
+                            <td><a href="#/managers/edit/{{t.AssignedTo}}">{{t.AssignedTo}}</a></td>
+                            <td>{{t.CompletedDate | date:'yyyy-MM-dd'}}</td>
                         </tr>
                     </tbody>
                 </table>

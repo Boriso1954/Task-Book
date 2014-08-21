@@ -10,5 +10,9 @@ namespace TaskBook.Services.Interfaces
     public interface ITaskService: IDisposable
     {
         IQueryable<TaskVm> GetTasks(long? projectId = null);
+        TaskVm GetTask(long id);
+        void AddTask(TaskVm taskVm);
+        void UpdateTask(long id, TaskVm taskVm);
+        void DeleteTask(long id);
     }
 }

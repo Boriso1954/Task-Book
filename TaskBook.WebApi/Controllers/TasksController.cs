@@ -12,6 +12,7 @@ using TaskBook.DomainModel;
 using TaskBook.DataAccessLayer;
 using TaskBook.Services.Interfaces;
 using TaskBook.DomainModel.ViewModels;
+using TaskBook.DataAccessLayer.Exceptions;
 
 namespace TaskBook.WebApi.Controllers
 {
@@ -50,6 +51,88 @@ namespace TaskBook.WebApi.Controllers
                 return BadRequest("Unable to return tasks");
             }
             return Ok(tasks);
+        }
+
+        // GET api/Tasks/GetTask/{id}
+        [Route("GetTask/{id:long}")]
+        [ResponseType(typeof(TaskVm))]
+        public IHttpActionResult GetTask(long id)
+        {
+            var task = _taskService.GetTask(id);
+            if(task == null)
+            {
+                return BadRequest(string.Format("Unable to return the task with id = {0}", id));
+            }
+            return Ok(task);
+        }
+
+        // PUT api/Tasks/AddTask
+        [Route("AddTask")]
+        [HttpPost]
+        public IHttpActionResult AddTask(TaskVm taskVm)
+        {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                _taskService.AddTask(taskVm);
+            }
+            catch(DataAccessLayerException ex)
+            {
+                return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
+            }
+
+            return Ok();
+        }
+
+        // PUT api/Tasks/UpdateTask/{id}
+        [Route("UpdateTask/{id:long}")]
+        [HttpPut]
+        public IHttpActionResult UpdateTask(long id, TaskVm taskVm)
+        {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                _taskService.UpdateTask(id, taskVm);
+            }
+            catch(DataAccessLayerException ex)
+            {
+                return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
+            }
+
+            return Ok();
+        }
+
+        // DELETE api/Tasks/DeleteTask/{id}
+        [Route("DeleteTask/{id:long}")]
+        [HttpDelete]
+        public IHttpActionResult DeleteTask(long id)
+        {
+            try
+            {
+                _taskService.DeleteTask(id);
+            }
+            catch(DataAccessLayerException ex)
+            {
+                return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
+            }
+
+            return Ok();
         }
 
         protected override void Dispose(bool disposing)

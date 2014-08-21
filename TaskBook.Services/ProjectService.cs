@@ -97,7 +97,7 @@ namespace TaskBook.Services
 
             if(toBeUpdated == null)
             {
-                throw new Exception(string.Format("The project {0} is not found.", projectVm.ProjectTitle));
+                throw new Exception(string.Format("Unable to find project '{0}'.", projectVm.ProjectTitle));
             }
 
             toBeUpdated.Title = projectVm.ProjectTitle;
@@ -118,7 +118,7 @@ namespace TaskBook.Services
             var existing = _projectRepository.GetById(id);
             if(existing == null)
             {
-                throw new Exception("Project is not found");
+                throw new Exception(string.Format("Unable to find project to be deleted. Project ID {0}", id));
             }
 
             try

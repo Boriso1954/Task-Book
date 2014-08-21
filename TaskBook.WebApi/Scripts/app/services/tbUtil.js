@@ -26,6 +26,15 @@ app.factory("tbUtil",function () {
         });
         return withoutNull;
     };
+    
+    tbUtilFactory.getColumnFromCollection = function (arr, fn) {
+        var result = [];
+        arr.forEach(function (x) {
+            var key = fn(x);
+            result.push(key);
+        });
+        return result;
+    };
 
     tbUtilFactory.addDays = function (theDate, days) {
 

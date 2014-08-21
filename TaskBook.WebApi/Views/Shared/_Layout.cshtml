@@ -33,8 +33,8 @@
                     <li data-ng-show="authentication.role=='Admin'"><a href="#/projectsAndManagers">Project & Managers</a></li>
                     <li data-ng-show="authentication.role=='Admin'"><a href="#/projects/new">Add Project</a></li>
                     <li data-ng-show="authentication.role=='Project Manager'"><a href="#/usersAndTasks/{{authentication.userName}}">Users & Tasks</a></li>
+                    <li data-ng-show="authentication.role=='Project Manager'"><a href="#/tasks/new/{{authentication.userName}}">Add Task</a></li>
                     <li data-ng-show="authentication.role=='Project Manager'"><a href="#">Add User</a></li>
-                    <li data-ng-show="authentication.role=='Project Manager'"><a href="#">Add Task</a></li>
                     <li data-ng-show="false"><a href="#">Tasks</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">

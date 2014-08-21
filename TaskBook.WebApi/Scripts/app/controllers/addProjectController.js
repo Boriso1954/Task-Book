@@ -1,5 +1,5 @@
 ﻿"use strict";
-app.controller("createProjectController", ["$scope", "projectsService", function ($scope, projectsService) {
+app.controller("addProjectController", ["$scope", "projectsService", function ($scope, projectsService) {
 
         $scope.project = {};
         $scope.message = "";
@@ -12,7 +12,7 @@ app.controller("createProjectController", ["$scope", "projectsService", function
             .then(function (result) {
                 $scope.successful = true;
                 $scope.message = "New project has been added.";
-                $scope.createProjectForm.$setPristine();
+                $scope.addProjectForm.$setPristine();
             }, function (error) {
                 $scope.successful = false;
                 $scope.message = error.data.Message;
