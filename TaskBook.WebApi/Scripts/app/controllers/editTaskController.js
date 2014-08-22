@@ -1,6 +1,6 @@
 ﻿"use strict";
-app.controller("editTaskController", ["$scope", "$routeParams", "$modal", "$location", "$timeout", "tasksService", "accountService", "tbUtil", "authService",
-    function ($scope, $routeParams, $modal, $location, $timeout, tasksService, accountService, tbUtil, authService) {
+app.controller("editTaskController", ["$scope", "$routeParams", "$modal", "$location", "$timeout", "taskService", "accountService", "authService", "tbUtil",
+    function ($scope, $routeParams, $modal, $location, $timeout, taskService, accountService, authService, tbUtil) {
 
         $scope.task = {};
         $scope.task.id = $routeParams.id;
@@ -11,7 +11,7 @@ app.controller("editTaskController", ["$scope", "$routeParams", "$modal", "$loca
 
         var managerName = authService.authData.userName;
 
-        tasksService.getTaskById($scope.task.id)
+        taskService.getTaskById($scope.task.id)
             .then(function (result) {
                 $scope.successful = true;
                 $scope.task = result.data;
@@ -50,7 +50,7 @@ app.controller("editTaskController", ["$scope", "$routeParams", "$modal", "$loca
 
         $scope.save = function () {
             var task = $scope.task;
-            tasksService.putTask(task)
+            taskService.putTask(task)
             .then(function (result) {
                 $scope.successful = true;
                 $scope.message = "Task details have been updated.";
@@ -80,7 +80,7 @@ app.controller("editTaskController", ["$scope", "$routeParams", "$modal", "$loca
 
         var deleteTask = function () {
             var task = $scope.task;
-            tasksService.deleteTask(task)
+            taskService.deleteTask(task)
             .then(function (result) {
                 $scope.message = "task has been deleted successfully. You will be redirected to the task list in 3 seconds.";
                 startTimer();

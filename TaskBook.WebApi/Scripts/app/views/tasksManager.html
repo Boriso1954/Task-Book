@@ -17,9 +17,9 @@
             </div>
         
             <div class="form-group">
-                <label for="FindTask" class="col-md-2 control-label">Find for</label>
+                <label class="col-md-2 control-label">Find for</label>
                 <div class="col-md-3">
-                    <select id="FindTask" class="form-control" data-ng-model="searchFor" data-ng-change="clearSearch()">
+                    <select class="form-control" data-ng-model="searchFor" data-ng-change="clearSearch()">
                         <option value="$">All table</option>
                         <option data-ng-bind ="fields[0].name" value={{fields[0].value}}></option>
                         <option data-ng-bind ="fields[1].name" value={{fields[1].value}}></option>
@@ -109,14 +109,14 @@
                 </tr>
 
                 <tr data-ng-repeat="t in tasks | orderBy: sort.column: sort.reverse | filter: title | filter: status | filter: createdBy | filter: assignedTo | filter: search | dateRange: dateFor: fromDate: toDate">
-                    <td><a href="#/tasks/edit/{{t.TaskId}}">{{t.Title}}</a></td>
-                    <td>{{t.Description}}</td>
-                    <td>{{t.CreatedDate | date:'yyyy-MM-dd'}}</td>
-                    <td>{{t.DueDate | date:'yyyy-MM-dd'}}</td>
-                    <td>{{t.Status}}</td>
-                    <td><a href="#/managers/edit/{{t.CreatedBy}}">{{t.CreatedBy}}</a></td>
-                    <td><a href="#/managers/edit/{{t.AssignedTo}}">{{t.AssignedTo}}</a></td>
-                    <td>{{t.CompletedDate | date:'yyyy-MM-dd'}}</td>
+                    <td><a href="#/tasks/edit/{{t.TaskId}}" data-ng-bind="t.Title"></a></td>
+                    <td data-ng-bind="t.Description"></td>
+                    <td data-ng-bind="t.CreatedDate | date:'yyyy-MM-dd'"></td>
+                    <td data-ng-bind="t.DueDate | date:'yyyy-MM-dd'"></td>
+                    <td data-ng-bind="t.Status"></td>
+                    <td><a href="#/users/edit/{{t.CreatedBy}}" data-ng-bind="t.CreatedBy"></a></td>
+                    <td><a href="#/users/edit/{{t.AssignedTo}}" data-ng-bind="t.AssignedTo"></a></td>
+                    <td data-ng-bind="t.CompletedDate | date:'yyyy-MM-dd'"></td>
                 </tr>
             </tbody>
         </table>

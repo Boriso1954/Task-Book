@@ -1,6 +1,6 @@
 ﻿"use strict";
-app.controller("loginController", ["$scope", "$location", "authService", "rolesService",
-    function ($scope, $location, authService, rolesService) {
+app.controller("loginController", ["$scope", "$location", "authService", "roleService",
+    function ($scope, $location, authService, roleService) {
 
     $scope.loginData = {
         userName: "Manager1",
@@ -14,16 +14,16 @@ app.controller("loginController", ["$scope", "$location", "authService", "rolesS
     $scope.login = function () {
         authService.login($scope.loginData)
             .then(function (response) {
-                rolesService.getRoleByUserName($scope.loginData.userName)
+                roleService.getRoleByUserName($scope.loginData.userName)
                     .then(function (result) {
                         var role = result;
                         if (role == "Admin") {
-                            $location.path("/projectsAndManagers");
+                            $location.path("/projects");
                         }
-                        else if (role == "Project Manager") {
+                        else if (role == "Manager") {
                             $location.path("/tasks/" + $scope.loginData.userName);
                         }
-                        else if (role == "Advanced User") {
+                        else if (role == "Advanced") {
                             // TODO
                         }
                         else { // User

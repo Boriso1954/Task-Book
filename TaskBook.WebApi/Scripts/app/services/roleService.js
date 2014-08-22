@@ -1,11 +1,11 @@
 ﻿"use strict";
-app.factory("rolesService", ["$http", "authService", function ($http, authService) {
+app.factory("roleService", ["$http", "authService", function ($http, authService) {
 
-    var rolesServiceFactory = {};
+    var roleServiceFactory = {};
 
-    var tbRoles = ["Admin", "Project Manager", "Advanced User", "User"];
+    var tbRoles = ["Admin", "Manager", "Advanced", "User"];
 
-    rolesServiceFactory.getRoleByUserName = function (userName) {
+    roleServiceFactory.getRoleByUserName = function (userName) {
         return $http.get("api/Roles/GetRolesByUserName/" + userName)
             .then(function (response) {
                 var roles = response.data;
@@ -27,7 +27,7 @@ app.factory("rolesService", ["$http", "authService", function ($http, authServic
             });
     };
 
-    rolesServiceFactory.getRoleByUserId = function (id) {
+    roleServiceFactory.getRoleByUserId = function (id) {
         return $http.get("api/Roles/GetRolesByUserId/" + id)
             .then(function (response) {
                 var roles = response.data;
@@ -48,6 +48,6 @@ app.factory("rolesService", ["$http", "authService", function ($http, authServic
             });
     };
 
-    return rolesServiceFactory;
+    return roleServiceFactory;
 
 }]);

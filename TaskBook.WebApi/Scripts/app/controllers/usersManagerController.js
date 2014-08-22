@@ -1,6 +1,6 @@
 ﻿"use strict";
-app.controller("usersManagerController", ["$scope", "$routeParams", "accountService", "tasksService", "projectsService", "tbUtil",
-    function ($scope, $routeParams, accountService, tasksService, projectsService, tbUtil) {
+app.controller("usersManagerController", ["$scope", "$routeParams", "accountService", "taskService", "projectService", "tbUtil",
+    function ($scope, $routeParams, accountService, taskService, projectService, tbUtil) {
 
         $scope.fields = [{
             name: "User Name",
@@ -28,42 +28,46 @@ app.controller("usersManagerController", ["$scope", "$routeParams", "accountServ
         $scope.message = "";
 
         // Manager's data
-        var fullUserList = null;
+        var projectId = null;
         accountService.getUserDetailsByUserName(authUser.UserName)
             .then(function (result) {
                 $scope.successful = true;
                 authUser = result.data;
-                if (authUser.Role === "Project Manager") {
+                if (authUser.Role === "Manager") {
                     $scope.manager.userName = authUser.UserName;
                     $scope.manager.projectTitle = authUser.ProjectTitle;
+                    projectId = authUser.ProjectId;
+                    getUsers(projectId);
                 }
                 else {
-                    projectsService.getProjectsAndManagersByProjectId(authUser.ProjectId)
+                    projectService.getProjectsAndManagersByProjectId(authUser.ProjectId)
                     .then(function (result) {
                         $scope.successful = true;
                         $scope.manager.userName = result.data.UserName;
                         $scope.manager.projectTitle = result.data.Title;
+                        projectId = result.data.ProjectId;
+                        getUsers(projectId);
                     }, function (error) {
                         $scope.successful = false;
                         $scope.message = error.data.Message;
                     });
                 }
-
-                // List of users
-                accountService.getUsersWithRolesByProjectId(authUser.ProjectId)
-                    .then(function (result) {
-                        $scope.successful = true;
-                        $scope.users = result.data;
-                        prepareData();
-                    }, function (error) {
-                        $scope.successful = false;
-                        $scope.message = error.data.Message;
-                    });
-
             }, function (error) {
                 $scope.successful = false;
                 $scope.message = error.data.Message;
             });
+
+        var getUsers = function (projectId) {
+            accountService.getUsersWithRolesByProjectId(projectId)
+                   .then(function (result) {
+                       $scope.successful = true;
+                       $scope.users = result.data;
+                       prepareData();
+                   }, function (error) {
+                       $scope.successful = false;
+                       $scope.message = error.data.Message;
+                   });
+        };
 
         // Scope for search
         $scope.search = {};

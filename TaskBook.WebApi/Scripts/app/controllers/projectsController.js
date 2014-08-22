@@ -1,12 +1,12 @@
 ﻿"use strict";
-app.controller("projectsAndManagersController", ["$scope", "projectsService", "tbUtil",
-    function ($scope, projectsService, tbUtil) {
+app.controller("projectsController", ["$scope", "projectService", "tbUtil",
+    function ($scope, projectService, tbUtil) {
 
     $scope.projectsAndManagers = [];
     $scope.message = "";
     $scope.successful = true;
 
-    projectsService.getProjectsAndManagers()
+    projectService.getProjectsAndManagers()
         .then(function (result) {
             $scope.successful = true;
             $scope.projectsAndManagers = result.data;

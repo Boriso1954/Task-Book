@@ -1,6 +1,6 @@
 ﻿"use strict";
-app.controller("managerDetailsController", ["$scope", "$routeParams", "accountService", "permissionsService", 
-    function ($scope, $routeParams, accountService, permissionsService) {
+app.controller("editUserController", ["$scope", "$routeParams", "accountService", "permissionService", 
+    function ($scope, $routeParams, accountService, permissionService) {
 
     $scope.user = {};
 
@@ -12,7 +12,7 @@ app.controller("managerDetailsController", ["$scope", "$routeParams", "accountSe
        .then(function (result) {
            $scope.successful = true;
            $scope.user = result.data;
-           permissionsService.getPermissionsByRole($scope.user.Role)
+           permissionService.getPermissionsByRole($scope.user.Role)
                .then(function (result) {
                    $scope.successful = true;
                    $scope.user.Permissions = result.data;

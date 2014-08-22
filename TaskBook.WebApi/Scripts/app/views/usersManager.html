@@ -73,7 +73,7 @@
                 </tr>
 
                 <tr data-ng-repeat="u in users | orderBy: sort.column: sort.reverse | filter: userName | filter: email | filter: firstName | filter: lastName | filter: role | filter: search">
-                    <td><a href="#/managers/edit/{{u.UserName}}" data-ng-bind="u.UserName"></a></td>
+                    <td><a href="#/users/edit/{{u.UserName}}" data-ng-bind="u.UserName"></a></td>
                     <td data-ng-bind="u.Email"></td>
                     <td data-ng-bind="u.FirstName"></td>
                     <td data-ng-bind="u.LastName"></td>

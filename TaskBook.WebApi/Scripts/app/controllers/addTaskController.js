@@ -1,6 +1,6 @@
 ﻿"use strict";
-app.controller("addTaskController", ["$scope", "$routeParams", "tasksService", "accountService", "tbUtil",
-    function ($scope, $routeParams, tasksService, accountService, tbUtil) {
+app.controller("addTaskController", ["$scope", "$routeParams", "taskService", "accountService", "tbUtil",
+    function ($scope, $routeParams, taskService, accountService, tbUtil) {
 
         $scope.task = {};
         $scope.usersForProject = {};
@@ -44,7 +44,7 @@ app.controller("addTaskController", ["$scope", "$routeParams", "tasksService", "
             newTask.AssignedTo = $scope.task.AssignedTo;
             newTask.Status = $scope.task.Status;
 
-            tasksService.postTask(newTask)
+            taskService.postTask(newTask)
             .then(function (result) {
                 $scope.successful = true;
                 $scope.message = "New task has been added.";

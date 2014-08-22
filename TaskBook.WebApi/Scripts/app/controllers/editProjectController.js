@@ -1,13 +1,13 @@
 ﻿"use strict";
-app.controller("editProjectController", ["$scope", "$routeParams", "$modal", "$location", "$timeout", "projectsService",
-    function ($scope, $routeParams, $modal, $location, $timeout, projectsService) {
+app.controller("editProjectController", ["$scope", "$routeParams", "$modal", "$location", "$timeout", "projectService",
+    function ($scope, $routeParams, $modal, $location, $timeout, projectService) {
 
         $scope.project = {};
         $scope.project.ProjectId = $routeParams.projectId;
         $scope.message = "";
         $scope.successful = true;
 
-        projectsService.getProjectsAndManagersByProjectId($scope.project.ProjectId)
+        projectService.getProjectsAndManagersByProjectId($scope.project.ProjectId)
             .then(function (result) {
                 $scope.successful = true;
                 $scope.project = result.data;
@@ -18,7 +18,7 @@ app.controller("editProjectController", ["$scope", "$routeParams", "$modal", "$l
 
         $scope.save = function () {
             var project = $scope.project;
-            projectsService.putProject(project)
+            projectService.putProject(project)
             .then(function (result) {
                 $scope.successful = true;
                 $scope.message = "Project details have been updated.";
@@ -48,7 +48,7 @@ app.controller("editProjectController", ["$scope", "$routeParams", "$modal", "$l
 
         var deleteProject = function () {
             var project = $scope.project;
-            projectsService.deleteProject(project)
+            projectService.deleteProject(project)
             .then(function (result) {
                 $scope.message = "Project has been deleted successfully. You will be redirected to the project list in 3 seconds.";
                 startTimer();
@@ -61,7 +61,7 @@ app.controller("editProjectController", ["$scope", "$routeParams", "$modal", "$l
         var startTimer = function () {
             var timer = $timeout(function () {
                 $timeout.cancel(timer);
-                $location.path("/projectsAndManagers");
+                $location.path("/projects");
             }, 3000);
         };
 

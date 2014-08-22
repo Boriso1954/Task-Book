@@ -1,14 +1,14 @@
 ﻿"use strict";
-app.controller("addManagerController", ["$scope", "$routeParams", "permissionsService", "projectsService", "accountService",
-    function ($scope, $routeParams, permissionsService, projectsService, accountService) {
+app.controller("addUserController", ["$scope", "$routeParams", "permissionService", "projectService", "accountService",
+    function ($scope, $routeParams, permissionService, projectService, accountService) {
 
     $scope.user = {};
     $scope.user.ProjectId = $routeParams.projectId;
-    $scope.user.Role = "Project manager";
+    $scope.user.Role = "Manager"; //TODO: correct this
     $scope.successful = true;
     $scope.message = "";
 
-    projectsService.getProjectById($scope.user.ProjectId)
+    projectService.getProjectById($scope.user.ProjectId)
         .then(function (result) {
             $scope.successful = true;
             $scope.user.ProjectTitle = result.data.Title;
@@ -17,7 +17,7 @@ app.controller("addManagerController", ["$scope", "$routeParams", "permissionsSe
             $scope.message = error.data.Message;
         });
 
-    permissionsService.getPermissionsByRole($scope.user.Role)
+    permissionService.getPermissionsByRole($scope.user.Role)
         .then(function (result) {
             $scope.successful = true;
             $scope.user.Permissions = result.data;
@@ -32,7 +32,7 @@ app.controller("addManagerController", ["$scope", "$routeParams", "permissionsSe
         .then(function (result) {
             $scope.successful = true;
             $scope.message = "Manager details have been added.";
-            $scope.addManagerForm.$setPristine();
+            $scope.addUserForm.$setPristine();
         }, function (error) {
             $scope.successful = false;
             $scope.message = error.data.Message;

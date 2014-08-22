@@ -1,7 +1,5 @@
 ﻿var app = angular.module("TaskBookApp", ["ngRoute", "LocalStorageModule", "angular-loading-bar", "ui.bootstrap", "angular.filter"]);
 
-
-
 app.config(function ($routeProvider) {
 
     $routeProvider.when("/home", {
@@ -19,9 +17,9 @@ app.config(function ($routeProvider) {
         templateUrl: "/Scripts/app/views/forgotPassword.html"
     });
 
-    $routeProvider.when("/projectsAndManagers", {
-        controller: "projectsAndManagersController",
-        templateUrl: "/Scripts/app/views/projectsAndManagers.html"
+    $routeProvider.when("/projects", {
+        controller: "projectsController",
+        templateUrl: "/Scripts/app/views/projects.html"
     });
 
     $routeProvider.when("/projects/edit/:projectId", {
@@ -34,14 +32,14 @@ app.config(function ($routeProvider) {
         templateUrl: "/Scripts/app/views/addProject.html"
     });
 
-    $routeProvider.when("/managers/edit/:userName", {
-        controller: "managerDetailsController",
-        templateUrl: "/Scripts/app/views/managerDetails.html"
+    $routeProvider.when("/users/edit/:userName", {
+        controller: "editUserController",
+        templateUrl: "/Scripts/app/views/editUser.html"
     });
 
-    $routeProvider.when("/managers/new/:projectId", {
-        controller: "addManagerController",
-        templateUrl: "/Scripts/app/views/addManager.html"
+    $routeProvider.when("/users/new/:projectId", {
+        controller: "addUserController",
+        templateUrl: "/Scripts/app/views/addUser.html"
     });
 
     $routeProvider.when("/users/:userName", {
@@ -63,8 +61,6 @@ app.config(function ($routeProvider) {
         controller: "editTaskController",
         templateUrl: "/Scripts/app/views/editTask.html"
     });
-
-    
 
     $routeProvider.otherwise({ redirectTo: "/" });
 });

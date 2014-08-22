@@ -1,22 +1,22 @@
 ﻿"use strict";
-app.controller("indexController", ["$scope", "$location", "authService", "rolesService",
-    function ($scope, $location, authService, rolesService) {
+app.controller("indexController", ["$scope", "$location", "authService", "roleService",
+    function ($scope, $location, authService, roleService) {
 
     $scope.message = "";
     $scope.successful = true;
 
     var start = function () {
         if (authService.authData.isAuth) {
-            rolesService.getRoleByUserName(authService.authData.userName)
+            roleService.getRoleByUserName(authService.authData.userName)
                 .then(function (result) {
                     var role = result;
                     if (role == "Admin") {
-                        $location.path("/projectsAndManagers");
+                        $location.path("/projects");
                     }
-                    else if (role == "Project Manager") {
+                    else if (role == "Manager") {
                         $location.path("/tasks/" + authService.authData.userName);
                     }
-                    else if (role == "Advanced User") {
+                    else if (role == "Advanced") {
                         // TODO
                     }
                     else { // User

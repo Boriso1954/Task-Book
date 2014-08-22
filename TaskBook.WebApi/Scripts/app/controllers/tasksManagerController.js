@@ -1,6 +1,6 @@
 ﻿"use strict";
-app.controller("tasksManagerController", ["$scope", "$routeParams", "accountService", "tasksService", "tbUtil",
-    function ($scope, $routeParams, accountService, tasksService, tbUtil) {
+app.controller("tasksManagerController", ["$scope", "$routeParams", "accountService", "taskService", "projectService", "tbUtil",
+    function ($scope, $routeParams, accountService, taskService, projectService, tbUtil) {
     
         $scope.fields = [{
             name: "Title",
@@ -28,10 +28,11 @@ app.controller("tasksManagerController", ["$scope", "$routeParams", "accountServ
             value: "CompletedDate"
         }];
 
-        $scope.user = {};
+        var authUser = {};
+        $scope.manager = {};
         $scope.tasks = {};
 
-        $scope.user.UserName = $routeParams.userName;
+        authUser.UserName = $routeParams.userName;
         $scope.successful = true;
         $scope.message = "";
 
@@ -42,13 +43,37 @@ app.controller("tasksManagerController", ["$scope", "$routeParams", "accountServ
 
         // Manager's data
         var fullTaskList = null;
-        accountService.getUserDetailsByUserName($scope.user.UserName)
+        var projectId = null;
+        accountService.getUserDetailsByUserName(authUser.UserName)
             .then(function (result) {
                 $scope.successful = true;
-                $scope.user = result.data;
+                authUser = result.data;
+                if (authUser.Role === "Manager") {
+                    $scope.manager.userName = authUser.UserName;
+                    $scope.manager.projectTitle = authUser.ProjectTitle;
+                    projectId = authUser.ProjectId;
+                    getTasks(projectId);
+                }
+                else {
+                    projectService.getProjectsAndManagersByProjectId(authUser.ProjectId)
+                    .then(function (result) {
+                        $scope.successful = true;
+                        $scope.manager.userName = result.data.UserName;
+                        $scope.manager.projectTitle = result.data.Title;
+                        projectId = result.data.ProjectId;
+                        getTasks(projectId);
+                    }, function (error) {
+                        $scope.successful = false;
+                        $scope.message = error.data.Message;
+                    });
+                }
+            }, function (error) {
+                $scope.successful = false;
+                $scope.message = error.data.Message;
+            });
 
-                // List of tasks
-                tasksService.getTasksByProjectId($scope.user.ProjectId)
+        var getTasks = function (projectId) {
+            taskService.getTasksByProjectId(projectId)
                     .then(function (result) {
                         $scope.successful = true;
                         fullTaskList = result.data;
@@ -59,11 +84,7 @@ app.controller("tasksManagerController", ["$scope", "$routeParams", "accountServ
                         $scope.successful = false;
                         $scope.message = error.data.Message;
                     });
-
-            }, function (error) {
-                $scope.successful = false;
-                $scope.message = error.data.Message;
-            });
+        };
 
         // Prepare tasks for the page
         $scope.pageChanged = function () {

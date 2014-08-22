@@ -1,5 +1,5 @@
 ﻿"use strict";
-app.controller("addProjectController", ["$scope", "projectsService", function ($scope, projectsService) {
+app.controller("addProjectController", ["$scope", "projectService", function ($scope, projectService) {
 
         $scope.project = {};
         $scope.message = "";
@@ -8,7 +8,7 @@ app.controller("addProjectController", ["$scope", "projectsService", function ($
         $scope.addProject = function () {
             var newProject = {}; 
             newProject.Title = $scope.project.ProjectTitle;
-            projectsService.postProject(newProject)
+            projectService.postProject(newProject)
             .then(function (result) {
                 $scope.successful = true;
                 $scope.message = "New project has been added.";

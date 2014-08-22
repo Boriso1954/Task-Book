@@ -9,7 +9,7 @@ BEGIN
 				Projects ON ProjectUsers.ProjectId = Projects.Id INNER JOIN
 				AspNetUserRoles ON AspNetUsers.Id = AspNetUserRoles.UserId INNER JOIN
 				AspNetRoles ON AspNetUserRoles.RoleId = AspNetRoles.Id
-		WHERE	AspNetRoles.Name = N'Project Manager' AND Projects.DeletedDate IS NULL
+		WHERE	AspNetRoles.Name = N'Manager' AND Projects.DeletedDate IS NULL
 	ELSE
 		SELECT	Projects.Id AS ProjectId, Projects.Title, AspNetUsers.Id AS UserId, AspNetUsers.UserName
 		FROM	AspNetUsers INNER JOIN
@@ -17,7 +17,7 @@ BEGIN
 				Projects ON ProjectUsers.ProjectId = Projects.Id INNER JOIN
 				AspNetUserRoles ON AspNetUsers.Id = AspNetUserRoles.UserId INNER JOIN
 				AspNetRoles ON AspNetUserRoles.RoleId = AspNetRoles.Id
-		WHERE	AspNetRoles.Name = N'Project Manager' AND Projects.DeletedDate IS NULL AND Projects.Id = @projectId
+		WHERE	AspNetRoles.Name = N'Manager' AND Projects.DeletedDate IS NULL AND Projects.Id = @projectId
 END
 GO
 CREATE PROCEDURE spGetUserDetailsByUserName

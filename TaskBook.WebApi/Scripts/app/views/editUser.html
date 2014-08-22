@@ -1,9 +1,9 @@
 ﻿<div class="row">
     <section class="col-md-offset-3 col-md-6">
         <div class = "well">
-            <h2>Add manager</h2>
+            <h2>Edit user</h2>
             <hr />
-            <form name="addManagerForm" class="form-horizontal" role="form" data-ng-submit="add()" novalidate>
+            <form name="userForm" class="form-horizontal" role="form" data-ng-submit="editUser()" novalidate>
 
                 <div data-ng-hide="message == ''" data-ng-class="(successful) ? 'alert alert-success' : 'alert alert-danger'">
                   <button type="button" class="close" data-ng-click="message = ''">&times;</button>
@@ -28,7 +28,7 @@
                     <label for="UserName" class="col-md-3 control-label">User name</label>
                     <div class="col-md-9">
                         <input type="text" id="UserName" name ="userName" class="form-control" placeholder="Enter user name" data-ng-model="user.UserName" required autofocus/>
-                        <span data-ng-show="addManagerForm.userName.$invalid && addManagerForm.userName.$dirty" class="help-block">Name is required.</span>
+                        <span data-ng-show="userForm.userName.$invalid && userForm.userName.$dirty" class="help-block">User's name is required.</span>
                     </div>
                 </div>
 
@@ -36,7 +36,7 @@
                     <label for="Email" class="col-md-3 control-label">Email</label>
                     <div class="col-md-9">
                         <input type="email" id="Eamil" name ="email" class="form-control" placeholder="Enter email" data-ng-model="user.Email"/>
-                        <span data-ng-show="addManagerForm.email.$invalid && addManagerForm.email.$dirty" class="help-block">Email is invalid.</span>
+                        <span data-ng-show="userForm.email.$invalid && userForm.email.$dirty" class="help-block">Email is invalid.</span>
                     </div>
                 </div>
 
@@ -44,7 +44,7 @@
                     <label for="FirstName" class="col-md-3 control-label">First name</label>
                     <div class="col-md-9">
                         <input type="text" id="FirstName" name ="firstName" class="form-control" placeholder="Enter first name" data-ng-model="user.FirstName" required/>
-                        <span data-ng-show="addManagerForm.firstName.$invalid && addManagerForm.firstName.$dirty" class="help-block">First name is required.</span>
+                        <span data-ng-show="userForm.firstName.$invalid && userForm.firstName.$dirty" class="help-block">First name is required.</span>
                     </div>
                 </div>
 
@@ -52,11 +52,11 @@
                     <label for="LastName" class="col-md-3 control-label">Last name</label>
                     <div class="col-md-9">
                         <input type="text" id="LastName" name ="lastName" class="form-control" placeholder="Enter last name" data-ng-model="user.LastName" required/>
-                        <span data-ng-show="addManagerForm.lastName.$invalid && addManagerForm.lastName.$dirty" class="help-block">Last name is required.</span>
+                        <span data-ng-show="userForm.lastName.$invalid && userForm.lastName.$dirty" class="help-block">Last name is required.</span>
                     </div>
                 </div>
 
-                <button type="submit" data-ng-disabled="addManagerForm.$pristine || addManagerForm.$invalid" class="btn btn-primary">Save</button>
+                <button type="submit" data-ng-disabled="userForm.$pristine || userForm.$invalid" class="btn btn-primary">Save</button>
 
             </form>
         </div>
