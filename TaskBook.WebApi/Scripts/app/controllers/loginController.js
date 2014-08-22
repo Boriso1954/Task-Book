@@ -21,7 +21,7 @@ app.controller("loginController", ["$scope", "$location", "authService", "rolesS
                             $location.path("/projectsAndManagers");
                         }
                         else if (role == "Project Manager") {
-                            $location.path("/usersAndTasks/" + $scope.loginData.userName);
+                            $location.path("/tasks/" + $scope.loginData.userName);
                         }
                         else if (role == "Advanced User") {
                             // TODO

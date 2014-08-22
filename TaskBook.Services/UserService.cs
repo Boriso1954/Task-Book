@@ -39,6 +39,12 @@ namespace TaskBook.Services
             return user;
         }
 
+        public IQueryable<TbUserVm> GetUsersWithRolesByProjectId(long projectId)
+        {
+            var users = _readerRepository.GetUsersWithRolesByProjectId(projectId);
+            return users;
+        }
+
         public IQueryable<UserProjectVm> GetUsersByProjectId(long projectId)
         {
             var users = _readerRepository.GetUsersByProjectId(projectId);

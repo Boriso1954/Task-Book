@@ -89,3 +89,17 @@ BEGIN
             Projects ON ProjectUsers.ProjectId = Projects.Id
 	WHERE   Projects.Id = @projectId
 END
+GO
+CREATE PROCEDURE spGetUsersWithRolesByProjectId
+	@projectId bigint = NULL
+AS
+BEGIN
+	SELECT  AspNetUsers.Id AS UserId, AspNetUsers.UserName, AspNetUsers.Email, AspNetUsers.FirstName, AspNetUsers.LastName, 
+            AspNetRoles.Name AS Role, Projects.Id AS ProjectId, Projects.Title AS ProjectTitle
+	FROM    AspNetUsers INNER JOIN
+            ProjectUsers ON AspNetUsers.Id = ProjectUsers.UserId INNER JOIN
+            Projects ON ProjectUsers.ProjectId = Projects.Id INNER JOIN
+            AspNetUserRoles ON AspNetUsers.Id = AspNetUserRoles.UserId INNER JOIN
+            AspNetRoles ON AspNetUserRoles.RoleId = AspNetRoles.Id
+	WHERE   Projects.Id = @projectId
+END

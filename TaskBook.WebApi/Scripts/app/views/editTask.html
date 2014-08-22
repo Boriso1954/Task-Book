@@ -40,15 +40,16 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" data-ng-class="{ 'has-error' : editTaskForm.dueDate.$invalid && editTaskForm.dueDate.$dirty }">
                     <label class="col-md-4 control-label">Due date</label>
                     <div class="col-md-7">
                         <p class="input-group">
-                            <input type="text" class="form-control" data-datepicker-popup="yyyy-MM-dd" data-ng-model="task.DueDate" data-is-open="openedDueDate" data-close-text="Close" />
+                            <input type="text" name="dueDate" class="form-control" data-datepicker-popup="yyyy-MM-dd" data-ng-model="task.DueDate" data-is-open="openedDueDate" data-close-text="Close" required/>
                             <span class="input-group-btn">
                                 <button type="button" class="btn btn-default" data-ng-click="openDueDate($event)"><i class="glyphicon glyphicon-calendar"></i></button>
                             </span>
                         </p>
+                        <span data-ng-show="editTaskForm.dueDate.$invalid && editTaskForm.dueDate.$dirty" class="help-block">Due date is required.</span>
                     </div>
                 </div>
 
@@ -70,8 +71,9 @@
                 <div class="form-group">
                     <label class="col-md-4 control-label">Assigned to</label>
                     <div class="col-md-7">
-                        <select  class="form-control" data-ng-model="task.AssignedTo" data-ng-options="u as u for u in usersForProject">
+                        <select  class="form-control" name="assignedTo" data-ng-model="task.AssignedTo" data-ng-options="u as u for u in usersForProject">
                         </select>
+                        <span data-ng-show="editTaskForm.assignedTo.$invalid && editTaskForm.assignedTo.$dirty" class="help-block">Assignee is required.</span>
                     </div>
                 </div>
 

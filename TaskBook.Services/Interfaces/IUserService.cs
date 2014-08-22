@@ -10,6 +10,7 @@ namespace TaskBook.Services.Interfaces
     {
         TbUser GetById(string id);
         TbUserVm GetUserByUserName(string userName);
+        IQueryable<TbUserVm> GetUsersWithRolesByProjectId(long projectId);
         IQueryable<UserProjectVm> GetUsersByProjectId(long projectId);
         void AddUser(TbUserVm userModel);
         //void UpdateUser(string id, TbUserVm userVm);

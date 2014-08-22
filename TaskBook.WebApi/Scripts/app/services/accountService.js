@@ -11,6 +11,10 @@ app.factory("accountService", ["$http", function ($http) {
         return $http.get("api/Account/GetUsersByProjectId/" + projectId)
     };
 
+    accountServiceFactory.getUsersWithRolesByProjectId = function (projectId) {
+        return $http.get("api/Account/GetUsersWithRolesByProjectId/" + projectId)
+    };
+
     accountServiceFactory.putUserDetails = function (user) {
         return $http.put("api/Account/UpdateUser/" + user.UserId, user)
     };

@@ -139,6 +139,21 @@ namespace TaskBook.DataAccessReader
             return reader.Select(Projections.UserProjectVmFromReader).AsQueryable();
         }
 
+        public IQueryable<TbUserVm> GetUsersWithRolesByProjectId(long projectId)
+        {
+            var parameters = new TbParameters()
+                {
+                    new SqlParameter()
+                    {
+                        ParameterName = "@projectId",
+                        Value = projectId
+                    }
+                };
+
+            var reader = _dataReader.ExecuteReader(CommandType.StoredProcedure, SpNames.spGetUsersWithRolesByProjectId, parameters);
+            return reader.Select(Projections.TbUserVmFromReader).AsQueryable();
+        }
+
         public void Dispose()
         {
             _dataReader.Dispose();

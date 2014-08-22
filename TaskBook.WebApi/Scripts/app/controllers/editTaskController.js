@@ -1,6 +1,6 @@
 ﻿"use strict";
-app.controller("editTaskController", ["$scope", "$routeParams", "$modal", "$location", "$timeout", "tasksService", "accountService", "tbUtil",
-    function ($scope, $routeParams, $modal, $location, $timeout, tasksService, accountService, tbUtil) {
+app.controller("editTaskController", ["$scope", "$routeParams", "$modal", "$location", "$timeout", "tasksService", "accountService", "tbUtil", "authService",
+    function ($scope, $routeParams, $modal, $location, $timeout, tasksService, accountService, tbUtil, authService) {
 
         $scope.task = {};
         $scope.task.id = $routeParams.id;
@@ -8,6 +8,8 @@ app.controller("editTaskController", ["$scope", "$routeParams", "$modal", "$loca
         $scope.message = "";
         $scope.successful = true;
         $scope.statuses = ["New", "In Progress", "Completed"];
+
+        var managerName = authService.authData.userName;
 
         tasksService.getTaskById($scope.task.id)
             .then(function (result) {
@@ -81,11 +83,18 @@ app.controller("editTaskController", ["$scope", "$routeParams", "$modal", "$loca
             tasksService.deleteTask(task)
             .then(function (result) {
                 $scope.message = "task has been deleted successfully. You will be redirected to the task list in 3 seconds.";
-                //startTimer();
+                startTimer();
             }, function (error) {
                 $scope.successful = false;
                 $scope.message = error.data.Message;
             });
+        };
+
+        var startTimer = function () {
+            var timer = $timeout(function () {
+                $timeout.cancel(timer);
+                $location.path("/tasks/" + managerName);
+            }, 3000);
         };
 
 }]);

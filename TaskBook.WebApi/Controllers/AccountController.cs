@@ -29,9 +29,22 @@ namespace TaskBook.WebApi.Controllers
             var userVm = _userService.GetUserByUserName(userName);
             if(userVm == null)
             {
-                return BadRequest(string.Format("User '{0}' has not been found.", userName));
+                return BadRequest(string.Format("Unable to return data for user '{0}'.", userName));
             }
             return Ok(userVm);
+        }
+
+        // GET api/Account/GetUsersWithRolesByProjectId/{projectId}
+        [Route("GetUsersWithRolesByProjectId/{projectId:long}")]
+        [ResponseType(typeof(IQueryable<TbUserVm>))]
+        public IHttpActionResult GetUsersWithRolesByProjectId(long projectId)
+        {
+            var users = _userService.GetUsersWithRolesByProjectId(projectId);
+            if(users == null)
+            {
+                return BadRequest(string.Format("Unable to return users for the project with ID '{0}'.", projectId));
+            }
+            return Ok(users);
         }
 
         // GET api/Account/GetUsersByProjectId/{projectId}

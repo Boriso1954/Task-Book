@@ -14,7 +14,7 @@ app.controller("indexController", ["$scope", "$location", "authService", "rolesS
                         $location.path("/projectsAndManagers");
                     }
                     else if (role == "Project Manager") {
-                        $location.path("/usersAndTasks/" + authService.authData.userName);
+                        $location.path("/tasks/" + authService.authData.userName);
                     }
                     else if (role == "Advanced User") {
                         // TODO
