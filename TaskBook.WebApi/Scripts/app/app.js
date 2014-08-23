@@ -32,27 +32,27 @@ app.config(function ($routeProvider) {
         templateUrl: "/Scripts/app/views/addProject.html"
     });
 
+    $routeProvider.when("/users/new/:projectId/:authName", {
+        controller: "addUserController",
+        templateUrl: "/Scripts/app/views/addUser.html"
+    });
+        
     $routeProvider.when("/users/edit/:userName", {
         controller: "editUserController",
         templateUrl: "/Scripts/app/views/editUser.html"
     });
 
-    $routeProvider.when("/users/new/:projectId", {
-        controller: "addUserController",
-        templateUrl: "/Scripts/app/views/addUser.html"
-    });
-
-    $routeProvider.when("/users/:userName", {
+    $routeProvider.when("/users/:authName", {
         controller: "usersManagerController",
         templateUrl: "/Scripts/app/views/usersManager.html"
     });
 
-    $routeProvider.when("/tasks/:userName", {
+    $routeProvider.when("/tasks/:authName", {
         controller: "tasksManagerController",
         templateUrl: "/Scripts/app/views/tasksManager.html"
     });
 
-    $routeProvider.when("/tasks/new/:userName", {
+    $routeProvider.when("/tasks/new/:authName", {
         controller: "addTaskController",
         templateUrl: "/Scripts/app/views/addTask.html"
     });

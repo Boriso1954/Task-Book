@@ -13,7 +13,7 @@ namespace TaskBook.Services.Interfaces
         IQueryable<TbUserVm> GetUsersWithRolesByProjectId(long projectId);
         IQueryable<UserProjectVm> GetUsersByProjectId(long projectId);
         void AddUser(TbUserVm userModel);
-        //void UpdateUser(string id, TbUserVm userVm);
-        Task UpdateUserAsync(string id, TbUserVm userVm);
+        void UpdateUser(string id, TbUserVm userVm);
+        //Task UpdateUserAsync(string id, TbUserVm userVm);
     }
 }

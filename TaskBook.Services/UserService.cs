@@ -102,14 +102,14 @@ namespace TaskBook.Services
             }
         }
 
-        public async Task UpdateUserAsync(string id, TbUserVm userVm)
+        public void UpdateUser(string id, TbUserVm userVm)
         {
             if(id != userVm.UserId)
             {
                 throw new Exception("User ID conflict.");
             }
 
-            var user = await _userManager.FindByIdAsync(userVm.UserId);
+            var user = _userManager.FindById(userVm.UserId);
             if(user == null)
             {
                 throw new Exception(string.Format("Unable to find user '{0}'.", userVm.UserName));
@@ -121,10 +121,40 @@ namespace TaskBook.Services
             user.FirstName = userVm.FirstName;
             user.LastName = userVm.LastName;
 
-            var result = await _userManager.UpdateAsync(user);
-            if(result == null || !result.Succeeded)
+            using(var transaction = new TransactionScope())
             {
-                throw new TbIdentityException("Update user error", result);
+                try
+                {
+                    var result = _userManager.Update(user);
+                    if(result == null || !result.Succeeded)
+                    {
+                        throw new TbIdentityException("Update user error", result);
+                    }
+
+                    string prevRole = _userManager.GetRoles(id).FirstOrDefault();
+                    if(prevRole != userVm.Role)
+                    {
+                        result = _userManager.RemoveFromRole(id, prevRole);
+                        if(result == null || !result.Succeeded)
+                        {
+                            throw new TbIdentityException("Remove from role error", result);
+                        }
+                        result = _userManager.AddToRole(id, userVm.Role);
+                        if(result == null || !result.Succeeded)
+                        {
+                            throw new TbIdentityException("Add to role error", result);
+                        }
+                    }
+                }
+                catch(DataAccessLayerException)
+                {
+                    throw;
+                }
+                catch(TbIdentityException)
+                {
+                    throw;
+                }
+                transaction.Complete();
             }
         }
 

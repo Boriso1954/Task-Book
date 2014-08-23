@@ -23,7 +23,7 @@ app.controller("usersManagerController", ["$scope", "$routeParams", "accountServ
         $scope.manager = {};
         $scope.users = {};
 
-        authUser.UserName = $routeParams.userName;
+        authUser.UserName = $routeParams.authName;
         $scope.successful = true;
         $scope.message = "";
 

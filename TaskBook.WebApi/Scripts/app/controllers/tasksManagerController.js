@@ -32,7 +32,7 @@ app.controller("tasksManagerController", ["$scope", "$routeParams", "accountServ
         $scope.manager = {};
         $scope.tasks = {};
 
-        authUser.UserName = $routeParams.userName;
+        authUser.UserName = $routeParams.authName;
         $scope.successful = true;
         $scope.message = "";
 

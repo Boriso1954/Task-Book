@@ -8,11 +8,11 @@ app.controller("addTaskController", ["$scope", "$routeParams", "taskService", "a
         $scope.message = "";
         $scope.successful = true;
 
-        var authUserName = $routeParams.userName;
+        var authName = $routeParams.authName;
         var authUser = {};
 
         // Authentication user's data
-        accountService.getUserDetailsByUserName(authUserName)
+        accountService.getUserDetailsByUserName(authName)
             .then(function (result) {
                 $scope.successful = true;
                 authUser = result.data;

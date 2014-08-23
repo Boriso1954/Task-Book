@@ -87,7 +87,7 @@ namespace TaskBook.WebApi.Controllers
         // PUT api/Account/UpdateUser/{id}
         [Route("UpdateUser/{id}")]
         [HttpPut]
-        public async Task<IHttpActionResult> UpdateUser(string id, TbUserVm userVm)
+        public IHttpActionResult UpdateUser(string id, TbUserVm userVm)
         {
             if(!ModelState.IsValid)
             {
@@ -96,15 +96,15 @@ namespace TaskBook.WebApi.Controllers
 
             try
             {
-                await _userService.UpdateUserAsync(id, userVm);
+                _userService.UpdateUser(id, userVm);
+            }
+            catch(DataAccessLayerException ex)
+            {
+                return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
             }
             catch(TbIdentityException ex)
             {
                 return GetErrorResult(ex.TbIdentityResult);
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex.Message);
             }
            
             return Ok();

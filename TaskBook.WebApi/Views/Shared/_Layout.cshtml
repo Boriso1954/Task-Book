@@ -35,8 +35,7 @@
                     <li data-ng-show="authentication.role=='Manager'"><a href="#/tasks/{{authentication.userName}}">Tasks</a></li>
                     <li data-ng-show="authentication.role=='Manager'"><a href="#/users/{{authentication.userName}}">Users</a></li>
                     <li data-ng-show="authentication.role=='Manager'"><a href="#/tasks/new/{{authentication.userName}}">Add Task</a></li>
-                    <li data-ng-show="authentication.role=='Manager'"><a href="#">Add User</a></li>
-                    <li data-ng-show="false"><a href="#">Tasks</a></li>
+                    <li data-ng-show="authentication.role=='Manager'"><a href="#/users/new/no/{{authentication.userName}}">Add User</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <!--<li data-ng-show="authentication.isAuth"><a href="#">Welcome {{authentication.userName}}</a></li>-->
