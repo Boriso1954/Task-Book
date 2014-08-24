@@ -36,7 +36,7 @@ namespace TaskBook.WebApi.Controllers
             }
             catch(Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
             }
         }
 
@@ -45,12 +45,19 @@ namespace TaskBook.WebApi.Controllers
         [ResponseType(typeof(IQueryable<string>))]
         public IHttpActionResult GetRolesByUserId(string id)
         {
-            var roles = _roleService.GetRolesByUserId(id);
-            if(roles == null)
+            try
             {
-                return BadRequest(string.Format("Unable to find role for user with ID '{0}'.", id));
+                var roles = _roleService.GetRolesByUserId(id);
+                if(roles == null)
+                {
+                    return BadRequest(string.Format("Unable to find role for user with ID '{0}'.", id));
+                }
+                return Ok(roles);
             }
-            return Ok(roles);
+            catch(Exception ex)
+            {
+                return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
+            }
         }
 
         protected override void Dispose(bool disposing)

@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\DataAccessReaderException.cs" />
     <Compile Include="ReaderRepository.cs" />
     <Compile Include="SpNames.cs" />
     <Compile Include="Projections.cs" />

@@ -23,5 +23,9 @@ app.factory("accountService", ["$http", function ($http) {
         return $http.post("api/Account/AddUser", user)
     };
 
+    accountServiceFactory.deleteUser = function (user) {
+        return $http.delete("api/Account/DeleteUser/" + user.UserId)
+    };
+
     return accountServiceFactory;
 }]);

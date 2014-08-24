@@ -57,6 +57,7 @@
                 </div>
 
                 <button type="submit" data-ng-disabled="editUserForm.$pristine || editUserForm.$invalid" class="btn btn-primary">Save</button>
+                <button type="button" data-ng-hide="user.Role=='Manager'" class="btn btn-primary" data-ng-click="openModalDeleteUserDialog('sm')">Delete</button>
 
             </form>
         </div>

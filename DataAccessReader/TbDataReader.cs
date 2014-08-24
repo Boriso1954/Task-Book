@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskBook.DataAccessReader.Exceptions;
 
 namespace TaskBook.DataAccessReader
 {
@@ -56,10 +57,35 @@ namespace TaskBook.DataAccessReader
 
                 return reader;
             }
-            catch(SqlException)
+            catch(SqlException ex)
+            {
+               
+                throw new DataAccessReaderException("SQL error", ex);
+            }
+            catch(ConfigurationErrorsException ex)
             {
                 Dispose();
-                throw;
+                throw new DataAccessReaderException("Connection configuration error", ex);
+            }
+            catch(InvalidCastException ex)
+            {
+                Dispose();
+                throw new DataAccessReaderException("Invalid cast", ex);
+            }
+            catch(ObjectDisposedException ex)
+            {
+                Dispose();
+                throw new DataAccessReaderException("Object disposed", ex);
+            }
+            catch(InvalidOperationException ex)
+            {
+                Dispose();
+                throw new DataAccessReaderException("Invalid Operation", ex);
+            }
+            catch(Exception ex)
+            {
+                Dispose();
+                throw new DataAccessReaderException("Exception", ex);
             }
         }
 
@@ -77,9 +103,9 @@ namespace TaskBook.DataAccessReader
                     _sqlConnection.Close();
                 }
             }
-            catch(SqlException)
+            catch(SqlException ex)
             {
-                throw;
+                throw new DataAccessReaderException("SQL error", ex);
             }
         }
     }

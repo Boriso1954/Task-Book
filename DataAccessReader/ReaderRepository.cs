@@ -154,6 +154,21 @@ namespace TaskBook.DataAccessReader
             return reader.Select(Projections.TbUserVmFromReader).AsQueryable();
         }
 
+        public IQueryable<TaskUserVm> GetUserTasksByUserName(string userName)
+        {
+            var parameters = new TbParameters()
+                {
+                    new SqlParameter()
+                    {
+                        ParameterName = "@userName",
+                        Value = userName
+                    }
+                };
+
+            var reader = _dataReader.ExecuteReader(CommandType.StoredProcedure, SpNames.spGetUserTasks, parameters);
+            return reader.Select(Projections.TaskUserVmFromReader).AsQueryable();
+        }
+
         public void Dispose()
         {
             _dataReader.Dispose();

@@ -13,6 +13,7 @@ using TaskBook.DataAccessLayer;
 using TaskBook.Services.Interfaces;
 using TaskBook.DomainModel.ViewModels;
 using TaskBook.DataAccessLayer.Exceptions;
+using TaskBook.DataAccessReader.Exceptions;
 
 namespace TaskBook.WebApi.Controllers
 {
@@ -32,12 +33,19 @@ namespace TaskBook.WebApi.Controllers
         [ResponseType(typeof(IQueryable<TaskVm>))]
         public IHttpActionResult GetTasks()
         {
-            var tasks = _taskService.GetTasks();
-            if(tasks == null)
+            try
             {
-                return BadRequest("Unable to return tasks");
+                var tasks = _taskService.GetTasks();
+                if(tasks == null)
+                {
+                    return BadRequest("Unable to return tasks");
+                }
+                return Ok(tasks);
             }
-            return Ok(tasks);
+            catch(DataAccessReaderException ex)
+            {
+                return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
+            }
         }
 
         // GET api/Tasks/GetTasks/{projectId}
@@ -45,12 +53,19 @@ namespace TaskBook.WebApi.Controllers
         [ResponseType(typeof(IQueryable<TaskVm>))]
         public IHttpActionResult GetTasks(long projectId)
         {
-            var tasks = _taskService.GetTasks(projectId);
-            if(tasks == null)
+            try
             {
-                return BadRequest("Unable to return tasks");
+                var tasks = _taskService.GetTasks(projectId);
+                if(tasks == null)
+                {
+                    return BadRequest("Unable to return tasks");
+                }
+                return Ok(tasks);
             }
-            return Ok(tasks);
+            catch(DataAccessReaderException ex)
+            {
+                return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
+            }
         }
 
         // GET api/Tasks/GetTask/{id}
@@ -58,12 +73,19 @@ namespace TaskBook.WebApi.Controllers
         [ResponseType(typeof(TaskVm))]
         public IHttpActionResult GetTask(long id)
         {
-            var task = _taskService.GetTask(id);
-            if(task == null)
+            try
             {
-                return BadRequest(string.Format("Unable to return the task with id = {0}", id));
+                var task = _taskService.GetTask(id);
+                if(task == null)
+                {
+                    return BadRequest(string.Format("Unable to return the task with id = {0}", id));
+                }
+                return Ok(task);
             }
-            return Ok(task);
+            catch(DataAccessReaderException ex)
+            {
+                return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
+            }
         }
 
         // PUT api/Tasks/AddTask
@@ -81,6 +103,10 @@ namespace TaskBook.WebApi.Controllers
                 _taskService.AddTask(taskVm);
             }
             catch(DataAccessLayerException ex)
+            {
+                return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
+            }
+            catch(DataAccessReaderException ex)
             {
                 return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
             }
@@ -103,6 +129,10 @@ namespace TaskBook.WebApi.Controllers
                 _taskService.UpdateTask(id, taskVm);
             }
             catch(DataAccessLayerException ex)
+            {
+                return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
+            }
+            catch(DataAccessReaderException ex)
             {
                 return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
             }

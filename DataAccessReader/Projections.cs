@@ -57,6 +57,14 @@ namespace TaskBook.DataAccessReader
             ProjectId = (long)r["ProjectId"]
         };
 
+        internal static Func<SqlDataReader, TaskUserVm> TaskUserVmFromReader = (r) => new TaskUserVm()
+        {
+            TaskId = (long)r["TaskId"],
+            Title = (string)r["Title"],
+            UserId = (string)r["UserId"],
+            UserName = (string)r["UserName"]
+        };
+
         private static string GetStringTaskStatus(int taskStatus)
         {
             string status = string.Empty;

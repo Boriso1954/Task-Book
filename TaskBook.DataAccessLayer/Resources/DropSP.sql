@@ -11,3 +11,5 @@ GO
 DROP PROCEDURE spGetUsersByProjectId
 GO
 DROP PROCEDURE spGetUsersWithRolesByProjectId
+GO
+DROP PROCEDURE spGetUserTasks

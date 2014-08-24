@@ -17,7 +17,6 @@ namespace TaskBook.Services
     {
         private readonly ReaderRepository _readerRepository;
         private readonly ITaskRepository _taskRepository;
-        private readonly IUserService _userService;
 
         public TaskService(ReaderRepository readerRepository,
             ITaskRepository taskRepository,
@@ -25,7 +24,6 @@ namespace TaskBook.Services
         {
             _readerRepository = readerRepository;
             _taskRepository = taskRepository;
-            _userService = userService;
         }
 
         public TaskVm GetTask(long id)
@@ -58,21 +56,14 @@ namespace TaskBook.Services
                 Description = taskVm.Description,
                 ProjectId = taskVm.ProjectId,
                 CreatedDate = DateTimeOffset.UtcNow,
-                CreatedById = _userService.GetUserByUserName(taskVm.CreatedBy).UserId,
-                AssignedToId = _userService.GetUserByUserName(taskVm.AssignedTo).UserId,
+                CreatedById =_readerRepository.GetUserByUserName(taskVm.CreatedBy).FirstOrDefault().UserId,
+                AssignedToId = _readerRepository.GetUserByUserName(taskVm.AssignedTo).FirstOrDefault().UserId,
                 DueDate = taskVm.DueDate,
                 Status = TbTaskStatus.New
             };
 
-            try
-            {
-                _taskRepository.Add(task);
-                _taskRepository.SaveChanges();
-            }
-            catch(DataAccessLayerException)
-            {
-                throw;
-            }
+            _taskRepository.Add(task);
+            _taskRepository.SaveChanges();
         }
 
         public void UpdateTask(long id, TaskVm taskVm)
@@ -94,18 +85,11 @@ namespace TaskBook.Services
             task.Description = taskVm.Description;
             task.DueDate = taskVm.DueDate;
             task.Status = GetTaskStatusByString(taskVm.Status);
-            task.AssignedToId = _userService.GetUserByUserName(taskVm.AssignedTo).UserId;
+            task.AssignedToId = _readerRepository.GetUserByUserName(taskVm.AssignedTo).FirstOrDefault().UserId;
             task.CompletedDate = taskVm.CompletedDate;
 
-            try
-            {
-                _taskRepository.Update(task);
-                _taskRepository.SaveChanges();
-            }
-            catch(DataAccessLayerException)
-            {
-                throw;
-            }
+            _taskRepository.Update(task);
+            _taskRepository.SaveChanges();
         }
 
         public void DeleteTask(long id)
@@ -116,22 +100,14 @@ namespace TaskBook.Services
                 throw new Exception(string.Format("Unable to find task to be deleted. task ID {0}", id));
             }
 
-            try
-            {
-                _taskRepository.Delete(existing);
-                _taskRepository.SaveChanges();
-            }
-            catch(DataAccessLayerException)
-            {
-                throw;
-            }
+            _taskRepository.Delete(existing);
+            _taskRepository.SaveChanges();
         }
 
         public void Dispose()
         {
             _readerRepository.Dispose();
             _taskRepository.Dispose();
-            _userService.Dispose();
         }
 
         private TbTaskStatus GetTaskStatusByString(string taskStatus)

@@ -15,6 +15,7 @@ using TaskBook.DataAccessReader;
 using TaskBook.DomainModel;
 using TaskBook.Services.Interfaces;
 using TaskBook.DomainModel.ViewModels;
+using TaskBook.DataAccessReader.Exceptions;
 
 namespace TaskBook.WebApi.Controllers
 {
@@ -34,12 +35,19 @@ namespace TaskBook.WebApi.Controllers
         [ResponseType(typeof(IQueryable<ProjectManagerVm>))]
         public IHttpActionResult GetProjectsAndManagers()
         {
-            var projectsAndManagers = _projectService.GetProjectsAndManagers();
-            if(projectsAndManagers == null)
+            try
             {
-                return BadRequest("Unable to return list of projects and managers.");
+                var projectsAndManagers = _projectService.GetProjectsAndManagers();
+                if(projectsAndManagers == null)
+                {
+                    return BadRequest("Unable to return list of projects and managers.");
+                }
+                return Ok(projectsAndManagers);
             }
-            return Ok(projectsAndManagers);
+            catch(DataAccessReaderException ex)
+            {
+                return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
+            }
         }
 
         // GET api/Projects/GetProjectsAndManagers/{projectId}
@@ -47,12 +55,19 @@ namespace TaskBook.WebApi.Controllers
         [ResponseType(typeof(ProjectManagerVm))]
         public IHttpActionResult GetProjectsAndManagers(long projectId)
         {
-            var project = _projectService.GetProjectsAndManagers(projectId);
-            if(project == null)
+            try
             {
-                return BadRequest(string.Format("Unable to return the project anf int amanger for project ID '{0}'", projectId));
+                var project = _projectService.GetProjectsAndManagers(projectId);
+                if(project == null)
+                {
+                    return BadRequest(string.Format("Unable to return the project anf int amanger for project ID '{0}'", projectId));
+                }
+                return Ok(project);
             }
-            return Ok(project);
+            catch(DataAccessReaderException ex)
+            {
+                return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
+            }
         }
 
         // PUT api/Projects/GetProjectById/{id}
@@ -67,7 +82,7 @@ namespace TaskBook.WebApi.Controllers
             }
             catch(Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
             }
         }
 
@@ -89,7 +104,11 @@ namespace TaskBook.WebApi.Controllers
             {
                 return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
             }
-           
+            catch(Exception ex)
+            {
+                return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
+            }
+
             return Ok();
         }
 
@@ -132,12 +151,38 @@ namespace TaskBook.WebApi.Controllers
             {
                 return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
             }
+            catch(DataAccessReaderException ex)
+            {
+                return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
+            }
+            catch(TbIdentityException ex)
+            {
+                return GetErrorResult(ex.TbIdentityResult);
+            }
             catch(Exception ex)
             {
                 return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
             }
-            
             return Ok();
+        }
+
+        private IHttpActionResult GetErrorResult(IdentityResult result)
+        {
+            if(result == null)
+            {
+                return InternalServerError();
+            }
+            else // !result.Succeeded
+            {
+                if(result.Errors != null)
+                {
+                    foreach(string error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error);
+                    }
+                }
+                return BadRequest(ModelState);
+            }
         }
 
         protected override void Dispose(bool disposing)

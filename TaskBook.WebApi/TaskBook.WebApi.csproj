@@ -185,6 +185,7 @@
     <Content Include="Scripts\app\controllers\editProjectController.js" />
     <Content Include="Scripts\app\controllers\editTaskController.js" />
     <Content Include="Scripts\app\controllers\modalDeleteTaskController.js" />
+    <Content Include="Scripts\app\controllers\modalDeleteUserController.js" />
     <Content Include="Scripts\app\controllers\tasksManagerController.js" />
     <Content Include="Scripts\app\controllers\usersManagerController.js" />
     <Content Include="Scripts\app\services\permissionService.js" />
@@ -196,6 +197,7 @@
     <Content Include="Scripts\app\views\addTask.html" />
     <Content Include="Scripts\app\views\editTask.html" />
     <Content Include="Scripts\app\views\modalDeleteTask.html" />
+    <Content Include="Scripts\app\views\modalDeleteUser.html" />
     <Content Include="Scripts\app\views\tasksManager.html" />
     <Content Include="Scripts\app\views\usersManager.html" />
     <Content Include="Scripts\vendor\angular-animate.js" />

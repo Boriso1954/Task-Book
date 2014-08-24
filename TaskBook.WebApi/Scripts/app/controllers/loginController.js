@@ -35,7 +35,7 @@ app.controller("loginController", ["$scope", "$location", "authService", "roleSe
                     });
             }, function (error) {
                 $scope.successful = false;
-                $scope.message = error.data.Message;
+                $scope.message = error.error_description;
             });
     };
 

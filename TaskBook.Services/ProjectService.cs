@@ -16,17 +16,17 @@ namespace TaskBook.Services
 {
     public sealed class ProjectService: IProjectService
     {
-        private readonly UserManager<TbUser> _userManager;
+        private readonly IUserService _userService;
         private readonly IProjectRepository _projectRepository;
         private readonly IProjectAccessService _projectAccessService;
         private readonly ReaderRepository _readerRepository;
 
-        public ProjectService(IUserStore<TbUser> userStore,
+        public ProjectService(IUserService userService,
             IProjectRepository projectRepository,
             IProjectAccessService projectAccessService,
             ReaderRepository readerRepository)
         {
-            _userManager = new UserManager<TbUser>(userStore);
+            _userService = userService;
             _projectRepository = projectRepository;
             _projectAccessService = projectAccessService;
             _readerRepository = readerRepository;
@@ -67,21 +67,14 @@ namespace TaskBook.Services
                 CreatedDate = DateTimeOffset.UtcNow,
             };
 
-            var notAssignedUserId = _userManager.FindByName("NotAssigned").Id;
+            var notAssignedUserId = _userService.GetByName("NotAssigned").Id;
 
             using(var transaction = new TransactionScope())
             {
-                try
-                {
-                    _projectRepository.Add(project);
-                    _projectRepository.SaveChanges();
+                _projectRepository.Add(project);
+                _projectRepository.SaveChanges();
 
-                    _projectAccessService.AddUserToProject(project.Id, notAssignedUserId);
-                }
-                catch(DataAccessLayerException)
-                {
-                    throw;
-                }
+                _projectAccessService.AddUserToProject(project.Id, notAssignedUserId);
                 transaction.Complete();
             }
         }
@@ -101,16 +94,8 @@ namespace TaskBook.Services
             }
 
             toBeUpdated.Title = projectVm.ProjectTitle;
-
-            try
-            {
-                _projectRepository.Update(toBeUpdated);
-                _projectRepository.SaveChanges();
-            }
-            catch(DataAccessLayerException)
-            {
-                throw;
-            }
+            _projectRepository.Update(toBeUpdated);
+            _projectRepository.SaveChanges();
         }
 
         public void DeleteProject(long id)
@@ -121,22 +106,22 @@ namespace TaskBook.Services
                 throw new Exception(string.Format("Unable to find project to be deleted. Project ID {0}", id));
             }
 
-            try
+            string managerId = _readerRepository.GetProjectsAndManagers(id).FirstOrDefault().ManagerId;
+            using(var transaction = new TransactionScope())
             {
                 _projectRepository.Delete(existing);
                 _projectRepository.SaveChanges();
-            }
-            catch(DataAccessLayerException)
-            {
-                throw;
+                _userService.DeleteUser(managerId);
+                transaction.Complete();
             }
         }
 
         public void Dispose()
         {
-            _userManager.Dispose();
+            _userService.Dispose();
             _projectRepository.Dispose();
             _projectAccessService.Dispose();
+            _readerRepository.Dispose();
         }
     }
 }

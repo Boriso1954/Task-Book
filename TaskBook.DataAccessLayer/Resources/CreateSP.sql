@@ -87,7 +87,7 @@ BEGIN
 	FROM    AspNetUsers INNER JOIN
             ProjectUsers ON AspNetUsers.Id = ProjectUsers.UserId INNER JOIN
             Projects ON ProjectUsers.ProjectId = Projects.Id
-	WHERE   Projects.Id = @projectId
+	WHERE   Projects.Id = @projectId AND AspNetUsers.DeletedDate IS NULL
 END
 GO
 CREATE PROCEDURE spGetUsersWithRolesByProjectId
@@ -101,5 +101,15 @@ BEGIN
             Projects ON ProjectUsers.ProjectId = Projects.Id INNER JOIN
             AspNetUserRoles ON AspNetUsers.Id = AspNetUserRoles.UserId INNER JOIN
             AspNetRoles ON AspNetUserRoles.RoleId = AspNetRoles.Id
-	WHERE   Projects.Id = @projectId
+	WHERE   Projects.Id = @projectId AND AspNetUsers.DeletedDate IS NULL
+END
+GO
+CREATE PROCEDURE spGetUserTasks
+	@userName nvarchar(256) = NULL
+AS
+BEGIN
+	SELECT  Tasks.Id AS TaskId, Tasks.Title, AspNetUsers.Id AS UserId, AspNetUsers.UserName
+	FROM    AspNetUsers INNER JOIN
+            Tasks ON AspNetUsers.Id = Tasks.AssignedToId
+	WHERE   AspNetUsers.UserName = @userName
 END
