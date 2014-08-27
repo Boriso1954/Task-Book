@@ -71,6 +71,7 @@
     <Compile Include="ViewModels\ProjectVm.cs" />
     <Compile Include="ViewModels\TaskUserVm.cs" />
     <Compile Include="ViewModels\TaskVm.cs" />
+    <Compile Include="ViewModels\TbUserRoleVm.cs" />
     <Compile Include="ViewModels\TbUserVm.cs" />
     <Compile Include="ViewModels\UserProjectVm.cs" />
   </ItemGroup>

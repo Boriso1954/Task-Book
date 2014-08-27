@@ -71,6 +71,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -84,6 +85,7 @@
     <Compile Include="Configurations\PermissionConfiguration.cs" />
     <Compile Include="Configurations\ProjectConfiguration.cs" />
     <Compile Include="Configurations\ProjectUsersConfiguration.cs" />
+    <Compile Include="Configurations\TaskConfiguration.cs" />
     <Compile Include="Configurations\UserConfiguration.cs" />
     <Compile Include="Exceptions\DataAccessLayerException.cs" />
     <Compile Include="IUnitOfWork.cs" />
@@ -113,6 +115,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Exceptions\DataAccessReaderException.cs" />
+    <Compile Include="Reader\IReaderRepository.cs" />
+    <Compile Include="Reader\Projections.cs" />
+    <Compile Include="Reader\ReaderRepository.cs" />
+    <Compile Include="Reader\SpNames.cs" />
+    <Compile Include="Reader\TbDataReader.cs" />
+    <Compile Include="Reader\TbExtensions.cs" />
+    <Compile Include="Reader\TbParameters.cs" />
     <Compile Include="Repositories\Interfaces\IProjectRepository.cs" />
     <Compile Include="Repositories\Interfaces\IProjectUsersRepository.cs" />
     <Compile Include="Repositories\Interfaces\IRepository.cs" />
@@ -123,6 +133,7 @@
     <Compile Include="Repositories\TaskRepository.cs" />
     <Compile Include="TaskBookDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TransactionProvider.cs" />
     <Compile Include="UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>

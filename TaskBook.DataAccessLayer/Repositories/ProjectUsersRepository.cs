@@ -10,8 +10,8 @@ namespace TaskBook.DataAccessLayer.Repositories
 {
     public class ProjectUsersRepository: Repository<ProjectUsers>, IProjectUsersRepository
     {
-        public ProjectUsersRepository(IUnitOfWork unitOfWork)
-            : base(unitOfWork)
+        public ProjectUsersRepository(TaskBookDbContext database)
+            : base(database)
         {
         }
     }

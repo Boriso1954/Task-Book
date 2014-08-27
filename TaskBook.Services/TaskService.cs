@@ -6,64 +6,67 @@ using System.Threading.Tasks;
 using TaskBook.DataAccessLayer.Exceptions;
 using TaskBook.DataAccessLayer.Repositories;
 using TaskBook.DataAccessLayer.Repositories.Interfaces;
-using TaskBook.DataAccessReader;
+using TaskBook.DataAccessLayer.Reader;
 using TaskBook.DomainModel;
 using TaskBook.DomainModel.ViewModels;
 using TaskBook.Services.Interfaces;
+using TaskBook.DataAccessLayer;
 
 namespace TaskBook.Services
 {
     public sealed class TaskService: ITaskService
     {
-        private readonly ReaderRepository _readerRepository;
-        private readonly ITaskRepository _taskRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public TaskService(ReaderRepository readerRepository,
-            ITaskRepository taskRepository,
-            IUserService userService)
+        public TaskService(IUnitOfWork unitOfWork)
         {
-            _readerRepository = readerRepository;
-            _taskRepository = taskRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public TaskVm GetTask(long id)
         {
-            var task = _readerRepository.GetTask(id).FirstOrDefault();
-
+            var readerRepository = _unitOfWork.ReaderRepository;
+            var task = readerRepository.GetTask(id).FirstOrDefault();
             return task;
         }
 
         public IQueryable<TaskVm> GetTasks(long? projectId = null)
         {
-            IQueryable<TaskVm> tasks = null;
+            IQueryable<TaskVm> tasks;
+            var readerRepository = _unitOfWork.ReaderRepository;
 
             if(projectId == null)
             {
-                tasks = _readerRepository.GetTasks();
+                tasks = readerRepository.GetTasks();
             }
             else
             {
-                tasks = _readerRepository.GetTasks(projectId);
+                tasks = readerRepository.GetTasks(projectId);
             }
             return tasks;
         }
 
         public void AddTask(TaskVm taskVm)
         {
-            var task = new TbTask()
+            TbTask task;
+            using(var readerRepository = _unitOfWork.ReaderRepository)
             {
-                Title = taskVm.Title,
-                Description = taskVm.Description,
-                ProjectId = taskVm.ProjectId,
-                CreatedDate = DateTimeOffset.UtcNow,
-                CreatedById =_readerRepository.GetUserByUserName(taskVm.CreatedBy).FirstOrDefault().UserId,
-                AssignedToId = _readerRepository.GetUserByUserName(taskVm.AssignedTo).FirstOrDefault().UserId,
-                DueDate = taskVm.DueDate,
-                Status = TbTaskStatus.New
-            };
+                task = new TbTask()
+                {
+                    Title = taskVm.Title,
+                    Description = taskVm.Description,
+                    ProjectId = taskVm.ProjectId,
+                    CreatedDate = DateTimeOffset.UtcNow,
+                    CreatedById = readerRepository.GetUserByUserName(taskVm.CreatedBy).FirstOrDefault().UserId,
+                    AssignedToId = readerRepository.GetUserByUserName(taskVm.AssignedTo).FirstOrDefault().UserId,
+                    DueDate = taskVm.DueDate,
+                    Status = TbTaskStatus.New
+                };
+            }
 
-            _taskRepository.Add(task);
-            _taskRepository.SaveChanges();
+            var taskRepository = _unitOfWork.TaskRepository;
+            taskRepository.Add(task);
+            _unitOfWork.Commit();
         }
 
         public void UpdateTask(long id, TaskVm taskVm)
@@ -73,41 +76,45 @@ namespace TaskBook.Services
                 throw new Exception("Task ID conflict.");
             }
 
-            var task = _taskRepository.GetById(id);
+            var taskRepository = _unitOfWork.TaskRepository;
+            var task = taskRepository.GetById(id);
 
             if(task == null)
             {
                 throw new Exception(string.Format("Unable to find task '{0}'.", taskVm.Title));
             }
 
-            // TODO consider mapping
-            task.Title = taskVm.Title;
-            task.Description = taskVm.Description;
-            task.DueDate = taskVm.DueDate;
-            task.Status = GetTaskStatusByString(taskVm.Status);
-            task.AssignedToId = _readerRepository.GetUserByUserName(taskVm.AssignedTo).FirstOrDefault().UserId;
-            task.CompletedDate = taskVm.CompletedDate;
+            using(var readerRepository = _unitOfWork.ReaderRepository)
+            {
+                // TODO consider mapping
+                task.Title = taskVm.Title;
+                task.Description = taskVm.Description;
+                task.DueDate = taskVm.DueDate;
+                task.Status = GetTaskStatusByString(taskVm.Status);
+                task.AssignedToId = readerRepository.GetUserByUserName(taskVm.AssignedTo).FirstOrDefault().UserId;
+                task.CompletedDate = taskVm.CompletedDate;
+            }
 
-            _taskRepository.Update(task);
-            _taskRepository.SaveChanges();
+            taskRepository.Update(task);
+            _unitOfWork.Commit();
         }
 
         public void DeleteTask(long id)
         {
-            var existing = _taskRepository.GetById(id);
+            var taskRepository = _unitOfWork.TaskRepository;
+            var existing = taskRepository.GetById(id);
             if(existing == null)
             {
                 throw new Exception(string.Format("Unable to find task to be deleted. task ID {0}", id));
             }
 
-            _taskRepository.Delete(existing);
-            _taskRepository.SaveChanges();
+            taskRepository.Delete(existing);
+            _unitOfWork.Commit();
         }
 
         public void Dispose()
         {
-            _readerRepository.Dispose();
-            _taskRepository.Dispose();
+            _unitOfWork.Dispose();
         }
 
         private TbTaskStatus GetTaskStatusByString(string taskStatus)

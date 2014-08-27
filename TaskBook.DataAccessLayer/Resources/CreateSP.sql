@@ -31,7 +31,7 @@ BEGIN
 			AspNetRoles ON AspNetUserRoles.RoleId = AspNetRoles.Id LEFT OUTER JOIN
 			ProjectUsers ON AspNetUsers.Id = ProjectUsers.UserId LEFT OUTER JOIN
 			Projects ON ProjectUsers.ProjectId = Projects.Id
-	WHERE   AspNetUsers.UserName = @userName
+	WHERE   AspNetUsers.UserName = @userName AND AspNetUsers.DeletedDate IS NULL
 END
 GO
 CREATE PROCEDURE spGetPermissionsByRole
@@ -110,6 +110,14 @@ AS
 BEGIN
 	SELECT  Tasks.Id AS TaskId, Tasks.Title, AspNetUsers.Id AS UserId, AspNetUsers.UserName
 	FROM    AspNetUsers INNER JOIN
-            Tasks ON AspNetUsers.Id = Tasks.AssignedToId
+            Tasks ON AspNetUsers.Id = Tasks.AssignedToId OR AspNetUsers.Id = Tasks.CreatedById
 	WHERE   AspNetUsers.UserName = @userName
+END
+GO
+CREATE PROCEDURE spGetDeletedUsers
+AS
+BEGIN
+	SELECT  AspNetUsers.Id AS UserId, AspNetUsers.UserName, AspNetUsers.Email, AspNetUsers.FirstName, AspNetUsers.LastName
+	FROM    AspNetUsers
+	WHERE   AspNetUsers.DeletedDate IS NOT NULL
 END

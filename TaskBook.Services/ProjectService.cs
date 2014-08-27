@@ -10,43 +10,41 @@ using TaskBook.DataAccessLayer.Repositories.Interfaces;
 using TaskBook.DomainModel;
 using TaskBook.Services.Interfaces;
 using TaskBook.DomainModel.ViewModels;
-using TaskBook.DataAccessReader;
+using TaskBook.DataAccessLayer.Reader;
+using TaskBook.DataAccessLayer;
 
 namespace TaskBook.Services
 {
     public sealed class ProjectService: IProjectService
     {
-        private readonly IUserService _userService;
-        private readonly IProjectRepository _projectRepository;
-        private readonly IProjectAccessService _projectAccessService;
-        private readonly ReaderRepository _readerRepository;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly UserManager<TbUser> _userManager;
 
-        public ProjectService(IUserService userService,
-            IProjectRepository projectRepository,
-            IProjectAccessService projectAccessService,
-            ReaderRepository readerRepository)
+        public ProjectService(IUnitOfWork unitOfWork,
+            IUserStore<TbUser> userStore)
         {
-            _userService = userService;
-            _projectRepository = projectRepository;
-            _projectAccessService = projectAccessService;
-            _readerRepository = readerRepository;
+            _unitOfWork = unitOfWork;
+            _userManager = new UserManager<TbUser>(userStore);
         }
 
         public IQueryable<ProjectManagerVm> GetProjectsAndManagers()
         {
-            var projectsAndManagers = _readerRepository.GetProjectsAndManagers();
+            var readerRepository = _unitOfWork.ReaderRepository;
+            var projectsAndManagers = readerRepository.GetProjectsAndManagers();
             return projectsAndManagers;
         }
 
         public ProjectManagerVm GetProjectsAndManagers(long projectId)
         {
-            var projectAndManager = _readerRepository.GetProjectsAndManagers(projectId).FirstOrDefault();
+            var readerRepository = _unitOfWork.ReaderRepository;
+            var projectAndManager = readerRepository.GetProjectsAndManagers(projectId).FirstOrDefault();
             return projectAndManager;
         }
 
         public ProjectVm GetById(long id)
         {
-            var project = _projectRepository.GetById(id);
+            var projectRepository = _unitOfWork.ProjectRepository;
+            var project = projectRepository.GetById(id);
             if(project == null)
             {
                 throw new Exception(string.Format("Unable to return project with ID'{0}'", id));
@@ -67,14 +65,15 @@ namespace TaskBook.Services
                 CreatedDate = DateTimeOffset.UtcNow,
             };
 
-            var notAssignedUserId = _userService.GetByName("NotAssigned").Id;
+            var notAssignedUserId = _userManager.FindByName("NotAssigned").Id;
+            var projectRepository = _unitOfWork.ProjectRepository;
+            var projectAccessService = new ProjectAccessService(_unitOfWork);
 
             using(var transaction = new TransactionScope())
             {
-                _projectRepository.Add(project);
-                _projectRepository.SaveChanges();
-
-                _projectAccessService.AddUserToProject(project.Id, notAssignedUserId);
+                projectRepository.Add(project);
+                projectAccessService.AddUserToProject(project.Id, notAssignedUserId);
+                _unitOfWork.Commit();
                 transaction.Complete();
             }
         }
@@ -86,7 +85,8 @@ namespace TaskBook.Services
                 throw new Exception("Project ID conflict.");
             }
 
-            var toBeUpdated = _projectRepository.GetById(id);
+            var projectRepository = _unitOfWork.ProjectRepository;
+            var toBeUpdated = projectRepository.GetById(id);
 
             if(toBeUpdated == null)
             {
@@ -94,34 +94,39 @@ namespace TaskBook.Services
             }
 
             toBeUpdated.Title = projectVm.ProjectTitle;
-            _projectRepository.Update(toBeUpdated);
-            _projectRepository.SaveChanges();
+            projectRepository.Update(toBeUpdated);
+            _unitOfWork.Commit();
         }
 
         public void DeleteProject(long id)
         {
-            var existing = _projectRepository.GetById(id);
+            var projectRepository = _unitOfWork.ProjectRepository;
+            var existing = projectRepository.GetById(id);
             if(existing == null)
             {
                 throw new Exception(string.Format("Unable to find project to be deleted. Project ID {0}", id));
             }
 
-            string managerId = _readerRepository.GetProjectsAndManagers(id).FirstOrDefault().ManagerId;
+            string managerId = string.Empty;
+            using(var readerRepository = _unitOfWork.ReaderRepository)
+            {
+                managerId = readerRepository.GetProjectsAndManagers(id).FirstOrDefault().ManagerId;
+            }
+
+            var userService = new UserService(_unitOfWork, _userManager);
             using(var transaction = new TransactionScope())
             {
-                _projectRepository.Delete(existing);
-                _projectRepository.SaveChanges();
-                _userService.DeleteUser(managerId);
+                projectRepository.Delete(existing);
+                userService.DeleteUser(managerId);
+                _unitOfWork.Commit();
                 transaction.Complete();
             }
         }
 
         public void Dispose()
         {
-            _userService.Dispose();
-            _projectRepository.Dispose();
-            _projectAccessService.Dispose();
-            _readerRepository.Dispose();
+            _userManager.Dispose();
+            _unitOfWork.Dispose();
         }
     }
 }

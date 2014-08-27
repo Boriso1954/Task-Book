@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
-using TaskBook.DataAccessReader.Exceptions;
+using TaskBook.DataAccessLayer.Exceptions;
 using TaskBook.DomainModel.ViewModels;
 using TaskBook.Services.Interfaces;
 

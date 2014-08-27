@@ -15,7 +15,5 @@ namespace TaskBook.DataAccessLayer.Repositories.Interfaces
         void DeleteByPredicate(Func<T, bool> predicate);
         void Update(T t);
         T GetById(object id);
-        void SaveChanges();
-        void Dispose();
     }
 }

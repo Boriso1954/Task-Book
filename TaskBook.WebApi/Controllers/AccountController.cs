@@ -8,7 +8,6 @@ using Microsoft.AspNet.Identity;
 using TaskBook.DataAccessLayer.Exceptions;
 using TaskBook.Services.Interfaces;
 using TaskBook.DomainModel.ViewModels;
-using TaskBook.DataAccessReader.Exceptions;
 
 namespace TaskBook.WebApi.Controllers
 {
@@ -24,7 +23,7 @@ namespace TaskBook.WebApi.Controllers
 
         // GET api/Account/GetUserByUserName/{userName}
         [Route("GetUserByUserName/{userName}")]
-        [ResponseType(typeof(TbUserVm))]
+        [ResponseType(typeof(TbUserRoleVm))]
         public IHttpActionResult GetUserByUserName(string userName)
         {
             try
@@ -44,7 +43,7 @@ namespace TaskBook.WebApi.Controllers
 
         // GET api/Account/GetUsersWithRolesByProjectId/{projectId}
         [Route("GetUsersWithRolesByProjectId/{projectId:long}")]
-        [ResponseType(typeof(IQueryable<TbUserVm>))]
+        [ResponseType(typeof(IQueryable<TbUserRoleVm>))]
         public IHttpActionResult GetUsersWithRolesByProjectId(long projectId)
         {
             try
@@ -84,7 +83,7 @@ namespace TaskBook.WebApi.Controllers
 
         // POST api/Account/AddUser
         [Route("AddUser")]
-        public IHttpActionResult AddUser(TbUserVm userModel)
+        public IHttpActionResult AddUser(TbUserRoleVm userModel)
         {
             if(!ModelState.IsValid)
             {
@@ -109,7 +108,7 @@ namespace TaskBook.WebApi.Controllers
         // PUT api/Account/UpdateUser/{id}
         [Route("UpdateUser/{id}")]
         [HttpPut]
-        public IHttpActionResult UpdateUser(string id, TbUserVm userVm)
+        public IHttpActionResult UpdateUser(string id, TbUserRoleVm userVm)
         {
             if(!ModelState.IsValid)
             {

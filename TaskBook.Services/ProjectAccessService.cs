@@ -1,4 +1,5 @@
-﻿using TaskBook.DataAccessLayer.Repositories.Interfaces;
+﻿using TaskBook.DataAccessLayer;
+using TaskBook.DataAccessLayer.Repositories.Interfaces;
 using TaskBook.DomainModel;
 using TaskBook.Services.Interfaces;
 
@@ -6,11 +7,11 @@ namespace TaskBook.Services
 {
     public sealed class ProjectAccessService: IProjectAccessService
     {
-        private readonly IProjectUsersRepository _projectUsersRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public ProjectAccessService(IProjectUsersRepository projectUsersRepository)
+        public ProjectAccessService(IUnitOfWork unitOfWork)
         {
-            _projectUsersRepository = projectUsersRepository;
+            _unitOfWork = unitOfWork;
         } 
  
         public void AddUserToProject(long projectId, string userId)
@@ -20,19 +21,21 @@ namespace TaskBook.Services
                 ProjectId = projectId,
                 UserId = userId
             };
-            _projectUsersRepository.Add(projectUsers);
-            _projectUsersRepository.SaveChanges();
+
+            var projectUsersRepository = _unitOfWork.ProjectUsersRepository;
+            projectUsersRepository.Add(projectUsers);
+            _unitOfWork.Commit();
         }
 
         public void RemoveUserFromRoject(long projectId, string userId)
         {
-            _projectUsersRepository.DeleteByPredicate(x => x.UserId == userId && x.ProjectId == projectId);
-            _projectUsersRepository.SaveChanges();
+            var projectUsersRepository = _unitOfWork.ProjectUsersRepository;
+            projectUsersRepository.DeleteByPredicate(x => x.UserId == userId && x.ProjectId == projectId);
+            _unitOfWork.Commit();
         }
-
         public void Dispose()
         {
-            _projectUsersRepository.Dispose();
+            _unitOfWork.Dispose();
         }
     }
 }

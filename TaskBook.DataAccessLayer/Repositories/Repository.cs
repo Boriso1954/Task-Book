@@ -9,22 +9,21 @@ using TaskBook.DomainModel;
 
 namespace TaskBook.DataAccessLayer.Repositories
 {
-    public abstract class Repository<T>: IDisposable, IRepository<T> where T: Entity
+    public abstract class Repository<T>: IRepository<T> where T: Entity
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly TaskBookDbContext _db;
         private readonly IDbSet<T> _dbset;
 
-        protected Repository(IUnitOfWork unitOfWork)
+        protected Repository(TaskBookDbContext database)
         {
-            if(unitOfWork == null)
+
+            if(database == null)
             {
-                throw new ArgumentNullException("UnitOfWork");
+                throw new ArgumentNullException("Database");
             }
-            _unitOfWork = unitOfWork;
-            _dbset = unitOfWork.Database.Set<T>();
+            _db = database;
+            _dbset = database.Set<T>();
         }
-
-
 
         public virtual T GetById(object id)
         {
@@ -64,12 +63,12 @@ namespace TaskBook.DataAccessLayer.Repositories
         public virtual void Update(T entity)
         {
              _dbset.Attach(entity);
-            _unitOfWork.Database.Entry(entity).State = EntityState.Modified;
+            _db.Entry(entity).State = EntityState.Modified;
         }
 
         public virtual object Delete(T entity)
         {
-            if(_unitOfWork.Database.Entry(entity).State == EntityState.Detached)
+            if(_db.Entry(entity).State == EntityState.Detached)
             {
                 _dbset.Attach(entity);
             }
@@ -84,16 +83,6 @@ namespace TaskBook.DataAccessLayer.Repositories
             {
                 Delete(t);
             }
-        }
-
-        public void SaveChanges()
-        {
-            _unitOfWork.Commit();
-        }
-
-        public void Dispose()
-        {
-            _unitOfWork.Dispose();
         }
     }
 }

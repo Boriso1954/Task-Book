@@ -10,8 +10,8 @@ namespace TaskBook.DataAccessLayer.Repositories
 {
     public class TaskRepository: Repository<TbTask>, ITaskRepository
     {
-        public TaskRepository(IUnitOfWork unitOfWork)
-            : base(unitOfWork)
+        public TaskRepository(TaskBookDbContext database)
+            : base(database)
         {
         }
     }

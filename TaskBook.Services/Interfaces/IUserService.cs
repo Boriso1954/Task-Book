@@ -10,12 +10,13 @@ namespace TaskBook.Services.Interfaces
     {
         TbUser GetById(string id);
         TbUser GetByName(string name);
-        TbUserVm GetUserByUserName(string userName);
-        IQueryable<TbUserVm> GetUsersWithRolesByProjectId(long projectId);
+        TbUserRoleVm GetUserByUserName(string userName);
+        IQueryable<TbUserRoleVm> GetUsersWithRolesByProjectId(long projectId);
         IQueryable<UserProjectVm> GetUsersByProjectId(long projectId);
-        void AddUser(TbUserVm userModel);
-        void UpdateUser(string id, TbUserVm userVm);
+        void AddUser(TbUserRoleVm userModel);
+        void UpdateUser(string id, TbUserRoleVm userVm);
         //Task UpdateUserAsync(string id, TbUserVm userVm);
         void DeleteUser(string id);
+        
     }
 }

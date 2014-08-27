@@ -6,23 +6,78 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TaskBook.DataAccessLayer.Exceptions;
+using TaskBook.DataAccessLayer.Reader;
+using TaskBook.DataAccessLayer.Repositories;
+using TaskBook.DataAccessLayer.Repositories.Interfaces;
 
 namespace TaskBook.DataAccessLayer
 {
     public class UnitOfWork: IUnitOfWork, IDisposable
     {
-        private readonly TaskBookDbContext _db;
+        private readonly TaskBookDbContext _dbContext;
+        private IProjectRepository _projectRepository;
+        private IProjectUsersRepository _projectUsersRepository;
+        private ITaskRepository _taskRepository;
+        private IReaderRepository _readerRepository;
 
-        public UnitOfWork(TaskBookDbContext database)
+        public UnitOfWork(TaskBookDbContext dbContext)
         {
-            this._db = database;
+            _dbContext = dbContext;
         }
 
-        public TaskBookDbContext Database
+        public TaskBookDbContext DbContext
         {
             get
             {
-                return this._db;
+                return this._dbContext;
+            }
+        }
+
+        public IProjectRepository ProjectRepository
+        {
+            get
+            {
+                if(_projectRepository == null)
+                {
+                    _projectRepository = new ProjectRepository(_dbContext);
+                }
+                return _projectRepository;
+            }
+        }
+
+        public IProjectUsersRepository ProjectUsersRepository
+        {
+            get
+            {
+                if(_projectUsersRepository == null)
+                {
+                    _projectUsersRepository = new ProjectUsersRepository(_dbContext);
+                }
+                return _projectUsersRepository;
+            }
+        }
+
+        public ITaskRepository TaskRepository
+        {
+            get
+            {
+                if(_taskRepository == null)
+                {
+                    _taskRepository = new TaskRepository(_dbContext);
+                }
+                return _taskRepository;
+            }
+        }
+
+        public IReaderRepository ReaderRepository
+        {
+            get
+            {
+                if(_readerRepository == null)
+                {
+                    _readerRepository = new ReaderRepository(_dbContext);
+                }
+                return _readerRepository;
             }
         }
 
@@ -30,7 +85,7 @@ namespace TaskBook.DataAccessLayer
         {
             try
             {
-                _db.SaveChanges();
+                _dbContext.SaveChanges();
             }
             catch(DbUpdateConcurrencyException ex)
             {
@@ -67,7 +122,7 @@ namespace TaskBook.DataAccessLayer
 
         public void Dispose()
         {
-            this._db.Dispose();
+            this._dbContext.Dispose();
         }
     }
 }

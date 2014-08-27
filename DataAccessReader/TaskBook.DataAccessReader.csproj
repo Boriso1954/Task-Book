@@ -53,6 +53,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TaskBook.DataAccessLayer\TaskBook.DataAccessLayer.csproj">
+      <Project>{bd70db56-cc9d-4040-8dcd-1a12c3548f73}</Project>
+      <Name>TaskBook.DataAccessLayer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TaskBook.DomainModel\TaskBook.DomainModel.csproj">
       <Project>{e324a2ee-a49f-4b96-80c6-5e87faab474a}</Project>
       <Name>TaskBook.DomainModel</Name>

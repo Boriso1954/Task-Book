@@ -47,6 +47,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.0.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Practices.Unity">
+      <HintPath>..\packages\Unity.3.0.1304.1\lib\Net45\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration">
+      <HintPath>..\packages\Unity.3.0.1304.1\lib\Net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -74,10 +80,6 @@
     <Compile Include="UserService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DataAccessReader\TaskBook.DataAccessReader.csproj">
-      <Project>{a04e2ecc-faeb-41cc-9b3f-809057dbbd41}</Project>
-      <Name>TaskBook.DataAccessReader</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TaskBook.DataAccessLayer\TaskBook.DataAccessLayer.csproj">
       <Project>{bd70db56-cc9d-4040-8dcd-1a12c3548f73}</Project>
       <Name>TaskBook.DataAccessLayer</Name>

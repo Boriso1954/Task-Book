@@ -11,11 +11,10 @@ using Microsoft.AspNet.Identity;
 using TaskBook.DataAccessLayer;
 using TaskBook.DataAccessLayer.Exceptions;
 using TaskBook.DataAccessLayer.Repositories.Interfaces;
-using TaskBook.DataAccessReader;
+using TaskBook.DataAccessLayer.Reader;
 using TaskBook.DomainModel;
 using TaskBook.Services.Interfaces;
 using TaskBook.DomainModel.ViewModels;
-using TaskBook.DataAccessReader.Exceptions;
 
 namespace TaskBook.WebApi.Controllers
 {

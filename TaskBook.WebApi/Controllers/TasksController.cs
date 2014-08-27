@@ -13,7 +13,6 @@ using TaskBook.DataAccessLayer;
 using TaskBook.Services.Interfaces;
 using TaskBook.DomainModel.ViewModels;
 using TaskBook.DataAccessLayer.Exceptions;
-using TaskBook.DataAccessReader.Exceptions;
 
 namespace TaskBook.WebApi.Controllers
 {

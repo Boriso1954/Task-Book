@@ -11,8 +11,8 @@ namespace TaskBook.DataAccessLayer.Repositories
 {
     public class ProjectRepository: Repository<Project>, IProjectRepository
     {
-        public ProjectRepository(IUnitOfWork unitOfWork)
-            : base(unitOfWork)
+        public ProjectRepository(TaskBookDbContext database)
+            : base(database)
         {
         }
 

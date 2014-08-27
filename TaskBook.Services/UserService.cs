@@ -8,27 +8,29 @@ using TaskBook.DataAccessLayer.Exceptions;
 using TaskBook.DomainModel;
 using TaskBook.Services.Interfaces;
 using TaskBook.DomainModel.ViewModels;
-using TaskBook.DataAccessReader;
+using TaskBook.DataAccessLayer.Reader;
 using TaskBook.DataAccessLayer.Repositories.Interfaces;
+using TaskBook.DataAccessLayer;
+using Microsoft.Practices.Unity;
 
 namespace TaskBook.Services
 {
     public sealed class UserService: IUserService
     {
         private readonly UserManager<TbUser> _userManager;
-        private readonly IProjectAccessService _projectAccessService;
-        private readonly ITaskRepository _taskRepository;
-        private readonly ReaderRepository _readerRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public UserService(IUserStore<TbUser> userStore,
-            IProjectAccessService projectAccessService,
-            ITaskRepository taskRepository,
-            ReaderRepository readerRepository)
+        [InjectionConstructor]
+        public UserService(IUnitOfWork unitOfWork, IUserStore<TbUser> userStore)
         {
             _userManager = new UserManager<TbUser>(userStore);
-            _projectAccessService = projectAccessService;
-            _taskRepository = taskRepository;
-            _readerRepository = readerRepository;
+            _unitOfWork = unitOfWork;
+        }
+
+        public UserService(IUnitOfWork unitOfWork, UserManager<TbUser> userManager)
+        {
+            _userManager = userManager;
+            _unitOfWork = unitOfWork;
         }
 
         public TbUser GetById(string id)
@@ -43,26 +45,28 @@ namespace TaskBook.Services
             return user;
         }
 
-
-        public TbUserVm GetUserByUserName(string userName)
+        public TbUserRoleVm GetUserByUserName(string userName)
         {
-            var user = _readerRepository.GetUserByUserName(userName).FirstOrDefault();
+            var readerRepository = _unitOfWork.ReaderRepository;
+            var user = readerRepository.GetUserByUserName(userName).FirstOrDefault();
             return user;
         }
 
-        public IQueryable<TbUserVm> GetUsersWithRolesByProjectId(long projectId)
+        public IQueryable<TbUserRoleVm> GetUsersWithRolesByProjectId(long projectId)
         {
-            var users = _readerRepository.GetUsersWithRolesByProjectId(projectId);
+            var readerRepository = _unitOfWork.ReaderRepository;
+            var users = readerRepository.GetUsersWithRolesByProjectId(projectId);
             return users;
         }
 
         public IQueryable<UserProjectVm> GetUsersByProjectId(long projectId)
         {
-            var users = _readerRepository.GetUsersByProjectId(projectId);
+            var readerRepository = _unitOfWork.ReaderRepository;
+            var users = readerRepository.GetUsersByProjectId(projectId);
             return users;
         }
 
-        public void AddUser(TbUserVm userModel)
+        public void AddUser(TbUserRoleVm userModel)
         {
             // TODO: introduce mapping
             var user = new TbUser()
@@ -73,38 +77,44 @@ namespace TaskBook.Services
                 Email = userModel.Email
             };
             
-            var result = _userManager.Create(user, "123456");
-            if(result == null || !result.Succeeded)
+            using(var transaction = TransactionProvider.GetTransactionScope())
             {
-                throw new TbIdentityException("Create user error", result);
-            }
+                var result = _userManager.Create(user, "user12");
+                if(result == null || !result.Succeeded)
+                {
+                    throw new TbIdentityException("Create user error", result);
+                }
 
-            string role = userModel.Role;
-            long projectId = (long)userModel.ProjectId;
-            string userId = user.Id;
-            var rolesForUser = _userManager.GetRoles(userId);
-            
-            if(!rolesForUser.Contains(role))
-            {
+                string role = userModel.Role;
+                long projectId = (long)userModel.ProjectId;
+                string userId = user.Id;
+
                 result = _userManager.AddToRole(userId, role);
                 if(result == null || !result.Succeeded)
                 {
                     throw new TbIdentityException("Add to role error", result);
                 }
-            }
 
-            using(var transaction = new TransactionScope())
-            {
-                _projectAccessService.AddUserToProject(projectId, userId);
+                var projectUsers = new ProjectUsers()
+                {
+                    ProjectId = projectId,
+                    UserId = userId
+                };
 
-                string notAssignedUserId = _userManager.FindByName("NotAssigned").Id;
-                _projectAccessService.RemoveUserFromRoject(projectId, notAssignedUserId);
-               
+                var projectUsersRepository = _unitOfWork.ProjectUsersRepository;
+                projectUsersRepository.Add(projectUsers);
+
+                if(role == RoleKey.Manager)
+                {
+                    string notAssignedUserId = _userManager.FindByName("NotAssigned").Id;
+                    projectUsersRepository.DeleteByPredicate(x => x.UserId == notAssignedUserId && x.ProjectId == projectId);
+                }
+                _unitOfWork.Commit();
                 transaction.Complete();
             }
         }
 
-        public void UpdateUser(string id, TbUserVm userVm)
+        public void UpdateUser(string id, TbUserRoleVm userVm)
         {
             if(id != userVm.UserId)
             {
@@ -122,14 +132,15 @@ namespace TaskBook.Services
             user.Email = userVm.Email;
             user.FirstName = userVm.FirstName;
             user.LastName = userVm.LastName;
+
+            using(var transaction = TransactionProvider.GetTransactionScope())
+            {
+                var result = _userManager.Update(user);
+                if(result == null || !result.Succeeded)
+                {
+                    throw new TbIdentityException("Update user error", result);
+                }
             
-            var result = _userManager.Update(user);
-            if(result == null || !result.Succeeded)
-            {
-                throw new TbIdentityException("Update user error", result);
-            }
-            using(var transaction = new TransactionScope())
-            {
                 string prevRole = _userManager.GetRoles(id).FirstOrDefault();
                 if(prevRole != userVm.Role)
                 {
@@ -156,33 +167,54 @@ namespace TaskBook.Services
                 throw new Exception(string.Format("Unable to delete user with ID '{0}'.", id));
             }
 
-            user.DeletedDate = DateTimeOffset.UtcNow;
-
-            var result = _userManager.Update(user);
-            if(result == null || !result.Succeeded)
+            using(var transaction = TransactionProvider.GetTransactionScope())
             {
-                throw new TbIdentityException("Delete user error", result);
-            }
-
-            var tasks = _readerRepository.GetUserTasksByUserName(user.UserName);
-            using(var transaction = new TransactionScope())
-            {
-                foreach(var t in tasks)
+                // Reader must be disposed before transaction commitment
+                using(var readerRepository = _unitOfWork.ReaderRepository)
                 {
-                    var task = _taskRepository.GetById(t.TaskId);
-                    _taskRepository.Delete(task);
+                    // Delete user's tasks first
+                    var tasks = readerRepository.GetUserTasksByUserName(user.UserName).ToList();
+
+                    if(tasks.Any())
+                    {
+                        var taskRepository = _unitOfWork.TaskRepository;
+                        foreach(var t in tasks)
+                        {
+                            var task = taskRepository.GetById(t.TaskId);
+                            taskRepository.Delete(task);
+                        }
+                        _unitOfWork.Commit();
+                    }
                 }
-                _taskRepository.SaveChanges();
+
+                // Mark User as deleted
+                user.DeletedDate = DateTimeOffset.UtcNow;
+                var result = _userManager.Update(user);
+                if(result == null || !result.Succeeded)
+                {
+                    throw new TbIdentityException("Update user error", result);
+                }
                 transaction.Complete();
+            }
+            
+            using(var readerRepository = _unitOfWork.ReaderRepository)
+            {
+                // Delete users which marked as deleted 
+                var deletedUsers = readerRepository.GetDeletedUsers().ToList();
+                foreach(var u in deletedUsers)
+                {
+                    var deletedUser = _userManager.FindById(u.UserId);
+
+                    // Delete user (cascade deletion from UserRoles and ProgectUsers)
+                    _userManager.Delete(deletedUser);
+                }
             }
         }
 
         public void Dispose()
         {
             _userManager.Dispose();
-            _projectAccessService.Dispose();
-            _taskRepository.Dispose();
-            _readerRepository.Dispose();
+            _unitOfWork.Dispose();
         }
     }
 }
