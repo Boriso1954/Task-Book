@@ -53,6 +53,7 @@ namespace TaskBook.DataAccessLayer.Reader
 
         internal static Func<SqlDataReader, UserProjectVm> UserProjectVmFromReader = (r) => new UserProjectVm()
         {
+            UserId = (string)r["UserId"],
             UserName = (string)r["UserName"],
             ProjectId = (long)r["ProjectId"]
         };
@@ -73,6 +74,13 @@ namespace TaskBook.DataAccessLayer.Reader
             FirstName = (string)r["FirstName"],
             LastName = (string)r["LastName"]
         };
+
+        internal static Func<SqlDataReader, ProjectVm> ProjectVmFromReader = (r) => new ProjectVm()
+        {
+            ProjectId = (long)r["ProjectId"],
+            Title = (string)r["Title"]
+        };
+
 
         private static string GetStringTaskStatus(int taskStatus)
         {

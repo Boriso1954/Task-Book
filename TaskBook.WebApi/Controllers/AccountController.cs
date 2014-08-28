@@ -15,6 +15,7 @@ namespace TaskBook.WebApi.Controllers
     public class AccountController : ApiController
     {
         private readonly IUserService _userService;
+        private readonly bool _softDeleted = false;
 
         public AccountController(IUserService userService)
         {
@@ -138,7 +139,7 @@ namespace TaskBook.WebApi.Controllers
         {
             try
             {
-                _userService.DeleteUser(id);
+                _userService.DeleteUser(id, _softDeleted);
             }
             catch(DataAccessLayerException ex)
             {

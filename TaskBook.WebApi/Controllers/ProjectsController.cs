@@ -23,6 +23,7 @@ namespace TaskBook.WebApi.Controllers
     public class ProjectsController : ApiController
     {
         private readonly IProjectService _projectService;
+        private readonly bool _softDeleted = false;
 
         public ProjectsController(IProjectService projectService)
         {
@@ -144,7 +145,7 @@ namespace TaskBook.WebApi.Controllers
         {
             try
             {
-                _projectService.DeleteProject(id);
+                _projectService.DeleteProject(id, _softDeleted);
             }
             catch(DataAccessLayerException ex)
             {

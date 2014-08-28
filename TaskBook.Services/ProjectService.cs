@@ -19,7 +19,7 @@ namespace TaskBook.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly UserManager<TbUser> _userManager;
-
+        
         public ProjectService(IUnitOfWork unitOfWork,
             IUserStore<TbUser> userStore)
         {
@@ -52,6 +52,7 @@ namespace TaskBook.Services
 
             var projectVm = new ProjectVm()
             {
+                ProjectId = id,
                 Title = project.Title
             };
             return projectVm;
@@ -69,7 +70,7 @@ namespace TaskBook.Services
             var projectRepository = _unitOfWork.ProjectRepository;
             var projectAccessService = new ProjectAccessService(_unitOfWork);
 
-            using(var transaction = new TransactionScope())
+            using(var transaction = TransactionProvider.GetTransactionScope())
             {
                 projectRepository.Add(project);
                 projectAccessService.AddUserToProject(project.Id, notAssignedUserId);
@@ -98,28 +99,68 @@ namespace TaskBook.Services
             _unitOfWork.Commit();
         }
 
-        public void DeleteProject(long id)
+        public void DeleteProject(long id, bool softDeleted = false)
         {
             var projectRepository = _unitOfWork.ProjectRepository;
-            var existing = projectRepository.GetById(id);
-            if(existing == null)
+            var project = projectRepository.GetById(id);
+            if(project == null)
             {
                 throw new Exception(string.Format("Unable to find project to be deleted. Project ID {0}", id));
             }
 
-            string managerId = string.Empty;
+            // Get all project users and delete them
+            IList<UserProjectVm> users;
             using(var readerRepository = _unitOfWork.ReaderRepository)
             {
-                managerId = readerRepository.GetProjectsAndManagers(id).FirstOrDefault().ManagerId;
+                users = readerRepository.GetUsersByProjectId(id).ToList();
             }
 
-            var userService = new UserService(_unitOfWork, _userManager);
-            using(var transaction = new TransactionScope())
+            if(users.Any())
             {
-                projectRepository.Delete(existing);
-                userService.DeleteUser(managerId);
+                var userService = new UserService(_unitOfWork, _userManager);
+                foreach(var u in users)
+                {
+                    // Delete user's tasks and mark a user as deleted
+                    userService.DeleteUser(u.UserId, true);
+                }
+            }
+
+            // Mark the project as deleted
+            project.DeletedDate = DateTimeOffset.UtcNow;
+            _unitOfWork.Commit();
+
+            if(!softDeleted)
+            {
+                // Delete users which marked as deleted
+                IList<TbUserVm> deletedUsers;
+                using(var readerRepository = _unitOfWork.ReaderRepository)
+                {
+                    deletedUsers = readerRepository.GetDeletedUsers().ToList();
+                }
+               
+                foreach(var u in deletedUsers)
+                {
+                    var deletedUser = _userManager.FindById(u.UserId);
+
+                    // Delete user (cascade deletion from UserRoles and ProgectUsers)
+                    _userManager.Delete(deletedUser);
+                }
+
+                // Delete projects which marked as deleted
+                IList<ProjectVm> deletedProjects;
+                using(var readerRepository = _unitOfWork.ReaderRepository)
+                {
+                    deletedProjects = readerRepository.GetDeletedProjects().ToList();
+                }
+
+                foreach(var p in deletedProjects)
+                {
+                    var deletedProject = projectRepository.GetById(p.ProjectId);
+
+                    // Delete project
+                    projectRepository.Delete(deletedProject);
+                }
                 _unitOfWork.Commit();
-                transaction.Complete();
             }
         }
 

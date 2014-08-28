@@ -59,7 +59,7 @@ namespace TaskBook.Services
             return users;
         }
 
-        public IQueryable<UserProjectVm> GetUsersByProjectId(long projectId)
+        public IEnumerable<UserProjectVm> GetUsersByProjectId(long projectId)
         {
             var readerRepository = _unitOfWork.ReaderRepository;
             var users = readerRepository.GetUsersByProjectId(projectId);
@@ -159,7 +159,7 @@ namespace TaskBook.Services
             }
         }
 
-        public void DeleteUser(string id)
+        public void DeleteUser(string id, bool softDeleted = false)
         {
             var user = _userManager.FindById(id);
             if(user == null)
@@ -169,38 +169,46 @@ namespace TaskBook.Services
 
             using(var transaction = TransactionProvider.GetTransactionScope())
             {
-                // Reader must be disposed before transaction commitment
+                IList<TaskUserVm> tasks;
                 using(var readerRepository = _unitOfWork.ReaderRepository)
                 {
                     // Delete user's tasks first
-                    var tasks = readerRepository.GetUserTasksByUserName(user.UserName).ToList();
-
-                    if(tasks.Any())
-                    {
-                        var taskRepository = _unitOfWork.TaskRepository;
-                        foreach(var t in tasks)
-                        {
-                            var task = taskRepository.GetById(t.TaskId);
-                            taskRepository.Delete(task);
-                        }
-                        _unitOfWork.Commit();
-                    }
+                    tasks = readerRepository.GetUserTasksByUserName(user.UserName).ToList();
                 }
 
-                // Mark User as deleted
-                user.DeletedDate = DateTimeOffset.UtcNow;
-                var result = _userManager.Update(user);
-                if(result == null || !result.Succeeded)
+                if(tasks.Any())
                 {
-                    throw new TbIdentityException("Update user error", result);
+                    var taskRepository = _unitOfWork.TaskRepository;
+                    foreach(var t in tasks)
+                    {
+                        var task = taskRepository.GetById(t.TaskId);
+                        taskRepository.Delete(task);
+                    }
+                    _unitOfWork.Commit();
+                }
+
+                // Mark User as deleted (soft deletion), skip the system user
+                if(user.UserName != "NotAssigned")
+                {
+                    user.DeletedDate = DateTimeOffset.UtcNow;
+                    var result = _userManager.Update(user);
+                    if(result == null || !result.Succeeded)
+                    {
+                        throw new TbIdentityException("Update user error", result);
+                    }
                 }
                 transaction.Complete();
             }
-            
-            using(var readerRepository = _unitOfWork.ReaderRepository)
+
+            if(!softDeleted)
             {
                 // Delete users which marked as deleted 
-                var deletedUsers = readerRepository.GetDeletedUsers().ToList();
+                IList<TbUserVm> deletedUsers;
+                using(var readerRepository = _unitOfWork.ReaderRepository)
+                {
+                   deletedUsers = readerRepository.GetDeletedUsers().ToList();
+                }
+                
                 foreach(var u in deletedUsers)
                 {
                     var deletedUser = _userManager.FindById(u.UserId);
@@ -208,6 +216,7 @@ namespace TaskBook.Services
                     // Delete user (cascade deletion from UserRoles and ProgectUsers)
                     _userManager.Delete(deletedUser);
                 }
+                
             }
         }
 

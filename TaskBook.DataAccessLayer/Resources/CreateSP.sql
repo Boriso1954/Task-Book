@@ -83,7 +83,7 @@ CREATE PROCEDURE spGetUsersByProjectId
 	@projectId bigint = NULL
 AS
 BEGIN
-	SELECT  AspNetUsers.UserName, Projects.Id AS ProjectId
+	SELECT  AspNetUsers.Id AS UserId, AspNetUsers.UserName, Projects.Id AS ProjectId
 	FROM    AspNetUsers INNER JOIN
             ProjectUsers ON AspNetUsers.Id = ProjectUsers.UserId INNER JOIN
             Projects ON ProjectUsers.ProjectId = Projects.Id
@@ -120,4 +120,12 @@ BEGIN
 	SELECT  AspNetUsers.Id AS UserId, AspNetUsers.UserName, AspNetUsers.Email, AspNetUsers.FirstName, AspNetUsers.LastName
 	FROM    AspNetUsers
 	WHERE   AspNetUsers.DeletedDate IS NOT NULL
+END
+GO
+CREATE PROCEDURE spGetDeletedProjects
+AS
+BEGIN
+	SELECT  Projects.Id, Project.Title
+	FROM    Prpjects
+	WHERE   Projects.DeletedDate IS NOT NULL
 END

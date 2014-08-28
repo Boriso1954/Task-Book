@@ -177,6 +177,12 @@ namespace TaskBook.DataAccessLayer.Reader
             return reader.Select(Projections.TbUserVmFromReader).AsQueryable();
         }
 
+        public IQueryable<ProjectVm> GetDeletedProjects()
+        {
+            var reader = _dataReader.ExecuteReader(CommandType.StoredProcedure, SpNames.spGetDeletedProjects);
+            return reader.Select(Projections.ProjectVmFromReader).AsQueryable();
+        }
+
         public void Dispose()
         {
             _dataReader.Dispose();

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TaskBook.DomainModel;
@@ -12,11 +13,11 @@ namespace TaskBook.Services.Interfaces
         TbUser GetByName(string name);
         TbUserRoleVm GetUserByUserName(string userName);
         IQueryable<TbUserRoleVm> GetUsersWithRolesByProjectId(long projectId);
-        IQueryable<UserProjectVm> GetUsersByProjectId(long projectId);
+        IEnumerable<UserProjectVm> GetUsersByProjectId(long projectId);
         void AddUser(TbUserRoleVm userModel);
         void UpdateUser(string id, TbUserRoleVm userVm);
         //Task UpdateUserAsync(string id, TbUserVm userVm);
-        void DeleteUser(string id);
+        void DeleteUser(string id, bool softDelete = false);
         
     }
 }

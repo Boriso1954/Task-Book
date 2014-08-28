@@ -19,5 +19,6 @@ namespace TaskBook.DataAccessLayer.Reader
         IQueryable<TbUserRoleVm> GetUsersWithRolesByProjectId(long projectId);
         IQueryable<TaskUserVm> GetUserTasksByUserName(string userName);
         IQueryable<TbUserVm> GetDeletedUsers();
+        IQueryable<ProjectVm> GetDeletedProjects();
     }
 }

@@ -12,13 +12,13 @@ namespace TaskBook.DataAccessLayer.Reader
 {
     public sealed class TbDataReader: IDisposable
     {
-        private readonly TaskBookDbContext _database;
+        private readonly TaskBookDbContext _dbContext;
         private readonly SqlConnection _sqlConnection;
 
         public TbDataReader(TaskBookDbContext database)
         {
-            _database = database;
-            _sqlConnection = (SqlConnection)_database.Database.Connection;
+            _dbContext = database;
+            _sqlConnection = (SqlConnection)_dbContext.Database.Connection;
         }
 
         // TODO Make it async

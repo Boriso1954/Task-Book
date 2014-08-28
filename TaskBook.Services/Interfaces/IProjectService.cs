@@ -15,6 +15,6 @@ namespace TaskBook.Services.Interfaces
         ProjectManagerVm GetProjectsAndManagers(long projectId);
         void AddProject(ProjectVm projectVm);
         void UpdateProject(long id, ProjectManagerVm projectVm);
-        void DeleteProject(long id);
+        void DeleteProject(long id, bool softDeleted = false);
     }
 }
