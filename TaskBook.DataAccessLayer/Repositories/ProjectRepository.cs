@@ -16,10 +16,10 @@ namespace TaskBook.DataAccessLayer.Repositories
         {
         }
 
-        public override object Delete(Project project)
-        {
-            project.DeletedDate = DateTimeOffset.UtcNow;
-            return project.Id;
-        }
+        //public override object Delete(Project project)
+        //{
+        //    project.DeletedDate = DateTimeOffset.UtcNow;
+        //    return project.Id;
+        //}
     }
 }

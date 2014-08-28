@@ -125,7 +125,7 @@ GO
 CREATE PROCEDURE spGetDeletedProjects
 AS
 BEGIN
-	SELECT  Projects.Id, Projects.Title
+	SELECT  Projects.Id AS ProjectId, Projects.Title
 	FROM    Projects
 	WHERE   Projects.DeletedDate IS NOT NULL
 END
