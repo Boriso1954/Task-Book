@@ -24,7 +24,7 @@ app.controller("loginController", ["$scope", "$location", "authService", "roleSe
                             $location.path("/tasks/" + $scope.loginData.userName);
                         }
                         else if (role == "Advanced") {
-                            // TODO
+                            $location.path("/tasks/" + $scope.loginData.userName);
                         }
                         else { // User
                             // TODO

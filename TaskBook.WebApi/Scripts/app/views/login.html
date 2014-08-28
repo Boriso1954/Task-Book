@@ -2,23 +2,27 @@
     <section class="col-md-offset-3 col-md-6">
         <div class = "well">
             <h2>Log in</h2>
-            <form class="form-horizontal" role="form">
-                <hr />
-                <ul class="text-danger">
-                    <li data-ng-hide="message == ''" data-ng-bind="message"></li>
-                </ul>
+            <hr />
+            <form name="loginForm" class="form-horizontal" role="form" data-ng-submit="login()" novalidate>
 
-                <div class="form-group">
-                    <label for="LoginUserName" class="col-md-3 control-label">User name</label>
+                <div data-ng-hide="message == ''" data-ng-class="(successful) ? 'alert alert-success' : 'alert alert-danger'">
+                    <button type="button" class="close" data-ng-click="message = ''">&times;</button>
+                    <span data-ng-bind="message"></span>
+                </div>
+
+                <div class="form-group" data-ng-class="{ 'has-error' : loginForm.userName.$invalid && loginForm.userName.$dirty }">
+                    <label class="col-md-3 control-label">User name</label>
                     <div class="col-md-9">
-                        <input type="text" id="LoginUserName" class="form-control" placeholder="Enter your user name" data-ng-model="loginData.userName" autofocus/>
+                        <input type="text" name="userName" class="form-control" placeholder="Enter your user name" data-ng-model="loginData.userName" required autofocus/>
+                        <span data-ng-show="loginForm.userName.$invalid && loginForm.userName.$dirty" class="help-block">User name is required.</span>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="LoginPassword" class="col-md-3 control-label">Password</label>
+                <div class="form-group" data-ng-class="{ 'has-error' : loginForm.password.$invalid && loginForm.password.$dirty }">
+                    <label class="col-md-3 control-label">Password</label>
                     <div class="col-md-9">
-                        <input type="password" id="LoginPassword" class="form-control" placeholder="Enter password" data-ng-model="loginData.password" />
+                        <input type="password" name="password" class="form-control" placeholder="Enter password" data-ng-model="loginData.password" required/>
+                        <span data-ng-show="loginForm.password.$invalid && loginForm.password.$dirty" class="help-block">Password is required.</span>
                     </div>
                 </div>
 
@@ -33,7 +37,7 @@
 
                 <div class="form-group">
                     <div class="col-md-offset-3 col-md-9">
-                        <button type="submit" class="btn btn-primary" data-ng-click="login()">Log in</button>
+                        <button type="submit" data-ng-disabled="loginForm.$pristine || login.$invalid" class="btn btn-primary">Log in</button>
                     </div>
                 </div>
 

@@ -11,9 +11,9 @@
                 </div>
 
                 <div class="form-group" data-ng-class="{ 'has-error' : addProjectForm.projectName.$invalid && addProjectForm.projectName.$dirty }">
-                    <label for="ProjectName" class="col-md-3 control-label">Name</label>
+                    <label class="col-md-3 control-label">Name</label>
                     <div class="col-md-9">
-                        <input type="text" id="ProjectName" name ="projectName" class="form-control" placeholder="Enter project name" data-ng-model="project.ProjectTitle" required autofocus/>
+                        <input type="text" name ="projectName" class="form-control" placeholder="Enter project name" data-ng-model="project.ProjectTitle" required autofocus/>
                         <span data-ng-show="addProjectForm.projectName.$invalid && addProjectForm.projectName.$dirty" class="help-block">Project name is required.</span>
                     </div>
                 </div>
