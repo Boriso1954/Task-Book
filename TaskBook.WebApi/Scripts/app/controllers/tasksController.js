@@ -1,5 +1,5 @@
 ﻿"use strict";
-app.controller("tasksManagerController", ["$scope", "$routeParams", "accountService", "taskService", "projectService", "tbUtil",
+app.controller("tasksController", ["$scope", "$routeParams", "accountService", "taskService", "projectService", "tbUtil",
     function ($scope, $routeParams, accountService, taskService, projectService, tbUtil) {
     
         $scope.fields = [{
@@ -28,11 +28,11 @@ app.controller("tasksManagerController", ["$scope", "$routeParams", "accountServ
             value: "CompletedDate"
         }];
 
-        var authUser = {};
+        $scope.authUser = {};
         $scope.manager = {};
         $scope.tasks = {};
 
-        authUser.UserName = $routeParams.authName;
+        $scope.authUser.UserName = $routeParams.authName;
         $scope.successful = true;
         $scope.message = "";
 
@@ -44,24 +44,30 @@ app.controller("tasksManagerController", ["$scope", "$routeParams", "accountServ
         // Manager's data
         var fullTaskList = null;
         var projectId = null;
-        accountService.getUserDetailsByUserName(authUser.UserName)
+        accountService.getUserDetailsByUserName($scope.authUser.UserName)
             .then(function (result) {
                 $scope.successful = true;
-                authUser = result.data;
-                if (authUser.Role === "Manager") {
-                    $scope.manager.userName = authUser.UserName;
-                    $scope.manager.projectTitle = authUser.ProjectTitle;
-                    projectId = authUser.ProjectId;
-                    getTasks(projectId);
+                $scope.authUser = result.data;
+                if ($scope.authUser.Role === "Manager") {
+                    $scope.manager.userName = $scope.authUser.UserName;
+                    $scope.manager.projectTitle = $scope.authUser.ProjectTitle;
+                    projectId = $scope.authUser.ProjectId;
+                    getTasksByProjectId(projectId);
                 }
                 else {
-                    projectService.getProjectsAndManagersByProjectId(authUser.ProjectId)
+                    projectService.getProjectsAndManagersByProjectId($scope.authUser.ProjectId)
                     .then(function (result) {
                         $scope.successful = true;
                         $scope.manager.userName = result.data.UserName;
                         $scope.manager.projectTitle = result.data.Title;
-                        projectId = result.data.ProjectId;
-                        getTasks(projectId);
+                        if ($scope.authUser.Role === "Advanced") {
+                            projectId = result.data.ProjectId;
+                            getTasksByProjectId(projectId);
+                        }
+                        else { // $scope.authUser.Role = "User"
+                            var userName = $scope.authUser.UserName;
+                            getTasksByUserName(userName);
+                        }
                     }, function (error) {
                         $scope.successful = false;
                         $scope.message = error.data.Message;
@@ -72,7 +78,7 @@ app.controller("tasksManagerController", ["$scope", "$routeParams", "accountServ
                 $scope.message = error.data.Message;
             });
 
-        var getTasks = function (projectId) {
+        var getTasksByProjectId = function (projectId) {
             taskService.getTasksByProjectId(projectId)
                     .then(function (result) {
                         $scope.successful = true;
@@ -85,6 +91,21 @@ app.controller("tasksManagerController", ["$scope", "$routeParams", "accountServ
                         $scope.message = error.data.Message;
                     });
         };
+
+        var getTasksByUserName = function (userName) {
+            taskService.getTasksByUserName(userName)
+                    .then(function (result) {
+                        $scope.successful = true;
+                        fullTaskList = result.data;
+                        $scope.totalItems = fullTaskList.length;
+                        $scope.tasks = tbUtil.getItemsForPage(fullTaskList, $scope.currentPage, $scope.pageSize);
+                        prepareData();
+                    }, function (error) {
+                        $scope.successful = false;
+                        $scope.message = error.data.Message;
+                    });
+        };
+
 
         // Prepare tasks for the page
         $scope.pageChanged = function () {

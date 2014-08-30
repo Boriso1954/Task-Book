@@ -46,6 +46,13 @@ namespace TaskBook.Services
             return tasks;
         }
 
+        public IQueryable<TaskVm> GetTasksByUserName(string userName)
+        {
+            var readerRepository = _unitOfWork.ReaderRepository;
+            var tasks = readerRepository.GetTasksByUserName(userName);
+            return tasks;
+        }
+
         public void AddTask(TaskVm taskVm)
         {
             TbTask task;

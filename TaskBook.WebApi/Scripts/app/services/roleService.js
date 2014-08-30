@@ -19,6 +19,7 @@ app.factory("roleService", ["$http", "authService", function ($http, authService
                         break;
                     }
                 }
+                // Keep role for further use
                 authService.authData.role = role;
                 return role;
             },

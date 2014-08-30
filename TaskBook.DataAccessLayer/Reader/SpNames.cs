@@ -18,5 +18,6 @@ namespace TaskBook.DataAccessLayer.Reader
         internal const string spGetUserTasks = "spGetUserTasks";
         internal const string spGetDeletedUsers = "spGetDeletedUsers";
         internal const string spGetDeletedProjects = "spGetDeletedProjects";
+        internal const string spGetTasksByUserName = "spGetTasksByUserName";
     }
 }

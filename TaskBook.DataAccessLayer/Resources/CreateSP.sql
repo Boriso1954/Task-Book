@@ -129,3 +129,16 @@ BEGIN
 	FROM    Projects
 	WHERE   Projects.DeletedDate IS NOT NULL
 END
+GO
+CREATE PROCEDURE spGetTasksByUserName
+	@userName nvarchar(256) = NULL
+AS
+BEGIN
+	SELECT  Tasks.Id AS TaskId, Projects.Id AS ProjectId, Tasks.Title, Tasks.Description, Tasks.CreatedDate, Tasks.DueDate, Tasks.Status, 
+            UC.UserName AS CreatedBy, UA.UserName AS AssignedTo, Tasks.CompletedDate
+	FROM    Tasks INNER JOIN
+            AspNetUsers AS UC ON Tasks.CreatedById = UC.Id INNER JOIN
+            AspNetUsers AS UA ON Tasks.AssignedToId = UA.Id INNER JOIN
+            Projects ON Tasks.ProjectId = Projects.Id
+	WHERE   UA.UserName = @userName
+END

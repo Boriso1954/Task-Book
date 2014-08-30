@@ -156,7 +156,7 @@ namespace TaskBook.DataAccessLayer.Reader
             return reader.Select(Projections.TbUserRoleVmFromReader).AsQueryable();
         }
 
-        public IQueryable<TaskUserVm> GetUserTasksByUserName(string userName)
+        public IQueryable<TaskUserVm> GetUserTasks(string userName)
         {
             var parameters = new TbParameters()
                 {
@@ -181,6 +181,21 @@ namespace TaskBook.DataAccessLayer.Reader
         {
             var reader = _dataReader.ExecuteReader(CommandType.StoredProcedure, SpNames.spGetDeletedProjects);
             return reader.Select(Projections.ProjectVmFromReader).AsQueryable();
+        }
+
+        public IQueryable<TaskVm> GetTasksByUserName(string userName)
+        {
+            var parameters = new TbParameters()
+                {
+                    new SqlParameter()
+                    {
+                        ParameterName = "@userName",
+                        Value = userName
+                    }
+                };
+
+            var reader = _dataReader.ExecuteReader(CommandType.StoredProcedure, SpNames.spGetTasksByUserName, parameters);
+            return reader.Select(Projections.TaskVmFromReader).AsQueryable();
         }
 
         public void Dispose()

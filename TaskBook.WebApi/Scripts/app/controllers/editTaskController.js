@@ -9,7 +9,7 @@ app.controller("editTaskController", ["$scope", "$routeParams", "$modal", "$loca
         $scope.successful = true;
         $scope.statuses = ["New", "In Progress", "Completed"];
 
-        var managerName = authService.authData.userName;
+        var authName = authService.authData.userName;
 
         taskService.getTaskById($scope.task.id)
             .then(function (result) {
@@ -78,6 +78,27 @@ app.controller("editTaskController", ["$scope", "$routeParams", "$modal", "$loca
             });
         };
 
+        $scope.IsDeletionAllowed = function () {
+            var result = false;
+            if (authService.authData.role == "User") {
+                // User cannot delete task
+                // Actually Admin cannot delete tasl too, but this page is unavailable for Admin
+                result = false;
+            }
+            else {
+                // Manager and Advanced User can delete task
+                result = true;
+            }
+            return result;
+        };
+
+        $scope.IsUpdateAllowed = function () {
+            var result = true;
+            // Manager and Advanced User can edit any task
+            // User can edit anly own tasks, but other tasks are unavailable for User
+            return result;
+        };
+
         var deleteTask = function () {
             var task = $scope.task;
             taskService.deleteTask(task)
@@ -93,7 +114,7 @@ app.controller("editTaskController", ["$scope", "$routeParams", "$modal", "$loca
         var startTimer = function () {
             var timer = $timeout(function () {
                 $timeout.cancel(timer);
-                $location.path("/tasks/" + managerName);
+                $location.path("/tasks/" + authName);
             }, 3000);
         };
 

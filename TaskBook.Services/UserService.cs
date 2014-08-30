@@ -173,7 +173,7 @@ namespace TaskBook.Services
                 using(var readerRepository = _unitOfWork.ReaderRepository)
                 {
                     // Delete user's tasks first
-                    tasks = readerRepository.GetUserTasksByUserName(user.UserName).ToList();
+                    tasks = readerRepository.GetUserTasks(user.UserName).ToList();
                 }
 
                 if(tasks.Any())

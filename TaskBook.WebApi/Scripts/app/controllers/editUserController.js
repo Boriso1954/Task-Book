@@ -9,14 +9,17 @@ app.controller("editUserController", ["$scope", "$routeParams", "$modal", "$loca
         $scope.successful = true;
         $scope.message = "";
 
-        var managerName = authService.authData.userName;
+        var authName = authService.authData.userName;
 
         accountService.getUserDetailsByUserName($scope.user.UserName)
             .then(function (result) {
                 $scope.successful = true;
                 $scope.user = result.data;
-                if ($scope.user.Role == "Manager") {
-                    $scope.roles = [$scope.user.Role];
+                if ($scope.user.Role == "Admin") {
+                    $scope.roles = ["Admin"];
+                }
+                else if ($scope.user.Role == "Manager") {
+                    $scope.roles = ["Manager"];
                 }
                 else {
                     $scope.roles = ["Advanced", "User"];
@@ -58,6 +61,33 @@ app.controller("editUserController", ["$scope", "$routeParams", "$modal", "$loca
             });
         };
 
+        $scope.IsDeletionAllowed = function () {
+            var result = false;
+            if ($scope.user.Role == "Manager") {
+                // Manager's account can be deleted only with project by Admin
+                result = false;
+            }
+            else if (authService.authData.role == "Manager") {
+                // Only Manager can delete user account
+                result = true;
+            }
+            return result;
+        };
+
+        $scope.IsUpdateAllowed = function () {
+            var result = false;
+            if (authService.authData.role == "Admin" || authService.authData.role == "Manager") {
+                // Admin can edit Manager's account
+                // Manager can edit User's and Advaced User's accounts
+                result= true;
+            }
+            else if (authService.authData.userName.toLowerCase() == $scope.user.UserName.toLowerCase()) {
+                // User and Advanced User can edit only own account
+                result = true;
+            }
+            return result;
+        };
+
         var deleteUser = function () {
             var user = $scope.user;
             accountService.deleteUser(user)
@@ -73,7 +103,7 @@ app.controller("editUserController", ["$scope", "$routeParams", "$modal", "$loca
         var startTimer = function () {
             var timer = $timeout(function () {
                 $timeout.cancel(timer);
-                $location.path("/users/" + managerName);
+                $location.path("/users/" + authName);
             }, 3000);
         };
 

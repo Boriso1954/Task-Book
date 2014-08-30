@@ -1,5 +1,5 @@
 ﻿"use strict";
-app.controller("usersManagerController", ["$scope", "$routeParams", "accountService", "taskService", "projectService", "tbUtil",
+app.controller("usersController", ["$scope", "$routeParams", "accountService", "taskService", "projectService", "tbUtil",
     function ($scope, $routeParams, accountService, taskService, projectService, tbUtil) {
 
         $scope.fields = [{

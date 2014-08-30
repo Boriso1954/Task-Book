@@ -87,6 +87,26 @@ namespace TaskBook.WebApi.Controllers
             }
         }
 
+        // GET api/Tasks/GetTasks/{userName}
+        [Route("GetTasks/{userName}")]
+        [ResponseType(typeof(TaskVm))]
+        public IHttpActionResult GetTasks(string userName)
+        {
+            try
+            {
+                var tasks = _taskService.GetTasksByUserName(userName);
+                if(tasks == null)
+                {
+                    return BadRequest("Unable to return tasks");
+                }
+                return Ok(tasks);
+            }
+            catch(DataAccessReaderException ex)
+            {
+                return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
+            }
+        }
+
         // PUT api/Tasks/AddTask
         [Route("AddTask")]
         [HttpPost]

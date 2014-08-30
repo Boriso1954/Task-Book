@@ -27,7 +27,7 @@ app.controller("loginController", ["$scope", "$location", "authService", "roleSe
                             $location.path("/tasks/" + $scope.loginData.userName);
                         }
                         else { // User
-                            // TODO
+                            $location.path("/tasks/" + $scope.loginData.userName);
                         }
                     }, function (error) {
                         $scope.successful = false;

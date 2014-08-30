@@ -25,7 +25,7 @@
                         <option data-ng-bind ="fields[1].name" value={{fields[1].value}}></option>
                         <option data-ng-bind ="fields[4].name" value={{fields[4].value}}></option>
                         <option data-ng-bind ="fields[5].name" value={{fields[5].value}}></option>
-                        <option data-ng-bind ="fields[6].name" value={{fields[6].value}}></option>
+                        <option data-ng-hide="authUser.Role=='User'" data-ng-bind ="fields[6].name" value={{fields[6].value}}></option>
                     </select>
                 </div>
                 <div class="col-md-3">
@@ -68,7 +68,7 @@
         <table class="table table-striped table-bordered task-user">
             <thead>
                 <tr>
-                    <th data-ng-repeat="(i,h) in fields" data-ng-click="toggleSort(i)"><span data-ng-class="selectIconClass(i)"></span>{{h.name}}</th>
+                    <th data-ng-repeat="(i,h) in fields" data-ng-hide="authUser.Role=='User' && h.value=='AssignedTo'" data-ng-click="toggleSort(i)"><span data-ng-class="selectIconClass(i)"></span>{{h.name}}</th>
                 </tr>
             </thead>
             <tbody>
@@ -98,7 +98,7 @@
                             <option value="">All</option>
                         </select>
                     </td>
-                    <td>
+                    <td data-ng-hide="authUser.Role=='User'">
                         <select  id="SelectAssignedToUser" class="form-control" data-ng-model="assignedTo" data-ng-options="a for a in assignedToUsers">
                             <option value="">All</option>
                         </select>
@@ -115,7 +115,7 @@
                     <td data-ng-bind="t.DueDate | date:'yyyy-MM-dd'"></td>
                     <td data-ng-bind="t.Status"></td>
                     <td><a href="#/users/edit/{{t.CreatedBy}}" data-ng-bind="t.CreatedBy"></a></td>
-                    <td><a href="#/users/edit/{{t.AssignedTo}}" data-ng-bind="t.AssignedTo"></a></td>
+                    <td data-ng-hide="authUser.Role=='User'"><a href="#/users/edit/{{t.AssignedTo}}" data-ng-bind="t.AssignedTo"></a></td>
                     <td data-ng-bind="t.CompletedDate | date:'yyyy-MM-dd'"></td>
                 </tr>
             </tbody>

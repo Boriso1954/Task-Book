@@ -17,3 +17,5 @@ GO
 DROP PROCEDURE spGetDeletedUsers
 GO
 DROP PROCEDURE spGetDeletedProjects
+GO
+DROP PROCEDURE spGetTasksByUserName

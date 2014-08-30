@@ -11,6 +11,7 @@ namespace TaskBook.Services.Interfaces
     {
         IQueryable<TaskVm> GetTasks(long? projectId = null);
         TaskVm GetTask(long id);
+        IQueryable<TaskVm> GetTasksByUserName(string userName);
         void AddTask(TaskVm taskVm);
         void UpdateTask(long id, TaskVm taskVm);
         void DeleteTask(long id);

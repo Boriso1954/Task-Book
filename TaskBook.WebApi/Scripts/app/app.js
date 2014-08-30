@@ -43,13 +43,13 @@ app.config(function ($routeProvider) {
     });
 
     $routeProvider.when("/users/:authName", {
-        controller: "usersManagerController",
-        templateUrl: "/Scripts/app/views/usersManager.html"
+        controller: "usersController",
+        templateUrl: "/Scripts/app/views/users.html"
     });
 
     $routeProvider.when("/tasks/:authName", {
-        controller: "tasksManagerController",
-        templateUrl: "/Scripts/app/views/tasksManager.html"
+        controller: "tasksController",
+        templateUrl: "/Scripts/app/views/tasks.html"
     });
 
     $routeProvider.when("/tasks/new/:authName", {

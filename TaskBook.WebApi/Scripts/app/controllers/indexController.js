@@ -17,10 +17,10 @@ app.controller("indexController", ["$scope", "$location", "authService", "roleSe
                         $location.path("/tasks/" + authService.authData.userName);
                     }
                     else if (role == "Advanced") {
-                        // TODO
+                        $location.path("/tasks/" + authService.authData.userName);
                     }
                     else { // User
-                        // TODO
+                        $location.path("/tasks/" + authService.authData.userName);
                     }
                 }, function (error) {
                     $scope.successful = false;

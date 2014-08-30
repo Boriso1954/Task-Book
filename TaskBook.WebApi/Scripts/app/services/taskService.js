@@ -12,6 +12,10 @@ app.factory("taskService", ["$http",
             return $http.get("api/Tasks/GetTasks/" + projectId)
         };
 
+        taskServiceFactory.getTasksByUserName = function (userName) {
+            return $http.get("api/Tasks/GetTasks/" + userName)
+        };
+
         taskServiceFactory.getTaskById = function (id) {
             return $http.get("api/Tasks/GetTask/" + id)
         };
