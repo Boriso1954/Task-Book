@@ -8,9 +8,12 @@ using Microsoft.AspNet.Identity;
 using TaskBook.DataAccessLayer.Exceptions;
 using TaskBook.Services.Interfaces;
 using TaskBook.DomainModel.ViewModels;
+using TaskBook.WebApi.Attributes;
+using TaskBook.DomainModel;
 
 namespace TaskBook.WebApi.Controllers
 {
+    [Authorize]
     [RoutePrefix("api/Account")]
     public class AccountController : ApiController
     {
@@ -84,6 +87,7 @@ namespace TaskBook.WebApi.Controllers
 
         // POST api/Account/AddUser
         [Route("AddUser")]
+        [AuthorizeRoles(RoleKey.Admin, RoleKey.Manager)]
         public IHttpActionResult AddUser(TbUserRoleVm userModel)
         {
             if(!ModelState.IsValid)
@@ -135,6 +139,7 @@ namespace TaskBook.WebApi.Controllers
         // DELETE api/Account/DeleteUser/{id}
         [Route("DeleteUser/{id}")]
         [HttpDelete]
+        [AuthorizeRoles(RoleKey.Admin, RoleKey.Manager)]
         public IHttpActionResult DeleteUser(string id)
         {
             try

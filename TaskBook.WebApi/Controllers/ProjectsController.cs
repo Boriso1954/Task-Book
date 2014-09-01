@@ -15,10 +15,11 @@ using TaskBook.DataAccessLayer.Reader;
 using TaskBook.DomainModel;
 using TaskBook.Services.Interfaces;
 using TaskBook.DomainModel.ViewModels;
+using TaskBook.WebApi.Attributes;
 
 namespace TaskBook.WebApi.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [RoutePrefix("api/Projects")]
     public class ProjectsController : ApiController
     {
@@ -33,6 +34,7 @@ namespace TaskBook.WebApi.Controllers
         // GET api/Projects/GetProjectsAndManagers
         [Route("GetProjectsAndManagers")]
         [ResponseType(typeof(IQueryable<ProjectManagerVm>))]
+        [AuthorizeRoles(RoleKey.Admin)]
         public IHttpActionResult GetProjectsAndManagers()
         {
             try
@@ -53,6 +55,7 @@ namespace TaskBook.WebApi.Controllers
         // GET api/Projects/GetProjectsAndManagers/{projectId}
         [Route("GetProjectsAndManagers/{projectId:long}")]
         [ResponseType(typeof(ProjectManagerVm))]
+        [AuthorizeRoles(RoleKey.Admin)]
         public IHttpActionResult GetProjectsAndManagers(long projectId)
         {
             try
@@ -70,9 +73,10 @@ namespace TaskBook.WebApi.Controllers
             }
         }
 
-        // PUT api/Projects/GetProjectById/{id}
+        // GET api/Projects/GetProjectById/{id}
         [Route("GetProjectById/{id:long}")]
         [ResponseType(typeof(ProjectVm))]
+        [AuthorizeRoles(RoleKey.Admin)]
         public IHttpActionResult GetProjectById(long id)
         {
             try
@@ -86,9 +90,10 @@ namespace TaskBook.WebApi.Controllers
             }
         }
 
-        // PUT api/Projects/AddProject
+        // POST api/Projects/AddProject
         [Route("AddProject")]
         [HttpPost]
+        [AuthorizeRoles(RoleKey.Admin)]
         public IHttpActionResult AddProject(ProjectVm projectVm)
         {
             if(!ModelState.IsValid)
@@ -115,6 +120,7 @@ namespace TaskBook.WebApi.Controllers
         // PUT api/Projects/UpdateProject/{id}
         [Route("UpdateProject/{id:long}")]
         [HttpPut]
+        [AuthorizeRoles(RoleKey.Admin)]
         public IHttpActionResult UpdateProject(long id, ProjectManagerVm projectVm)
         {
              if(!ModelState.IsValid)
@@ -141,6 +147,7 @@ namespace TaskBook.WebApi.Controllers
         // DELETE api/Projects/DeleteProject/{id}
         [Route("DeleteProject/{id:long}")]
         [HttpDelete]
+        [AuthorizeRoles(RoleKey.Admin)]
         public IHttpActionResult DeleteProject(long id)
         {
             try

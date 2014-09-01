@@ -10,6 +10,7 @@ using TaskBook.Services.Interfaces;
 
 namespace TaskBook.WebApi.Controllers
 {
+    [Authorize]
     [RoutePrefix("api/Roles")]
     public class RolesController : ApiController
     {

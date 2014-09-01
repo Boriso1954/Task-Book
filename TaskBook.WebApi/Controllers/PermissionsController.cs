@@ -11,6 +11,7 @@ using TaskBook.Services.Interfaces;
 
 namespace TaskBook.WebApi.Controllers
 {
+    [Authorize]
     [RoutePrefix("api/Permissions")]
     public class PermissionsController : ApiController
     {
