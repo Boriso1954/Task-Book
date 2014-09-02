@@ -5,7 +5,7 @@ app.controller("loginController", ["$scope", "$location", "$routeParams", "authS
         $scope.loginData = {
             userName: "Manager1",
             password: "user12",
-            rememberMe: true
+            rememberMe: false
         };
 
         $scope.successful = true;

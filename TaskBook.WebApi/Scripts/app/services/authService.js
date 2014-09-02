@@ -7,7 +7,6 @@ app.factory("authService", ["$http", "$q", "localStorageService",
     var _authData = {
         isAuth: false,
         userName: "",
-        firstName: "",
         role: ""
     };
 
@@ -26,14 +25,14 @@ app.factory("authService", ["$http", "$q", "localStorageService",
             .success(function (response) {
                 var value = {
                     token: response.access_token,
-                    userName: loginData.userName
+                    userName: loginData.userName,
+                    rememberMe: loginData.rememberMe
                 };
 
                 localStorageService.set("authTbData", value);
 
                 _authData.isAuth = true;
                 _authData.userName = loginData.userName;
-                _authData.firstName = "";
 
                 deferred.resolve(response);
             })
@@ -59,8 +58,15 @@ app.factory("authService", ["$http", "$q", "localStorageService",
 
         var authTbData = localStorageService.get("authTbData");
         if (authTbData) {
-            _authData.isAuth = true;
-            _authData.userName = authTbData.userName;
+            var rememberMe = authTbData.rememberMe;
+            if (rememberMe) {
+                _authData.isAuth = true;
+                _authData.userName = authTbData.userName;
+            }
+            else {
+                _authData.isAuth = false;
+                _authData.userName = "";
+            }
         }
     };
 
