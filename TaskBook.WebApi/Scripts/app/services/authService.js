@@ -1,5 +1,6 @@
 ﻿"use strict";
-app.factory("authService", ["$http", "$q", "localStorageService", function ($http, $q, localStorageService) {
+app.factory("authService", ["$http", "$q", "localStorageService",
+    function ($http, $q, localStorageService) {
 
     var authServiceFactory = {};
 
@@ -21,7 +22,7 @@ app.factory("authService", ["$http", "$q", "localStorageService", function ($htt
             }
         };
 
-        $http.post('token', body, config)
+        $http.post("token", body, config)
             .success(function (response) {
                 var value = {
                     token: response.access_token,

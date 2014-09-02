@@ -55,7 +55,6 @@ namespace TaskBook.WebApi.Controllers
         // GET api/Projects/GetProjectsAndManagers/{projectId}
         [Route("GetProjectsAndManagers/{projectId:long}")]
         [ResponseType(typeof(ProjectManagerVm))]
-        [AuthorizeRoles(RoleKey.Admin)]
         public IHttpActionResult GetProjectsAndManagers(long projectId)
         {
             try

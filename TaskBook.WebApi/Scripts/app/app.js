@@ -6,8 +6,13 @@ app.config(function ($routeProvider) {
         controller: "homeController",
         templateUrl: "/Scripts/app/views/home.html"
     });
-
+    
     $routeProvider.when("/login", {
+        controller: "loginController",
+        templateUrl: "/Scripts/app/views/login.html"
+    });
+
+    $routeProvider.when("/login/:code", {
         controller: "loginController",
         templateUrl: "/Scripts/app/views/login.html"
     });
