@@ -92,7 +92,7 @@ app.controller("editUserController", ["$scope", "$routeParams", "$modal", "$loca
             var user = $scope.user;
             accountService.deleteUser(user)
             .then(function (result) {
-                $scope.message = "User has been deleted successfully. You will be redirected to the task list in 3 seconds.";
+                $scope.message = "User has been deleted successfully. You will be redirected to the user list in 3 seconds.";
                 startTimer();
             }, function (error) {
                 $scope.successful = false;

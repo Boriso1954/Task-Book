@@ -1,41 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.AspNet.Identity;
+using Microsoft.Practices.Unity;
 using TaskBook.DomainModel;
+using TaskBook.Services.AuthManagers;
 using TaskBook.Services.Interfaces;
 
 namespace TaskBook.Services
 {
     public sealed class RoleService: IRoleService
     {
-        private readonly UserManager<TbUser> _userManager;
 
-        public RoleService(IUserStore<TbUser> userStore)
+        [InjectionConstructor]
+        public RoleService()
         {
-            _userManager = new UserManager<TbUser>(userStore);
         }
+
+        public RoleService(TbUserManager userManager)
+        {
+            UserManager = userManager;
+        }
+
+        public TbUserManager UserManager { get; set; }
 
         public IList<string> GetRolesByUserId(string id)
         {
-            var rolesForUser = _userManager.GetRoles(id);
+            var rolesForUser = UserManager.GetRoles(id);
             return rolesForUser;
         }
 
         public IList<string> GetRolesByUserName(string userName)
         {
-            var user = _userManager.FindByName(userName);
+            var user = UserManager.FindByName(userName);
             if(user == null)
             {
                 throw new Exception(string.Format("Unable to find user '{0}'", userName));
             }
 
-            var rolesForUser = _userManager.GetRoles(user.Id);
+            var rolesForUser = UserManager.GetRoles(user.Id);
             return rolesForUser;
         }
 
         public void Dispose()
         {
-            _userManager.Dispose();
+            UserManager.Dispose();
         }
     }
 }

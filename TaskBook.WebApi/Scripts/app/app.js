@@ -22,6 +22,11 @@ app.config(function ($routeProvider) {
         templateUrl: "/Scripts/app/views/forgotPassword.html"
     });
 
+    $routeProvider.when("/resetPassword/:userName/:code", {
+        controller: "resetPasswordController",
+        templateUrl: "/Scripts/app/views/resetPassword.html"
+    });
+
     $routeProvider.when("/projects", {
         controller: "projectsController",
         templateUrl: "/Scripts/app/views/projects.html"

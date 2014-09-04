@@ -12,37 +12,78 @@ using TaskBook.DataAccessLayer.Reader;
 using TaskBook.DataAccessLayer.Repositories.Interfaces;
 using TaskBook.DataAccessLayer;
 using Microsoft.Practices.Unity;
+using System.Net.Mail;
+using Microsoft.AspNet.Identity.Owin;
+using TaskBook.Services.AuthManagers;
+using System.Net;
 
 namespace TaskBook.Services
 {
     public sealed class UserService: IUserService
     {
-        private readonly UserManager<TbUser> _userManager;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IEmailService _emailService;
+
+        private const string _addUserEmailBodyConst = @"
+                <div>
+	                Hello {0}!
+                    <p>
+	                    Your account has been added successfully to the TaskBook system. Your credentials:
+                        <br/>User name: <strong>{1}</strong>
+                        <br/>Password: <strong>{2}</strong>
+                        <br/>Please change your initial password by clicking this <a href={3}>link</a> (recommended).
+                        <br/>Please click <a href={4}>log in</a> to enter to the system,
+                    </p>
+                    TaskBook system
+                </div>
+                ";
+
+        private const string _resetPswEmailBodyConst = @"
+                <div>
+	                Hello {0}!
+                    <p>
+                        Please reset your password by clicking here: <a href={1}>Reset</a>
+                    </p>
+                    TaskBook system
+                </div>
+                ";
 
         [InjectionConstructor]
-        public UserService(IUnitOfWork unitOfWork, IUserStore<TbUser> userStore)
+        public UserService(IUnitOfWork unitOfWork,
+            IEmailService emailService)
         {
-            _userManager = new UserManager<TbUser>(userStore);
+            _emailService = emailService;
             _unitOfWork = unitOfWork;
         }
 
-        public UserService(IUnitOfWork unitOfWork, UserManager<TbUser> userManager)
+        public UserService(IUnitOfWork unitOfWork,
+            TbUserManager userManager,
+            IEmailService emailService)
         {
-            _userManager = userManager;
+            _emailService = emailService;
+            UserManager = userManager;
             _unitOfWork = unitOfWork;
         }
+
+        public string Host { get; set; }
+        public TbUserManager UserManager { get; set; }
 
         public TbUser GetById(string id)
         {
-            var user = _userManager.FindById(id);
+            var user = UserManager.FindById(id);
             return user;
+            
         }
 
         public TbUser GetByName(string name)
         {
-            var user = _userManager.FindByName(name);
+            var user = UserManager.FindByName(name);
             return user;
+        }
+
+        public Task<TbUser> GetByNameAsync(string name)
+        {
+           return UserManager.FindByNameAsync(name);
         }
 
         public TbUserRoleVm GetUserByUserName(string userName)
@@ -66,7 +107,42 @@ namespace TaskBook.Services
             return users;
         }
 
-        public void AddUser(TbUserRoleVm userModel)
+        public async Task ForgotPassword(ForgotPasswordVm model)
+        {
+            var user = await UserManager.FindByEmailAsync(model.Email);
+            if(user == null)
+            {
+                throw new TbIdentityException("Find user error");
+            }
+
+            var code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+            //code = WebUtility.UrlEncode(code);
+            string link = string.Format("{0}/#/resetPassword/{1}/{2}", Host, user.UserName, code);
+            //string link = string.Format("{0}/#/resetPassword?userId={1}&code={2}", Host, user.UserName, code);
+            string body = string.Format(_resetPswEmailBodyConst, user.FirstName, link);
+            MailMessage message = new MailMessage();
+            message.To.Add(user.Email);
+            message.Subject = "Reset password";
+            message.Body = body;
+
+            await _emailService.SendMailAsync(message);
+        }
+
+        public async Task ResetPassword(ResetPasswordVm model)
+        {
+            var user = await UserManager.FindByNameAsync(model.UserName);
+            if(user == null)
+            {
+                throw new TbIdentityException("Find user error.");
+            }
+            var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
+            if(result == null || !result.Succeeded)
+            {
+                throw new TbIdentityException("Reset password error.", result);
+            }
+        }
+
+        public async Task AddUserAsync(TbUserRoleVm userModel)
         {
             // TODO: introduce mapping
             var user = new TbUser()
@@ -76,10 +152,11 @@ namespace TaskBook.Services
                 LastName = userModel.LastName,
                 Email = userModel.Email
             };
-            
+
+            string password = "user12";
             using(var transaction = TransactionProvider.GetTransactionScope())
             {
-                var result = _userManager.Create(user, "user12");
+                var result = UserManager.Create(user, password);
                 if(result == null || !result.Succeeded)
                 {
                     throw new TbIdentityException("Create user error", result);
@@ -89,7 +166,7 @@ namespace TaskBook.Services
                 long projectId = (long)userModel.ProjectId;
                 string userId = user.Id;
 
-                result = _userManager.AddToRole(userId, role);
+                result = UserManager.AddToRole(userId, role);
                 if(result == null || !result.Succeeded)
                 {
                     throw new TbIdentityException("Add to role error", result);
@@ -106,12 +183,22 @@ namespace TaskBook.Services
 
                 if(role == RoleKey.Manager)
                 {
-                    string notAssignedUserId = _userManager.FindByName("NotAssigned").Id;
+                    string notAssignedUserId = UserManager.FindByName("NotAssigned").Id;
                     projectUsersRepository.DeleteByPredicate(x => x.UserId == notAssignedUserId && x.ProjectId == projectId);
                 }
                 _unitOfWork.Commit();
                 transaction.Complete();
             }
+
+            // Send email notification
+            string link = string.Format("{0}/#/login", Host);
+            string body = string.Format(_addUserEmailBodyConst, user.FirstName, user.UserName, password, "", link);
+            MailMessage message = new MailMessage();
+            message.To.Add(user.Email);
+            message.Subject = "Add account";
+            message.Body = body;
+
+            await _emailService.SendMailAsync(message);
         }
 
         public void UpdateUser(string id, TbUserRoleVm userVm)
@@ -121,7 +208,7 @@ namespace TaskBook.Services
                 throw new Exception("User ID conflict.");
             }
 
-            var user = _userManager.FindById(userVm.UserId);
+            var user = UserManager.FindById(userVm.UserId);
             if(user == null)
             {
                 throw new Exception(string.Format("Unable to find user '{0}'.", userVm.UserName));
@@ -135,21 +222,21 @@ namespace TaskBook.Services
 
             using(var transaction = TransactionProvider.GetTransactionScope())
             {
-                var result = _userManager.Update(user);
+                var result = UserManager.Update(user);
                 if(result == null || !result.Succeeded)
                 {
                     throw new TbIdentityException("Update user error", result);
                 }
             
-                string prevRole = _userManager.GetRoles(id).FirstOrDefault();
+                string prevRole = UserManager.GetRoles(id).FirstOrDefault();
                 if(prevRole != userVm.Role)
                 {
-                    result = _userManager.RemoveFromRole(id, prevRole);
+                    result = UserManager.RemoveFromRole(id, prevRole);
                     if(result == null || !result.Succeeded)
                     {
                         throw new TbIdentityException("Remove from role error", result);
                     }
-                    result = _userManager.AddToRole(id, userVm.Role);
+                    result = UserManager.AddToRole(id, userVm.Role);
                     if(result == null || !result.Succeeded)
                     {
                         throw new TbIdentityException("Add to role error", result);
@@ -161,7 +248,7 @@ namespace TaskBook.Services
 
         public void DeleteUser(string id, bool softDeleted = false)
         {
-            var user = _userManager.FindById(id);
+            var user = UserManager.FindById(id);
             if(user == null)
             {
                 throw new Exception(string.Format("Unable to delete user with ID '{0}'.", id));
@@ -191,7 +278,7 @@ namespace TaskBook.Services
                 if(user.UserName != "NotAssigned")
                 {
                     user.DeletedDate = DateTimeOffset.UtcNow;
-                    var result = _userManager.Update(user);
+                    var result = UserManager.Update(user);
                     if(result == null || !result.Succeeded)
                     {
                         throw new TbIdentityException("Update user error", result);
@@ -211,18 +298,19 @@ namespace TaskBook.Services
                 
                 foreach(var u in deletedUsers)
                 {
-                    var deletedUser = _userManager.FindById(u.UserId);
+                    var deletedUser = UserManager.FindById(u.UserId);
 
                     // Delete user (cascade deletion from UserRoles and ProgectUsers)
-                    _userManager.Delete(deletedUser);
+                    UserManager.Delete(deletedUser);
                 }
                 
             }
         }
-
+        
         public void Dispose()
         {
-            _userManager.Dispose();
+            UserManager.Dispose();
+            _emailService.Dispose();
             _unitOfWork.Dispose();
         }
     }

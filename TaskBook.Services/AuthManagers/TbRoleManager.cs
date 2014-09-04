@@ -7,9 +7,10 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
+using TaskBook.DataAccessLayer;
 using TaskBook.DomainModel;
 
-namespace TaskBook.DataAccessLayer.AuthManagers
+namespace TaskBook.Services.AuthManagers
 {
     public class TbRoleManager: RoleManager<TbRole>
     {

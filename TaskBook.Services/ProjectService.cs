@@ -12,20 +12,29 @@ using TaskBook.Services.Interfaces;
 using TaskBook.DomainModel.ViewModels;
 using TaskBook.DataAccessLayer.Reader;
 using TaskBook.DataAccessLayer;
+using TaskBook.Services.AuthManagers;
+using Microsoft.Practices.Unity;
 
 namespace TaskBook.Services
 {
     public sealed class ProjectService: IProjectService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly UserManager<TbUser> _userManager;
-        
-        public ProjectService(IUnitOfWork unitOfWork,
-            IUserStore<TbUser> userStore)
+
+        [InjectionConstructor]
+        public ProjectService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _userManager = new UserManager<TbUser>(userStore);
         }
+
+        public ProjectService(IUnitOfWork unitOfWork,
+            TbUserManager userManager)
+        {
+            _unitOfWork = unitOfWork;
+            UserManager = userManager;
+        }
+
+        public TbUserManager UserManager { get; set; }
 
         public IQueryable<ProjectManagerVm> GetProjectsAndManagers()
         {
@@ -66,7 +75,7 @@ namespace TaskBook.Services
                 CreatedDate = DateTimeOffset.UtcNow,
             };
 
-            var notAssignedUserId = _userManager.FindByName("NotAssigned").Id;
+            var notAssignedUserId = UserManager.FindByName("NotAssigned").Id;
             var projectRepository = _unitOfWork.ProjectRepository;
             var projectAccessService = new ProjectAccessService(_unitOfWork);
 
@@ -117,7 +126,7 @@ namespace TaskBook.Services
 
             if(users.Any())
             {
-                var userService = new UserService(_unitOfWork, _userManager);
+                var userService = new UserService(_unitOfWork, UserManager, new EmailService());
                 foreach(var u in users)
                 {
                     // Delete user's tasks and mark a user as deleted
@@ -140,10 +149,10 @@ namespace TaskBook.Services
                
                 foreach(var u in deletedUsers)
                 {
-                    var deletedUser = _userManager.FindById(u.UserId);
+                    var deletedUser = UserManager.FindById(u.UserId);
 
                     // Delete user (cascade deletion from UserRoles and ProgectUsers)
-                    _userManager.Delete(deletedUser);
+                    UserManager.Delete(deletedUser);
                 }
 
                 // Delete projects which marked as deleted
@@ -166,7 +175,7 @@ namespace TaskBook.Services
 
         public void Dispose()
         {
-            _userManager.Dispose();
+            UserManager.Dispose();
             _unitOfWork.Dispose();
         }
     }

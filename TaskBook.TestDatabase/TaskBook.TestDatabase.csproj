@@ -102,6 +102,10 @@
       <Project>{e324a2ee-a49f-4b96-80c6-5e87faab474a}</Project>
       <Name>TaskBook.DomainModel</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TaskBook.Services\TaskBook.Services.csproj">
+      <Project>{78570f18-1cc8-457e-a862-010732e5d3b2}</Project>
+      <Name>TaskBook.Services</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

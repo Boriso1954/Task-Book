@@ -7,7 +7,7 @@ namespace TaskBook.TestDatabase
     using System.Linq;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
-    using TaskBook.DataAccessLayer.AuthManagers;
+    using TaskBook.Services.AuthManagers;
     using TaskBook.DataAccessLayer.Properties;
     using TaskBook.DomainModel;
 

@@ -8,6 +8,7 @@ using System.Transactions;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using TaskBook.DataAccessLayer;
 using TaskBook.DataAccessLayer.Exceptions;
 using TaskBook.DataAccessLayer.Repositories.Interfaces;
@@ -16,6 +17,10 @@ using TaskBook.DomainModel;
 using TaskBook.Services.Interfaces;
 using TaskBook.DomainModel.ViewModels;
 using TaskBook.WebApi.Attributes;
+using TaskBook.Services;
+using TaskBook.Services.AuthManagers;
+using System.Web;
+using Microsoft.Practices.Unity;
 
 namespace TaskBook.WebApi.Controllers
 {
@@ -24,11 +29,33 @@ namespace TaskBook.WebApi.Controllers
     public class ProjectsController : ApiController
     {
         private readonly IProjectService _projectService;
+        private TbUserManager _userManager;
         private readonly bool _softDeleted = false;
 
+        public ProjectsController(IProjectService projectService,
+            TbUserManager userManager)
+        {
+            _projectService = projectService;
+            _projectService.UserManager = userManager;
+        }
+
+        [InjectionConstructor]
         public ProjectsController(IProjectService projectService)
         {
             _projectService = projectService;
+            _projectService.UserManager = UserManager;
+        }
+        
+        public TbUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.Current.GetOwinContext().GetUserManager<TbUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
         }
 
         // GET api/Projects/GetProjectsAndManagers

@@ -5,11 +5,16 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using TaskBook.DataAccessLayer.Exceptions;
 using TaskBook.Services.Interfaces;
 using TaskBook.DomainModel.ViewModels;
 using TaskBook.WebApi.Attributes;
 using TaskBook.DomainModel;
+using TaskBook.Services;
+using System.Web;
+using TaskBook.Services.AuthManagers;
+using Microsoft.Practices.Unity;
 
 namespace TaskBook.WebApi.Controllers
 {
@@ -18,12 +23,38 @@ namespace TaskBook.WebApi.Controllers
     public class AccountController : ApiController
     {
         private readonly IUserService _userService;
+        private TbUserManager _userManager;
         private readonly bool _softDeleted = false;
 
+        public AccountController(IUserService userService, TbUserManager userManager)
+        {
+            _userService = userService;
+            _userManager = userManager;
+            var url = HttpContext.Current.Request.Url;
+            _userService.Host = string.Format("{0}://{1}:{2}", url.Scheme, url.Host, url.Port);
+        }
+
+        [InjectionConstructor]
         public AccountController(IUserService userService)
         {
             _userService = userService;
+            _userService.UserManager = UserManager;
+            var url = HttpContext.Current.Request.Url;
+            _userService.Host = string.Format("{0}://{1}:{2}", url.Scheme, url.Host, url.Port);
         }
+
+        public TbUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.Current.GetOwinContext().GetUserManager<TbUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
+
 
         // GET api/Account/GetUserByUserName/{userName}
         [Route("GetUserByUserName/{userName}")]
@@ -85,10 +116,11 @@ namespace TaskBook.WebApi.Controllers
             }
         }
 
-        // POST api/Account/AddUser
-        [Route("AddUser")]
-        [AuthorizeRoles(RoleKey.Admin, RoleKey.Manager)]
-        public IHttpActionResult AddUser(TbUserRoleVm userModel)
+        // POST api/Account/ForgotPassword
+        [Route("ForgotPassword")]
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IHttpActionResult> ForgotPassword(ForgotPasswordVm model)
         {
             if(!ModelState.IsValid)
             {
@@ -97,7 +129,60 @@ namespace TaskBook.WebApi.Controllers
 
             try
             {
-                _userService.AddUser(userModel);
+                await _userService.ForgotPassword(model);
+            }
+            catch(TbIdentityException ex)
+            {
+                return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
+            }
+            catch(ArgumentNullException ex)
+            {
+                return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
+            }
+            return Ok();
+        }
+
+
+        // POST api/Account/ResetPassword
+        [Route("ResetPassword")]
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IHttpActionResult> ResetPassword(ResetPasswordVm model)
+        {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                await _userService.ResetPassword(model);
+            }
+            catch(TbIdentityException ex)
+            {
+                return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
+            }
+            catch(Exception ex)
+            {
+                string s1 = ex.Message;
+            }
+            return Ok();
+        }
+
+        // POST api/Account/AddUser
+        [Route("AddUser")]
+        [AuthorizeRoles(RoleKey.Admin, RoleKey.Manager)]
+        [HttpPost]
+        public async Task<IHttpActionResult> AddUserAsync(TbUserRoleVm userModel)
+        {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                await _userService.AddUserAsync(userModel);
             }
             catch(DataAccessLayerException ex)
             {
@@ -106,6 +191,10 @@ namespace TaskBook.WebApi.Controllers
             catch(TbIdentityException ex)
             {
                 return GetErrorResult(ex.TbIdentityResult);
+            }
+            catch(Exception ex)
+            {
+                string error = ex.Message;
             }
             return Ok();
         }

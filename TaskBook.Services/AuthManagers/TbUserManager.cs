@@ -7,9 +7,11 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
+using TaskBook.DataAccessLayer;
 using TaskBook.DomainModel;
+using TaskBook.Services;
 
-namespace TaskBook.DataAccessLayer.AuthManagers
+namespace TaskBook.Services.AuthManagers
 {
     public class TbUserManager: UserManager<TbUser>
     {
@@ -21,6 +23,14 @@ namespace TaskBook.DataAccessLayer.AuthManagers
         public static TbUserManager Create(IdentityFactoryOptions<TbUserManager> options, IOwinContext context)
         {
             var userManager = new TbUserManager(new UserStore<TbUser>(context.Get<TaskBookDbContext>()));
+
+            var dataProtectionProvider = options.DataProtectionProvider;
+            if(dataProtectionProvider != null)
+            {
+                //userManager.UserTokenProvider = new DataProtectorTokenProvider<TbUser>(dataProtectionProvider.Create("ASP.NET Identity"));
+                userManager.UserTokenProvider = new EmailTokenProvider<TbUser, string>();
+            }
+
             return userManager;
         }
     }

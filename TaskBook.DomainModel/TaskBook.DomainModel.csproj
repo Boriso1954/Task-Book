@@ -66,9 +66,11 @@
     <Compile Include="TbTask.cs" />
     <Compile Include="TbUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\ForgotPasswordVm.cs" />
     <Compile Include="ViewModels\PermissionVm.cs" />
     <Compile Include="ViewModels\ProjectManagerVm.cs" />
     <Compile Include="ViewModels\ProjectVm.cs" />
+    <Compile Include="ViewModels\ResetPasswordVm.cs" />
     <Compile Include="ViewModels\TaskUserVm.cs" />
     <Compile Include="ViewModels\TaskVm.cs" />
     <Compile Include="ViewModels\TbUserRoleVm.cs" />

@@ -28,7 +28,13 @@ app.controller("indexController", ["$scope", "$location", "authService", "roleSe
                 });
         }
         else {
-            $location.path("/home");
+            var path = $location.path();
+            if (path){
+                $location.path(path);
+            }
+            else {
+                $location.path("/home");
+            }
         }
     };
 

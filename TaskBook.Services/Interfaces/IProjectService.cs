@@ -5,11 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskBook.DomainModel;
 using TaskBook.DomainModel.ViewModels;
+using TaskBook.Services.AuthManagers;
 
 namespace TaskBook.Services.Interfaces
 {
     public interface IProjectService: IDisposable
     {
+        TbUserManager UserManager { get; set; }
         ProjectVm GetById(long id);
         IQueryable<ProjectManagerVm> GetProjectsAndManagers();
         ProjectManagerVm GetProjectsAndManagers(long projectId);

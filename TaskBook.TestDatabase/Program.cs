@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using TaskBook.DataAccessLayer;
-using TaskBook.DataAccessLayer.AuthManagers;
+using TaskBook.Services.AuthManagers;
 using TaskBook.DataAccessLayer.Migrations;
 using TaskBook.DomainModel;
 

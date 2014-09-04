@@ -4,7 +4,7 @@ using Microsoft.Owin.Security.OAuth;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 
-using TaskBook.DataAccessLayer.AuthManagers;
+using TaskBook.Services.AuthManagers;
 
 namespace TaskBook.WebApi.Providers
 {
