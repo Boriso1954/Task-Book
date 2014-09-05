@@ -6,6 +6,11 @@ app.controller('layoutController', ['$scope', '$location', 'authService', functi
         $location.path("/home");
     }
 
+    $scope.refresh = function () {
+        var path = $location.path();
+        $location.path(path);
+    };
+
     $scope.authentication = authService.authData;
 
 }]);

@@ -24,11 +24,10 @@
                     </div>
                 </div>
 
-                <div class="form-group" data-ng-class="{ 'has-error' : editUserForm.userName.$invalid && editUserForm.userName.$dirty }">
+                 <div class="form-group">
                     <label class="col-md-3 control-label">User name</label>
                     <div class="col-md-9">
-                        <input type="text" name ="userName" class="form-control" placeholder="Enter user name" data-ng-model="user.UserName" required autofocus/>
-                        <span data-ng-show="editUserForm.userName.$invalid && editUserForm.userName.$dirty" class="help-block">User's name is required.</span>
+                        <label class="form-control" data-ng-bind="user.UserName" data-ng-disabled="true"/>
                     </div>
                 </div>
 

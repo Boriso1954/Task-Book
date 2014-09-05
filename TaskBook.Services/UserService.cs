@@ -191,8 +191,9 @@ namespace TaskBook.Services
             }
 
             // Send email notification
-            string link = string.Format("{0}/#/login", Host);
-            string body = string.Format(_addUserEmailBodyConst, user.FirstName, user.UserName, password, "", link);
+            string login = string.Format("{0}/#/login", Host);
+            string retrive = string.Format("{0}/#/forgotPassword", Host);
+            string body = string.Format(_addUserEmailBodyConst, user.FirstName, user.UserName, password, retrive, login);
             MailMessage message = new MailMessage();
             message.To.Add(user.Email);
             message.Subject = "Add account";
