@@ -24,12 +24,13 @@ namespace TaskBook.Services.AuthManagers
         {
             var userManager = new TbUserManager(new UserStore<TbUser>(context.Get<TaskBookDbContext>()));
 
-            var dataProtectionProvider = options.DataProtectionProvider;
-            if(dataProtectionProvider != null)
-            {
-                //userManager.UserTokenProvider = new DataProtectorTokenProvider<TbUser>(dataProtectionProvider.Create("ASP.NET Identity"));
-                userManager.UserTokenProvider = new EmailTokenProvider<TbUser, string>();
-            }
+            // http://tech.trailmax.info/2014/06/asp-net-identity-and-cryptographicexception-when-running-your-site-on-microsoft-azure-web-sites/
+            userManager.UserTokenProvider = new EmailTokenProvider<TbUser, string>();
+            //var dataProtectionProvider = options.DataProtectionProvider;
+            //if(dataProtectionProvider != null)
+            //{
+            //    userManager.UserTokenProvider = new DataProtectorTokenProvider<TbUser>(dataProtectionProvider.Create("ASP.NET Identity"));
+            //}
 
             return userManager;
         }

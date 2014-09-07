@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
+using System.Web.Http.Tracing;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Practices.Unity;
 using TaskBook.Services.AuthManagers;
@@ -19,20 +20,24 @@ namespace TaskBook.WebApi.Controllers
     {
         private readonly IRoleService _roleService;
         private TbUserManager _userManager;
+        private readonly ITraceWriter _logger;
 
         [InjectionConstructor]
-        public RolesController(IRoleService roleService)
+        public RolesController(IRoleService roleService,
+            ITraceWriter logger)
         {
             _roleService = roleService;
             _roleService.UserManager = UserManager;
-            
+            _logger = logger;
         }
 
         public RolesController(IRoleService roleService,
-            TbUserManager userManager)
+            TbUserManager userManager,
+            ITraceWriter logger)
         {
             _roleService = roleService;
             UserManager = userManager;
+            _logger = logger;
         }
 
         public TbUserManager UserManager
@@ -57,13 +62,16 @@ namespace TaskBook.WebApi.Controllers
                 var roles = _roleService.GetRolesByUserName(userName);
                 if(roles == null)
                 {
-                    return BadRequest(string.Format("Unable to find role for user '{0}'.", userName));
+                    string msg = string.Format("Unable to find role for user '{0}'.", userName);
+                    _logger.Warn(Request, ControllerContext.ControllerDescriptor.ControllerType.FullName, msg);
+                    return BadRequest(msg);
                 }
                 return Ok(roles);
             }
             catch(Exception ex)
             {
-                return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
+                _logger.Error(Request, ControllerContext.ControllerDescriptor.ControllerType.FullName, ex);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -77,13 +85,16 @@ namespace TaskBook.WebApi.Controllers
                 var roles = _roleService.GetRolesByUserId(id);
                 if(roles == null)
                 {
-                    return BadRequest(string.Format("Unable to find role for user with ID '{0}'.", id));
+                    string msg = string.Format("Unable to find role for user with ID '{0}'.", id);
+                    _logger.Warn(Request, ControllerContext.ControllerDescriptor.ControllerType.FullName, msg);
+                    return BadRequest(msg);
                 }
                 return Ok(roles);
             }
             catch(Exception ex)
             {
-                return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
+                _logger.Error(Request, ControllerContext.ControllerDescriptor.ControllerType.FullName, ex);
+                return BadRequest(ex.Message);
             }
         }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using System.Web.Http.Tracing;
 
 namespace TaskBook.WebApi
 {
@@ -19,6 +20,12 @@ namespace TaskBook.WebApi
                 routeTemplate : "api/{controller}/{id}",
                 defaults : new { id = RouteParameter.Optional }
             );
+
+            var tracer = GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(ITraceWriter)) as ITraceWriter;
+            if(tracer != null)
+            {
+                config.Services.Replace(typeof(ITraceWriter), tracer);
+            }
         }
     }
 }

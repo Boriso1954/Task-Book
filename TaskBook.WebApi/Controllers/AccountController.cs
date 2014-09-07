@@ -15,6 +15,7 @@ using TaskBook.Services;
 using System.Web;
 using TaskBook.Services.AuthManagers;
 using Microsoft.Practices.Unity;
+using System.Web.Http.Tracing;
 
 namespace TaskBook.WebApi.Controllers
 {
@@ -24,21 +25,27 @@ namespace TaskBook.WebApi.Controllers
     {
         private readonly IUserService _userService;
         private TbUserManager _userManager;
+        private readonly ITraceWriter _logger;
         private readonly bool _softDeleted = false;
 
-        public AccountController(IUserService userService, TbUserManager userManager)
+        public AccountController(IUserService userService,
+            TbUserManager userManager,
+            ITraceWriter logger)
         {
             _userService = userService;
             _userManager = userManager;
+            _logger = logger;
             var url = HttpContext.Current.Request.Url;
             _userService.Host = string.Format("{0}://{1}:{2}", url.Scheme, url.Host, url.Port);
         }
 
         [InjectionConstructor]
-        public AccountController(IUserService userService)
+        public AccountController(IUserService userService,
+            ITraceWriter logger)
         {
             _userService = userService;
             _userService.UserManager = UserManager;
+            _logger = logger;
             var url = HttpContext.Current.Request.Url;
             _userService.Host = string.Format("{0}://{1}:{2}", url.Scheme, url.Host, url.Port);
         }
@@ -66,13 +73,16 @@ namespace TaskBook.WebApi.Controllers
                 var userVm = _userService.GetUserByUserName(userName);
                 if(userVm == null)
                 {
-                    return BadRequest(string.Format("Unable to return data for user '{0}'.", userName));
+                    string msg = string.Format("Unable to return data for user '{0}'.", userName);
+                    _logger.Warn(Request, ControllerContext.ControllerDescriptor.ControllerType.FullName, msg);
+                    return BadRequest(msg);
                 }
                 return Ok(userVm);
             }
             catch(DataAccessReaderException ex)
             {
-                return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
+                _logger.Error(Request, ControllerContext.ControllerDescriptor.ControllerType.FullName, ex);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -86,13 +96,16 @@ namespace TaskBook.WebApi.Controllers
                 var users = _userService.GetUsersWithRolesByProjectId(projectId);
                 if(users == null)
                 {
-                    return BadRequest(string.Format("Unable to return users for the project with ID '{0}'.", projectId));
+                    string msg = string.Format("Unable to return users for the project with ID '{0}'.", projectId);
+                    _logger.Warn(Request, ControllerContext.ControllerDescriptor.ControllerType.FullName, msg);
+                    return BadRequest(msg);
                 }
                 return Ok(users);
             }
             catch(DataAccessReaderException ex)
             {
-                return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
+                _logger.Error(Request, ControllerContext.ControllerDescriptor.ControllerType.FullName, ex);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -106,13 +119,16 @@ namespace TaskBook.WebApi.Controllers
                 var users = _userService.GetUsersByProjectId(projectId);
                 if(users == null)
                 {
-                    return BadRequest(string.Format("Unable to return users for the project with ID '{0}'.", projectId));
+                    string msg = string.Format("Unable to return users for the project with ID '{0}'.", projectId);
+                    _logger.Warn(Request, ControllerContext.ControllerDescriptor.ControllerType.FullName, msg);
+                    return BadRequest(msg);
                 }
                 return Ok(users);
             }
             catch(DataAccessReaderException ex)
             {
-                return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
+                _logger.Error(Request, ControllerContext.ControllerDescriptor.ControllerType.FullName, ex);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -133,11 +149,13 @@ namespace TaskBook.WebApi.Controllers
             }
             catch(TbIdentityException ex)
             {
-                return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
+                _logger.Error(Request, ControllerContext.ControllerDescriptor.ControllerType.FullName, ex);
+                return BadRequest(ex.Message);
             }
             catch(ArgumentNullException ex)
             {
-                return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
+                _logger.Error(Request, ControllerContext.ControllerDescriptor.ControllerType.FullName, ex);
+                return BadRequest(ex.Message);
             }
             return Ok();
         }
@@ -160,11 +178,13 @@ namespace TaskBook.WebApi.Controllers
             }
             catch(TbIdentityException ex)
             {
-                return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
+                _logger.Error(Request, ControllerContext.ControllerDescriptor.ControllerType.FullName, ex);
+                return BadRequest(ex.Message);
             }
             catch(Exception ex)
             {
-                string s1 = ex.Message;
+                _logger.Error(Request, ControllerContext.ControllerDescriptor.ControllerType.FullName, ex);
+                return BadRequest(ex.Message);
             }
             return Ok();
         }
@@ -186,15 +206,18 @@ namespace TaskBook.WebApi.Controllers
             }
             catch(DataAccessLayerException ex)
             {
-                return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
+                _logger.Error(Request, ControllerContext.ControllerDescriptor.ControllerType.FullName, ex);
+                return BadRequest(ex.Message);
             }
             catch(TbIdentityException ex)
             {
-                return GetErrorResult(ex.TbIdentityResult);
+                _logger.Error(Request, ControllerContext.ControllerDescriptor.ControllerType.FullName, ex);
+                return BadRequest(ex.Message);
             }
             catch(Exception ex)
             {
-                string error = ex.Message;
+                _logger.Error(Request, ControllerContext.ControllerDescriptor.ControllerType.FullName, ex);
+                return BadRequest(ex.Message);
             }
             return Ok();
         }
@@ -215,11 +238,13 @@ namespace TaskBook.WebApi.Controllers
             }
             catch(TbIdentityException ex)
             {
-                return GetErrorResult(ex.TbIdentityResult);
+                _logger.Error(Request, ControllerContext.ControllerDescriptor.ControllerType.FullName, ex);
+                return BadRequest(ex.Message);
             }
             catch(Exception ex)
             {
-                return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
+                _logger.Error(Request, ControllerContext.ControllerDescriptor.ControllerType.FullName, ex);
+                return BadRequest(ex.Message);
             }
            
             return Ok();
@@ -237,19 +262,23 @@ namespace TaskBook.WebApi.Controllers
             }
             catch(DataAccessLayerException ex)
             {
-                return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
+                _logger.Error(Request, ControllerContext.ControllerDescriptor.ControllerType.FullName, ex);
+                return BadRequest(ex.Message);
             }
             catch(DataAccessReaderException ex)
             {
-                return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
+                _logger.Error(Request, ControllerContext.ControllerDescriptor.ControllerType.FullName, ex);
+                return BadRequest(ex.Message);
             }
             catch(TbIdentityException ex)
             {
-                return GetErrorResult(ex.TbIdentityResult);
+                _logger.Error(Request, ControllerContext.ControllerDescriptor.ControllerType.FullName, ex);
+                return BadRequest(ex.Message);
             }
             catch(Exception ex)
             {
-                return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
+                _logger.Error(Request, ControllerContext.ControllerDescriptor.ControllerType.FullName, ex);
+                return BadRequest(ex.Message);
             }
 
             return Ok();

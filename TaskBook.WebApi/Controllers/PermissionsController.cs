@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
+using System.Web.Http.Tracing;
 using TaskBook.DataAccessLayer.Exceptions;
 using TaskBook.DomainModel.ViewModels;
 using TaskBook.Services.Interfaces;
@@ -16,10 +17,13 @@ namespace TaskBook.WebApi.Controllers
     public class PermissionsController : ApiController
     {
         private readonly IPermissionService _permissionService;
+        private readonly ITraceWriter _logger;
 
-        public PermissionsController(IPermissionService permissionService)
+        public PermissionsController(IPermissionService permissionService,
+            ITraceWriter logger)
         {
             _permissionService = permissionService;
+            _logger = logger;
         }
 
         [Route("GetByRole/{roleName}")]
@@ -32,13 +36,16 @@ namespace TaskBook.WebApi.Controllers
 
                 if(permissions == null)
                 {
-                    return BadRequest(string.Format("Unable to return permissions for role '{0}'", roleName));
+                    string msg = string.Format("Unable to return permissions for role '{0}'", roleName);
+                    _logger.Warn(Request, ControllerContext.ControllerDescriptor.ControllerType.FullName, msg);
+                    return BadRequest(msg);
                 }
                 return Ok(permissions);
             }
             catch(DataAccessReaderException ex)
             {
-                return BadRequest(string.Format("{0}: {1}", ex.Message, ex.InnerException.Message));
+                _logger.Error(Request, ControllerContext.ControllerDescriptor.ControllerType.FullName, ex);
+                return BadRequest(ex.Message);
             }
         }
 
