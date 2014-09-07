@@ -14,7 +14,7 @@ namespace TaskBook.DomainModel.Mapping
             return Mapper.Map(source, sourceType, destinationType);
         }
 
-        object Map(object source, object destination, Type sourceType, Type destinationType)
+        public object Map(object source, object destination, Type sourceType, Type destinationType)
         {
             return Mapper.Map(source, destination, sourceType, destinationType);
         }
