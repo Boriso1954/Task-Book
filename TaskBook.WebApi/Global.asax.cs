@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Routing;
 using System.Web.Optimization;
+using TaskBook.DomainModel.Mapping;
 
 namespace TaskBook.WebApi
 {
@@ -14,6 +15,9 @@ namespace TaskBook.WebApi
         {
             // Unity registrator
             UnityConfig.RegisterComponents();
+
+            // Initialize automapper
+            AutoMapperConfiguration.Initialize();
 
             // Enables attribute routing
             GlobalConfiguration.Configure(WebApiConfig.Register);
