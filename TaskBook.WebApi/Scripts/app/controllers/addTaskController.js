@@ -42,7 +42,7 @@ app.controller("addTaskController", ["$scope", "$routeParams", "taskService", "a
             newTask.DueDate = $scope.task.DueDate;
             newTask.CreatedBy = authUser.UserName;
             newTask.AssignedTo = $scope.task.AssignedTo;
-            newTask.Status = $scope.task.Status;
+            newTask.Status = "New";
 
             taskService.postTask(newTask)
             .then(function (result) {

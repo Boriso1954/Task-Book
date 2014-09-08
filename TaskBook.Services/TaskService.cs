@@ -11,16 +11,20 @@ using TaskBook.DomainModel;
 using TaskBook.DomainModel.ViewModels;
 using TaskBook.Services.Interfaces;
 using TaskBook.DataAccessLayer;
+using TaskBook.DomainModel.Mapping;
 
 namespace TaskBook.Services
 {
     public sealed class TaskService: ITaskService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public TaskService(IUnitOfWork unitOfWork)
+        public TaskService(IUnitOfWork unitOfWork,
+            IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public TaskVm GetTask(long id)
@@ -55,20 +59,12 @@ namespace TaskBook.Services
 
         public void AddTask(TaskVm taskVm)
         {
-            TbTask task;
+            var task = _mapper.Map<TaskVm, TbTask>(taskVm);
+
             using(var readerRepository = _unitOfWork.ReaderRepository)
             {
-                task = new TbTask()
-                {
-                    Title = taskVm.Title,
-                    Description = taskVm.Description,
-                    ProjectId = taskVm.ProjectId,
-                    CreatedDate = DateTimeOffset.UtcNow,
-                    CreatedById = readerRepository.GetUserByUserName(taskVm.CreatedBy).FirstOrDefault().UserId,
-                    AssignedToId = readerRepository.GetUserByUserName(taskVm.AssignedTo).FirstOrDefault().UserId,
-                    DueDate = taskVm.DueDate,
-                    Status = TbTaskStatus.New
-                };
+                task.CreatedById = readerRepository.GetUserByUserName(taskVm.CreatedBy).FirstOrDefault().UserId;
+                task.AssignedToId = readerRepository.GetUserByUserName(taskVm.AssignedTo).FirstOrDefault().UserId;
             }
 
             var taskRepository = _unitOfWork.TaskRepository;
@@ -91,15 +87,11 @@ namespace TaskBook.Services
                 throw new Exception(string.Format("Unable to find task '{0}'.", taskVm.Title));
             }
 
+            task = _mapper.Map<TaskVm, TbTask>(taskVm, task);
+
             using(var readerRepository = _unitOfWork.ReaderRepository)
             {
-                // TODO consider mapping
-                task.Title = taskVm.Title;
-                task.Description = taskVm.Description;
-                task.DueDate = taskVm.DueDate;
-                task.Status = GetTaskStatusByString(taskVm.Status);
                 task.AssignedToId = readerRepository.GetUserByUserName(taskVm.AssignedTo).FirstOrDefault().UserId;
-                task.CompletedDate = taskVm.CompletedDate;
             }
 
             taskRepository.Update(task);

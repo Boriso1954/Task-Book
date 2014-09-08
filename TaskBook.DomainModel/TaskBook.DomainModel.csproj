@@ -64,6 +64,7 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="Mapping\AutoMapperConfiguration.cs" />
     <Compile Include="Mapping\IMapper.cs" />
+    <Compile Include="Mapping\MappingExpressionExtensions.cs" />
     <Compile Include="Mapping\ViewModelToDomainMapper.cs" />
     <Compile Include="Mapping\ViewModelToDomainMappingProfile.cs" />
     <Compile Include="Permission.cs" />

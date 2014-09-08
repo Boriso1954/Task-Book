@@ -126,7 +126,8 @@ namespace TaskBook.Services
 
             if(users.Any())
             {
-                var userService = new UserService(_unitOfWork, UserManager, new EmailService());
+                // To delete a user only this simple constructor is needed
+                var userService = new UserService(_unitOfWork, UserManager);
                 foreach(var u in users)
                 {
                     // Delete user's tasks and mark a user as deleted

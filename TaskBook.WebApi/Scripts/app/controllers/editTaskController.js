@@ -36,7 +36,7 @@ app.controller("editTaskController", ["$scope", "$routeParams", "$modal", "$loca
             if (status === "New" || status === "In Progress") {
                 $scope.task.CompletedDate = null;
             }
-            else { // In Progress
+            else { // Completed
                 $scope.task.CompletedDate = new Date().toDateString();
             }
         };
@@ -82,7 +82,7 @@ app.controller("editTaskController", ["$scope", "$routeParams", "$modal", "$loca
             var result = false;
             if (authService.authData.role == "User") {
                 // User cannot delete task
-                // Actually Admin cannot delete tasl too, but this page is unavailable for Admin
+                // Actually Admin cannot delete task too, but this page is unavailable for Admin
                 result = false;
             }
             else {
@@ -103,7 +103,7 @@ app.controller("editTaskController", ["$scope", "$routeParams", "$modal", "$loca
             var task = $scope.task;
             taskService.deleteTask(task)
             .then(function (result) {
-                $scope.message = "task has been deleted successfully. You will be redirected to the task list in 3 seconds.";
+                $scope.message = "Task has been deleted successfully. You will be redirected to the task list in 3 seconds.";
                 startTimer();
             }, function (error) {
                 $scope.successful = false;

@@ -16,6 +16,7 @@ using System.Net.Mail;
 using Microsoft.AspNet.Identity.Owin;
 using TaskBook.Services.AuthManagers;
 using System.Net;
+using TaskBook.DomainModel.Mapping;
 
 namespace TaskBook.Services
 {
@@ -23,6 +24,7 @@ namespace TaskBook.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IEmailService _emailService;
+        private readonly IMapper _mapper;
 
         private const string _addUserEmailBodyConst = @"
                 <div>
@@ -50,19 +52,29 @@ namespace TaskBook.Services
 
         [InjectionConstructor]
         public UserService(IUnitOfWork unitOfWork,
-            IEmailService emailService)
+            IEmailService emailService,
+            IMapper mapper)
         {
             _emailService = emailService;
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public UserService(IUnitOfWork unitOfWork,
             TbUserManager userManager,
-            IEmailService emailService)
+            IEmailService emailService,
+            IMapper mapper)
         {
             _emailService = emailService;
             UserManager = userManager;
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
+        }
+
+        public UserService(IUnitOfWork unitOfWork,
+            TbUserManager userManager)
+            : this(unitOfWork, userManager, null, null)
+        {
         }
 
         public string Host { get; set; }
@@ -144,14 +156,10 @@ namespace TaskBook.Services
 
         public async Task AddUserAsync(TbUserRoleVm userModel)
         {
-            // TODO: introduce mapping
-            var user = new TbUser()
-            {
-                UserName = userModel.UserName,
-                FirstName = userModel.FirstName,
-                LastName = userModel.LastName,
-                Email = userModel.Email
-            };
+            // Base user constructor creates Id, which must bee kept in the model before mapping
+            var user = new TbUser();
+            userModel.UserId = user.Id;
+            user = _mapper.Map<TbUserRoleVm, TbUser>(userModel, user);
 
             string password = "user12";
             using(var transaction = TransactionProvider.GetTransactionScope())
@@ -215,11 +223,7 @@ namespace TaskBook.Services
                 throw new Exception(string.Format("Unable to find user '{0}'.", userVm.UserName));
             }
 
-            // TODO consider mapping
-            user.UserName = userVm.UserName;
-            user.Email = userVm.Email;
-            user.FirstName = userVm.FirstName;
-            user.LastName = userVm.LastName;
+            user = _mapper.Map<TbUserRoleVm, TbUser>(userVm, user);
 
             using(var transaction = TransactionProvider.GetTransactionScope())
             {

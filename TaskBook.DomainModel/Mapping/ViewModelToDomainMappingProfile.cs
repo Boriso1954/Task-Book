@@ -17,7 +17,45 @@ namespace TaskBook.DomainModel.Mapping
 
         protected override void Configure()
         {
-            Mapper.CreateMap<TaskVm, TbTask>();
+            Mapper.CreateMap<TaskVm, TbTask>()
+                .IgnoreUnmappedMembers()
+                .ForMember(d => d.Id, o => o.MapFrom(s => s.TaskId))
+                .ForMember(d => d.Title, o => o.MapFrom(s => s.Title))
+                .ForMember(d => d.Description, o => o.MapFrom(s => s.Description))
+                .ForMember(d => d.ProjectId, o => o.MapFrom(s => s.ProjectId))
+                .ForMember(d => d.CreatedDate, o => o.MapFrom(s => s.CreatedDate))
+                .ForMember(d => d.DueDate, o => o.MapFrom(s => s.DueDate))
+                .ForMember(d => d.CompletedDate, o => o.MapFrom(s => s.CompletedDate))
+                .ForMember(d => d.Status, o => o.ResolveUsing<TaskStatusResolver>().FromMember(s => s.Status));
+
+            Mapper.CreateMap<TbUserRoleVm, TbUser>()
+                .IgnoreUnmappedMembers()
+                .ForMember(d => d.Id, o => o.MapFrom(s => s.UserId))
+                .ForMember(d => d.UserName, o => o.MapFrom(s => s.UserName))
+                .ForMember(d => d.FirstName, o => o.MapFrom(s => s.FirstName))
+                .ForMember(d => d.LastName, o => o.MapFrom(s => s.LastName))
+                .ForMember(d => d.Email, o => o.MapFrom(s => s.Email));
+        }
+    }
+
+    internal sealed class TaskStatusResolver: ValueResolver<string, TbTaskStatus>
+    {
+        protected override TbTaskStatus ResolveCore(string source)
+        {
+            TbTaskStatus status = TbTaskStatus.New;
+            switch(source)
+            {
+                case "New":
+                    status = TbTaskStatus.New;
+                    break;
+                case "In Progress":
+                    status = TbTaskStatus.InProgress;
+                    break;
+                case "Completed":
+                    status = TbTaskStatus.Completed;
+                    break;
+            }
+            return status;
         }
     }
 }
