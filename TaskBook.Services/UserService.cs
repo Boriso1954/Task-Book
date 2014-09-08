@@ -156,7 +156,7 @@ namespace TaskBook.Services
 
         public async Task AddUserAsync(TbUserRoleVm userModel)
         {
-            // Base user constructor creates Id, which must bee kept in the model before mapping
+            // Base user constructor creates Id, which must be kept in the model before mapping
             var user = new TbUser();
             userModel.UserId = user.Id;
             user = _mapper.Map<TbUserRoleVm, TbUser>(userModel, user);
