@@ -112,7 +112,7 @@ namespace TaskBook.Services
             return users;
         }
 
-        public IEnumerable<UserProjectVm> GetUsersByProjectId(long projectId)
+        public IQueryable<UserProjectVm> GetUsersByProjectId(long projectId)
         {
             var readerRepository = _unitOfWork.ReaderRepository;
             var users = readerRepository.GetUsersByProjectId(projectId);

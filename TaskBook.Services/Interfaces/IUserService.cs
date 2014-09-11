@@ -17,7 +17,7 @@ namespace TaskBook.Services.Interfaces
         Task<TbUser> GetByNameAsync(string userName);
         TbUserRoleVm GetUserByUserName(string userName);
         IQueryable<TbUserRoleVm> GetUsersWithRolesByProjectId(long projectId);
-        IEnumerable<UserProjectVm> GetUsersByProjectId(long projectId);
+        IQueryable<UserProjectVm> GetUsersByProjectId(long projectId);
         Task ForgotPassword(ForgotPasswordVm model);
         Task ResetPassword(ResetPasswordVm model);
         //void AddUser(TbUserRoleVm userModel);
