@@ -10,6 +10,8 @@ using TaskBook.WebApi.Controllers;
 using NLog.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using System;
 
 namespace TaskBook.Test
 {
@@ -55,9 +57,9 @@ namespace TaskBook.Test
             var result = controller.GetUserByUserName(user.UserName) as OkNegotiatedContentResult<TbUserRoleVm>;
 
             // Assert
-            Assert.AreEqual(user.UserName, result.Content.UserName);
-            Assert.IsInstanceOf<OkNegotiatedContentResult<TbUserRoleVm>>(result);
             _userService.Verify();
+            Assert.IsInstanceOf<OkNegotiatedContentResult<TbUserRoleVm>>(result);
+            Assert.AreEqual(user.UserName, result.Content.UserName);
         }
 
         [Test]
@@ -80,9 +82,9 @@ namespace TaskBook.Test
             var result = controller.GetUserByUserName(userName) as BadRequestErrorMessageResult;
 
             // Assert
-            Assert.IsInstanceOf<BadRequestErrorMessageResult>(result);
             _userService.Verify();
             _logger.Verify();
+            Assert.IsInstanceOf<BadRequestErrorMessageResult>(result);
         }
 
         [Test]
@@ -114,11 +116,11 @@ namespace TaskBook.Test
             var result = controller.GetUsersWithRolesByProjectId(progectId) as OkNegotiatedContentResult<IQueryable<TbUserRoleVm>>;
 
             // Assert
+            _userService.Verify();
+            Assert.IsInstanceOf<OkNegotiatedContentResult<IQueryable<TbUserRoleVm>>>(result);
             Assert.AreEqual(users.Count(), result.Content.Count());
             Assert.AreEqual(users.ElementAt(0).ProjectId, result.Content.ElementAt(0).ProjectId);
             Assert.AreEqual(users.ElementAt(0).UserName, result.Content.ElementAt(0).UserName);
-            Assert.IsInstanceOf<OkNegotiatedContentResult<IQueryable<TbUserRoleVm>>>(result);
-            _userService.Verify();
         }
 
         [Test]
@@ -141,9 +143,9 @@ namespace TaskBook.Test
             var result = controller.GetUsersWithRolesByProjectId(progectId) as BadRequestErrorMessageResult;
 
             // Assert
-            Assert.IsInstanceOf<BadRequestErrorMessageResult>(result);
             _userService.Verify();
             _logger.Verify();
+            Assert.IsInstanceOf<BadRequestErrorMessageResult>(result);
         }
 
         [Test]
@@ -175,11 +177,11 @@ namespace TaskBook.Test
             var result = controller.GetUsersByProjectId(progectId) as OkNegotiatedContentResult<IQueryable<UserProjectVm>>;
 
             // Assert
+            _userService.Verify();
+            Assert.IsInstanceOf<OkNegotiatedContentResult<IQueryable<UserProjectVm>>>(result);
             Assert.AreEqual(users.Count(), result.Content.Count());
             Assert.AreEqual(users.ElementAt(0).ProjectId, result.Content.ElementAt(0).ProjectId);
             Assert.AreEqual(users.ElementAt(0).UserName, result.Content.ElementAt(0).UserName);
-            Assert.IsInstanceOf<OkNegotiatedContentResult<IQueryable<UserProjectVm>>>(result);
-            _userService.Verify();
         }
 
         [Test]
@@ -202,9 +204,190 @@ namespace TaskBook.Test
             var result = controller.GetUsersByProjectId(progectId) as BadRequestErrorMessageResult;
 
             // Assert
-            Assert.IsInstanceOf<BadRequestErrorMessageResult>(result);
             _userService.Verify();
             _logger.Verify();
+            Assert.IsInstanceOf<BadRequestErrorMessageResult>(result);
+        }
+
+        [Test]
+        public void AccountController_ForgotPassword_Ok()
+        {
+            // Arrange
+            var model = new ForgotPasswordVm()
+            {
+                Email = "tb@tb.com"
+            };
+
+            _userService.Setup(x => x.ForgotPassword(model))
+                .Returns(() => Task.FromResult(model))
+                .Verifiable("Must call IUserService.ForgotPassword");
+
+            var controller = new AccountController(_userService.Object, _userManager, _logger.Object);
+
+            // Act
+            var result = controller.ForgotPassword(model).Result;
+
+            // Assert
+            _userService.Verify(x => x.ForgotPassword(It.Is<ForgotPasswordVm>(m => m.Equals(model))));
+            Assert.IsInstanceOf<OkResult>(result);
+        }
+
+        [Test]
+        public void AccountController_ForgotPassword_Invalid_Model()
+        {
+            // Arrange
+            var model = new ForgotPasswordVm();
+
+            var controller = new AccountController(_userService.Object, _userManager, _logger.Object);
+            controller.ModelState.Clear();
+            controller.ModelState.AddModelError("TB", "Model is invalid");
+
+            // Act
+            var result = controller.ForgotPassword(model).Result;
+
+            // Assert
+            Assert.IsInstanceOf<InvalidModelStateResult>(result);
+        }
+
+        [Test]
+        public void AccountController_ResetPassword_Ok()
+        {
+            // Arrange
+            var model = new ResetPasswordVm()
+            {
+                UserName = "User1"
+            };
+
+            _userService.Setup(x => x.ResetPassword(model))
+                .Returns(() => Task.FromResult(model))
+                .Verifiable("Must call IUserService.ResetPassword");
+
+            var controller = new AccountController(_userService.Object, _userManager, _logger.Object);
+
+            // Act
+            var result = controller.ResetPassword(model).Result;
+
+            // Assert
+            _userService.Verify(x => x.ResetPassword(It.Is<ResetPasswordVm>(m => m.Equals(model))));
+            Assert.IsInstanceOf<OkResult>(result);
+        }
+
+        [Test]
+        public void AccountController_ResetPassword_Invalid_Model()
+        {
+            // Arrange
+            var model = new ResetPasswordVm();
+
+            var controller = new AccountController(_userService.Object, _userManager, _logger.Object);
+            controller.ModelState.Clear();
+            controller.ModelState.AddModelError("TB", "Model is invalid");
+
+            // Act
+            var result = controller.ResetPassword(model).Result;
+
+            // Assert
+            Assert.IsInstanceOf<InvalidModelStateResult>(result);
+        }
+
+        [Test]
+        public void AccountController_AddUserAsync_Ok()
+        {
+            // Arrange
+            var model = new TbUserRoleVm()
+            {
+                UserName = "User1"
+            };
+
+            _userService.Setup(x => x.AddUserAsync(model))
+                .Returns(() => Task.FromResult(model))
+                .Verifiable("Must call IUserService.AddUserAsync");
+
+            var controller = new AccountController(_userService.Object, _userManager, _logger.Object);
+
+            // Act
+            var result = controller.AddUserAsync(model).Result;
+
+            // Assert
+            _userService.Verify(x => x.AddUserAsync(It.Is<TbUserRoleVm>(m => m.Equals(model))));
+            Assert.IsInstanceOf<OkResult>(result);
+        }
+
+        [Test]
+        public void AccountController_AddUserAsync_Invalid_Model()
+        {
+            // Arrange
+            var model = new TbUserRoleVm();
+
+            var controller = new AccountController(_userService.Object, _userManager, _logger.Object);
+            controller.ModelState.Clear();
+            controller.ModelState.AddModelError("TB", "Model is invalid");
+
+            // Act
+            var result = controller.AddUserAsync(model).Result;
+
+            // Assert
+            Assert.IsInstanceOf<InvalidModelStateResult>(result);
+        }
+
+        [Test]
+        public void AccountController_UpdateUser_Ok()
+        {
+            // Arrange
+            string id = "AAAA-BBBB";
+            var model = new TbUserRoleVm()
+            {
+                UserId = id,
+                UserName = "User1"
+            };
+
+            _userService.Setup(x => x.UpdateUser(id, model))
+                .Verifiable("Must call IUserService.UpdateUser");
+
+            var controller = new AccountController(_userService.Object, _userManager, _logger.Object);
+
+            // Act
+            var result = controller.UpdateUser(id, model);
+
+            // Assert
+            _userService.Verify();
+            Assert.IsInstanceOf<OkResult>(result);
+        }
+
+        [Test]
+        public void AccountController_UpdateUser_Invalid_Model()
+        {
+            // Arrange
+            string id = "AAAA-BBBB";
+            var model = new TbUserRoleVm();
+
+            var controller = new AccountController(_userService.Object, _userManager, _logger.Object);
+            controller.ModelState.Clear();
+            controller.ModelState.AddModelError("TB", "Model is invalid");
+
+            // Act
+            var result = controller.UpdateUser(id, model);
+
+            // Assert
+            Assert.IsInstanceOf<InvalidModelStateResult>(result);
+        }
+
+        [Test]
+        public void AccountController_DeleteUser_Ok()
+        {
+            // Arrange
+            string id = "AAAA-BBBB";
+
+            _userService.Setup(x => x.DeleteUser(id, false))
+               .Verifiable("Must call IUserService.DeleteUser");
+
+            var controller = new AccountController(_userService.Object, _userManager, _logger.Object);
+
+            // Act
+            var result = controller.DeleteUser(id);
+
+            // Assert
+            _userService.Verify();
+            Assert.IsInstanceOf<OkResult>(result);
         }
     }
 }

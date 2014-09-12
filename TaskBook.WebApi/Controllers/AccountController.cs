@@ -153,14 +153,14 @@ namespace TaskBook.WebApi.Controllers
                 _logger.Error(ex.Message, ex);
                 return BadRequest(ex.Message);
             }
-            catch(ArgumentNullException ex)
+            catch(ArgumentNullException ex) 
             {
+                // From email service
                 _logger.Error(ex.Message, ex);
                 return BadRequest(ex.Message);
             }
             return Ok();
         }
-
 
         // POST api/Account/ResetPassword
         [Route("ResetPassword")]
