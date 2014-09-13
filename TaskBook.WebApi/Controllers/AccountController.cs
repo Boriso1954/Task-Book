@@ -36,8 +36,6 @@ namespace TaskBook.WebApi.Controllers
             _userService = userService;
             _userManager = userManager;
             _logger = logger;
-            //var url = HttpContext.Current.Request.Url;
-            //_userService.Host = string.Format("{0}://{1}:{2}", url.Scheme, url.Host, url.Port);
         }
 
         [InjectionConstructor]

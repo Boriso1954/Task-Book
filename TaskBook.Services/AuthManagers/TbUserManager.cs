@@ -13,7 +13,7 @@ using TaskBook.Services;
 
 namespace TaskBook.Services.AuthManagers
 {
-    public class TbUserManager: UserManager<TbUser>
+    public sealed class TbUserManager: UserManager<TbUser>
     {
         public TbUserManager(IUserStore<TbUser> userStore)
             : base(userStore)

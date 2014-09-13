@@ -81,7 +81,6 @@ namespace TaskBook.Services
 
             var taskRepository = _unitOfWork.TaskRepository;
             var task = taskRepository.GetById(id);
-
             if(task == null)
             {
                 throw new Exception(string.Format("Unable to find task '{0}'.", taskVm.Title));
