@@ -128,6 +128,9 @@
     <Compile Include="AccountControllerTest.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RoutingAccountControllerTest.cs" />
+    <Compile Include="RoutingPermissionsControllerTest.cs" />
+    <Compile Include="RoutingProjectsControllerTest.cs" />
     <Compile Include="RoutingTester.cs" />
     <Compile Include="TaskServiceTest.cs" />
     <Compile Include="UnityTest.cs" />

@@ -26,6 +26,7 @@ namespace TaskBook.WebApi.Controllers
             _logger = logger;
         }
 
+        // GET api//Permissions/GetByRole/{roleName}
         [Route("GetByRole/{roleName}")]
         [ResponseType(typeof(IQueryable<PermissionVm>))]
         public IHttpActionResult GetByRole(string roleName)

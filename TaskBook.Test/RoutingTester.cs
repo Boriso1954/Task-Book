@@ -8,46 +8,32 @@ using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Dispatcher;
 using System.Web.Http.Hosting;
+using System.Web.Http.Routing;
 
 namespace TaskBook.Test
 {
     internal static class RoutingTester
     {
-        internal static void TestRoute(HttpConfiguration config,
-            HttpRequestMessage request,
-            Action<Type, string> callback)
-        {
-            var controllerContextData = GetControllerContextData(config, request);
-
-            var actionSelector = new ApiControllerActionSelector();
-            var action = actionSelector.SelectAction(controllerContextData.HttpControllerContext).ActionName;
-            var controllerType = controllerContextData.HttpControllerContext.ControllerDescriptor.ControllerType;
-
-            callback(controllerType, action);
-
-        }
-
-        internal static ControllerConextData GetControllerContextData(HttpConfiguration config,
-            HttpRequestMessage request)
+        internal static void TestRoute(HttpRequestMessage request,
+            HttpConfiguration config,
+            Action<Type, string> assert)
         {
             var routeData = config.Routes.GetRouteData(request);
             request.Properties[HttpPropertyKeys.HttpRouteDataKey] = routeData;
 
             var controllerContext = new HttpControllerContext(config, routeData, request);
             var controllerSelector = new DefaultHttpControllerSelector(config);
+
             var controllerDescriptor = controllerSelector.SelectController(request);
 
-            return new ControllerConextData()
-            {
-                HttpControllerContext = controllerContext,
-                HttpControllerDescriptor = controllerDescriptor
-            };
-        }
-    }
+            controllerContext.ControllerDescriptor = controllerDescriptor;
 
-    internal sealed class ControllerConextData
-    {
-        internal HttpControllerContext HttpControllerContext { get; set; }
-        internal HttpControllerDescriptor HttpControllerDescriptor { get; set; }
+            var actionSelector = new ApiControllerActionSelector();
+            var action = actionSelector.SelectAction(controllerContext).ActionName;
+            
+            var controllerType = controllerContext.ControllerDescriptor.ControllerType;
+
+            assert(controllerType, action);
+        }
     }
 }
