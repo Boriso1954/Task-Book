@@ -131,16 +131,14 @@
     <Compile Include="RoutingAccountControllerTest.cs" />
     <Compile Include="RoutingPermissionsControllerTest.cs" />
     <Compile Include="RoutingProjectsControllerTest.cs" />
+    <Compile Include="RoutingRolesControllerTest.cs" />
+    <Compile Include="RoutingTasksControllerTest.cs" />
     <Compile Include="RoutingTester.cs" />
     <Compile Include="TaskServiceTest.cs" />
     <Compile Include="UnityTest.cs" />
     <Compile Include="UnityTestConfig.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\TaskBook.WebApi\NLog.config">
-      <Link>NLog.config</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="..\TaskBook.WebApi\Unity.config">
       <Link>Unity.config</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

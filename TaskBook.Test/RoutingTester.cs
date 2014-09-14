@@ -23,15 +23,12 @@ namespace TaskBook.Test
 
             var controllerContext = new HttpControllerContext(config, routeData, request);
             var controllerSelector = new DefaultHttpControllerSelector(config);
-
             var controllerDescriptor = controllerSelector.SelectController(request);
-
             controllerContext.ControllerDescriptor = controllerDescriptor;
+            var controllerType = controllerContext.ControllerDescriptor.ControllerType;
 
             var actionSelector = new ApiControllerActionSelector();
             var action = actionSelector.SelectAction(controllerContext).ActionName;
-            
-            var controllerType = controllerContext.ControllerDescriptor.ControllerType;
 
             assert(controllerType, action);
         }

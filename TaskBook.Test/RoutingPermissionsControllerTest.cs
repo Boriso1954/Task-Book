@@ -31,7 +31,7 @@ namespace TaskBook.Test
         }
 
         [Test]
-        public void Routing_AccountController_GetByRole()
+        public void Routing_PermissionsController_GetByRole()
         {
             var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost/api/Permissions/GetByRole/roleName");
             RoutingTester.TestRoute(request, _config,
