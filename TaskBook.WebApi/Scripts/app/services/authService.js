@@ -36,14 +36,13 @@ app.factory("authService", ["$http", "$q", "localStorageService",
 
                 deferred.resolve(response);
             })
-        .error(function (err, stratus) {
+        .error(function (err, status) {
+            _authData.isAuth = false;
             deferred.reject(err);
         });
 
         return deferred.promise;
     };
-
-    
 
     authServiceFactory.logOut = function () {
 

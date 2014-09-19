@@ -11,16 +11,9 @@ app.controller("loginController", ["$scope", "$location", "$routeParams", "authS
         $scope.successful = true;
         $scope.message = "";
 
-        var code = $routeParams.code;
-        if (code === "401") {
-            $scope.successful = false;
-            $scope.message = "Authorization has been denied.";
-            authService.logOut();
-        }
-
         $scope.login = function () {
             authService.login($scope.loginData)
-                .then(function (response) {
+                .then(function () {
                     roleService.getRoleByUserName($scope.loginData.userName)
                         .then(function (result) {
                             var role = result;

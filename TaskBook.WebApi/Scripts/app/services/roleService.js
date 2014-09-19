@@ -24,6 +24,7 @@ app.factory("roleService", ["$http", "authService", function ($http, authService
                 return role;
             },
             function (error) {
+                authService.authData.role = "";
                 return error;
             });
     };

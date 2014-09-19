@@ -126,7 +126,6 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Controllers\AccountControllerTest.cs" />
-    <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Routes\RoutingAccountControllerTest.cs" />
     <Compile Include="Routes\RoutingPermissionsControllerTest.cs" />
@@ -163,6 +162,22 @@
       <Project>{cdd91f07-1cf3-4ca7-a36a-7ba627f85634}</Project>
       <Name>TaskBook.WebApi</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="css\jasmine.css" />
+    <Content Include="Scripts\app\controllers\indexControllerTest.js" />
+    <Content Include="Scripts\app\controllers\loginControllerTest.js" />
+    <Content Include="Scripts\app\controllers\permissionControllerTest.js" />
+    <Content Include="Scripts\app\services\authServiceTest.js" />
+    <Content Include="Scripts\app\services\permissionServiceTest.js" />
+    <Content Include="Scripts\app\services\roleServiceTest.js" />
+    <Content Include="Scripts\app\_references.js" />
+    <Content Include="Scripts\vendor\jasmine-html.js" />
+    <Content Include="Scripts\vendor\jasmine.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Start\" />
+    <Folder Include="Scripts\app\filters\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

@@ -17,10 +17,6 @@ app.factory("authInterceptorService", ["$q", "$location", "localStorageService",
     }
 
     authInterceptorServiceFactory.responseError = function (rejection) {
-        //var path = $location.path();
-        //if (path.indexOf("login") == -1){
-        //    $location.path("/login/" + rejection.status);
-        //}
         return $q.reject(rejection);
     }
 

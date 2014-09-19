@@ -12,11 +12,6 @@ app.config(function ($routeProvider) {
         templateUrl: "/Scripts/app/views/login.html"
     });
 
-    $routeProvider.when("/login/:code", {
-        controller: "loginController",
-        templateUrl: "/Scripts/app/views/login.html"
-    });
-
     $routeProvider.when("/forgotPassword", {
         controller: "forgotPasswordController",
         templateUrl: "/Scripts/app/views/forgotPassword.html"

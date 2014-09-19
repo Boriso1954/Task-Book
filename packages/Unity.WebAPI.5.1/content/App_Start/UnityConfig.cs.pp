@@ -1,8 +1,8 @@
-using Microsoft.Practices.Unity;
+﻿using Microsoft.Practices.Unity;
 using System.Web.Http;
 using Unity.WebApi;
 
-namespace TaskBook.Test
+namespace $rootnamespace$
 {
     public static class UnityConfig
     {
