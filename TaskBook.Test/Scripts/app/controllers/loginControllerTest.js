@@ -57,7 +57,7 @@ describe("$loginController", function () {
         expect($location.path).toHaveBeenCalledWith("/projects");
     });
 
-    it("should resolve any role ", function () {
+    it("should resolve non-Manager role", function () {
         authService.authData.isAuth = true;
         authService.authData.userName = "user1";
 
@@ -66,7 +66,7 @@ describe("$loginController", function () {
         spyOn(authService, "login").and.returnValue(authDeferred.promise);
 
         var deferred = $q.defer();
-        deferred.resolve("AnyRole");
+        deferred.resolve("NonManager");
         spyOn(roleService, "getRoleByUserName").and.returnValue(deferred.promise);
 
         $controller("loginController",

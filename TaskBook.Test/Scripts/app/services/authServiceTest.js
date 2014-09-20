@@ -40,6 +40,8 @@ describe("$authService", function () {
     beforeEach(inject(function (_localStorageService_) {
         localStorageService = _localStorageService_;
         localStorageService.set = jasmine.createSpy();
+        localStorageService.remove = jasmine.createSpy();
+        
     }));
 
     afterEach(function () {
@@ -55,6 +57,7 @@ describe("$authService", function () {
 
         expect(localStorageService).not.toBeNull();
         expect(angular.isFunction(localStorageService.set)).toBeTruthy();
+        expect(angular.isFunction(localStorageService.remove)).toBeTruthy();
     });
 
     it("returns http token requests successfully and resolves the promise", function () {
@@ -83,4 +86,39 @@ describe("$authService", function () {
         expect(authService.authData.isAuth).toBeFalsy();
         expect(localStorageService.set).not.toHaveBeenCalled();
     });
+
+    it("should process logout", function () {
+        authService.logOut();
+        expect(localStorageService.remove).toHaveBeenCalled();
+        expect(authService.authData.isAuth).toBeFalsy();
+        expect(authService.authData.userName).toBe("");
+        expect(authService.authData.role).toBe("");
+    });
+
+    it("should initialize auth data when rememberMe flag is true", function () {
+        var authTbData = {
+            rememberMe: true,
+            userName: "user1"
+        };
+        localStorageService.get = jasmine.createSpy().and.returnValue(authTbData);
+        authService.fillAuthData();
+
+        expect(localStorageService.get).toHaveBeenCalled();
+        expect(authService.authData.isAuth).toBeTruthy();
+        expect(authService.authData.userName).toBe(authTbData.userName);
+    });
+
+    it("should initialize auth data when rememberMe flag is false", function () {
+        var authTbData = {
+            rememberMe: false,
+            userName: "user1"
+        };
+        localStorageService.get = jasmine.createSpy().and.returnValue(authTbData);
+        authService.fillAuthData();
+
+        expect(localStorageService.get).toHaveBeenCalled();
+        expect(authService.authData.isAuth).toBeFalsy();
+        expect(authService.authData.userName).toBe("");
+    });
+
 });

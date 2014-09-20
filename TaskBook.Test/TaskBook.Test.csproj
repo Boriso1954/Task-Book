@@ -166,11 +166,18 @@
   <ItemGroup>
     <Content Include="css\jasmine.css" />
     <Content Include="Scripts\app\controllers\indexControllerTest.js" />
+    <Content Include="Scripts\app\controllers\layoutControllerTest.js" />
     <Content Include="Scripts\app\controllers\loginControllerTest.js" />
-    <Content Include="Scripts\app\controllers\permissionControllerTest.js" />
+    <Content Include="Scripts\app\controllers\usersControllerTest.js" />
+    <Content Include="Scripts\app\services\accountServiceTest.js" />
+    <Content Include="Scripts\app\services\authInterceptorServiceTest.js" />
     <Content Include="Scripts\app\services\authServiceTest.js" />
+    <Content Include="Scripts\app\services\passwordServiceTest.js" />
     <Content Include="Scripts\app\services\permissionServiceTest.js" />
+    <Content Include="Scripts\app\services\projectServiceTest.js" />
     <Content Include="Scripts\app\services\roleServiceTest.js" />
+    <Content Include="Scripts\app\services\taskServiceTest.js" />
+    <Content Include="Scripts\app\services\tbUtilTest.js" />
     <Content Include="Scripts\app\_references.js" />
     <Content Include="Scripts\vendor\jasmine-html.js" />
     <Content Include="Scripts\vendor\jasmine.js" />

@@ -1,5 +1,5 @@
-﻿'use strict';
-app.controller('layoutController', ['$scope', '$location', 'authService', function ($scope, $location, authService) {
+﻿"use strict";
+app.controller("layoutController", ["$scope", "$location", "authService", function ($scope, $location, authService) {
 
     $scope.logOut = function () {
         authService.logOut();

@@ -16,8 +16,8 @@ describe("$permissionService", function () {
         });
     });
 
-    it("should contain a permissionService", function () {
+    it("should contain a permissionService and set of functions", function () {
         expect(permissionService).not.toBeNull();
-        expect(angular.isFunction(permissionService.getPermissionsByRole)).toBe(true);
+        expect(angular.isFunction(permissionService.getPermissionsByRole)).toBeTruthy();
     });
 });

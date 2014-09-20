@@ -27,19 +27,20 @@ app.controller("usersController", ["$scope", "$routeParams", "accountService", "
         $scope.successful = true;
         $scope.message = "";
 
-        // Manager's data
         var projectId = null;
         accountService.getUserDetailsByUserName(authUser.UserName)
             .then(function (result) {
                 $scope.successful = true;
                 authUser = result.data;
                 if (authUser.Role === "Manager") {
+                    // If auth user is manager we know manager's name and project title
                     $scope.manager.userName = authUser.UserName;
                     $scope.manager.projectTitle = authUser.ProjectTitle;
                     projectId = authUser.ProjectId;
                     getUsers(projectId);
                 }
                 else {
+                    // If auth user is not manager we have to ask for manager's details for auth user 
                     projectService.getProjectsAndManagersByProjectId(authUser.ProjectId)
                     .then(function (result) {
                         $scope.successful = true;
