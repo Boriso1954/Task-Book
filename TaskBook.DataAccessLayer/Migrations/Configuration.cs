@@ -11,19 +11,33 @@ namespace TaskBook.DataAccessLayer.Migrations
     using TaskBook.DataAccessLayer.Properties;
     using TaskBook.DomainModel;
 
+    /// <summary>
+    /// Database migration configuration class
+    /// </summary>
     internal sealed class Configuration : DbMigrationsConfiguration<TaskBook.DataAccessLayer.TaskBookDbContext>
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
+        /// <summary>
+        /// Populates a database
+        /// </summary>
+        /// <param name="context">Database context</param>
         protected override void Seed(TaskBookDbContext context)
         {
             CreateSP(context);
             PopulateDb(context);
         }
 
+        /// <summary>
+        /// Adds stored procedures to the database
+        /// </summary>
+        /// <param name="context">Database context</param>
         private void CreateSP(TaskBookDbContext context)
         {
             string sql = string.Empty;
@@ -62,8 +76,13 @@ namespace TaskBook.DataAccessLayer.Migrations
             }
         }
 
+        /// <summary>
+        /// Initializes the database
+        /// </summary>
+        /// <param name="context"></param>
         private void PopulateDb(TaskBookDbContext context)
         {
+            // Add permissions
             var permissions = new List<Permission>()
                 {
                     new Permission()
@@ -125,6 +144,7 @@ namespace TaskBook.DataAccessLayer.Migrations
             permissions.ForEach(x => context.Permissions.AddOrUpdate(y => y.Name, x));
             context.SaveChanges();
 
+            // Add roles
             var roles = new List<TbRole>()
             {
                 new TbRole()
@@ -194,6 +214,7 @@ namespace TaskBook.DataAccessLayer.Migrations
                 }
             }
 
+            // Add TaskBook administrator
             using(var userManager = new TbUserManager(new UserStore<TbUser>(context)))
             {
                 string adminName = "Admin1";
@@ -217,6 +238,7 @@ namespace TaskBook.DataAccessLayer.Migrations
                     var result = userManager.AddToRole(user.Id, role.Name);
                 }
 
+                // That is a system account
                 string notAssignedName = "NotAssigned"; // W/o spaces!
                 user = userManager.FindByName(notAssignedName);
                 if(user == null)

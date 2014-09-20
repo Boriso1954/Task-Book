@@ -6,13 +6,26 @@ using TaskBook.DomainModel;
 
 namespace TaskBook.DataAccessLayer.AuthManagers
 {
+    /// <summary>
+    /// Provides user related api
+    /// </summary>
     public sealed class TbUserManager: UserManager<TbUser>
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="userStore">User store</param>
         public TbUserManager(IUserStore<TbUser> userStore)
             : base(userStore)
         {
         }
 
+        /// <summary>
+        /// Creates the application user manager
+        /// </summary>
+        /// <param name="options">Configuration options</param>
+        /// <param name="context">OWIN context</param>
+        /// <returns></returns>
         public static TbUserManager Create(IdentityFactoryOptions<TbUserManager> options, IOwinContext context)
         {
             var userManager = new TbUserManager(new UserStore<TbUser>(context.Get<TaskBookDbContext>()));
