@@ -23,7 +23,7 @@ using Microsoft.Practices.Unity;
 using System.Web.Http.Tracing;
 using NLog.Mvc;
 using System.Text;
-using TaskBook.Services.AuthManagers;
+using TaskBook.DataAccessLayer.AuthManagers;
 
 namespace TaskBook.WebApi.Controllers
 {

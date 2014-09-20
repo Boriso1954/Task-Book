@@ -14,7 +14,7 @@ using TaskBook.DataAccessLayer;
 using Microsoft.Practices.Unity;
 using System.Net.Mail;
 using Microsoft.AspNet.Identity.Owin;
-using TaskBook.Services.AuthManagers;
+using TaskBook.DataAccessLayer.AuthManagers;
 using System.Net;
 using TaskBook.DomainModel.Mapping;
 

@@ -4,7 +4,7 @@ using Moq;
 using NUnit.Framework;
 using TaskBook.DomainModel;
 using TaskBook.DomainModel.ViewModels;
-using TaskBook.Services.AuthManagers;
+using TaskBook.DataAccessLayer.AuthManagers;
 using TaskBook.Services.Interfaces;
 using TaskBook.WebApi.Controllers;
 using NLog.Mvc;

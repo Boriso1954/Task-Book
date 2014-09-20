@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TaskBook.DomainModel;
 using TaskBook.DomainModel.ViewModels;
-using TaskBook.Services.AuthManagers;
+using TaskBook.DataAccessLayer.AuthManagers;
 
 namespace TaskBook.Services.Interfaces
 {

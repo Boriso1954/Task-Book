@@ -12,7 +12,7 @@ using TaskBook.Services.Interfaces;
 using TaskBook.DomainModel.ViewModels;
 using TaskBook.DataAccessLayer.Reader;
 using TaskBook.DataAccessLayer;
-using TaskBook.Services.AuthManagers;
+using TaskBook.DataAccessLayer.AuthManagers;
 using Microsoft.Practices.Unity;
 
 namespace TaskBook.Services

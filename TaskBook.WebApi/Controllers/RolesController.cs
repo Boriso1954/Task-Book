@@ -10,7 +10,7 @@ using System.Web.Http.Tracing;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Practices.Unity;
 using NLog.Mvc;
-using TaskBook.Services.AuthManagers;
+using TaskBook.DataAccessLayer.AuthManagers;
 using TaskBook.Services.Interfaces;
 
 namespace TaskBook.WebApi.Controllers

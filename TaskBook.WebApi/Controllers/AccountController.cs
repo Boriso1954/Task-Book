@@ -13,11 +13,11 @@ using TaskBook.WebApi.Attributes;
 using TaskBook.DomainModel;
 using TaskBook.Services;
 using System.Web;
-using TaskBook.Services.AuthManagers;
 using Microsoft.Practices.Unity;
 using System.Web.Http.Tracing;
 using NLog.Mvc;
 using System.Text;
+using TaskBook.DataAccessLayer.AuthManagers;
 
 namespace TaskBook.WebApi.Controllers
 {

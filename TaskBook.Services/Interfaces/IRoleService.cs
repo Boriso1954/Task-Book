@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using TaskBook.Services.AuthManagers;
+using TaskBook.DataAccessLayer.AuthManagers;
 
 namespace TaskBook.Services.Interfaces
 {
