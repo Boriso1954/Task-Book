@@ -18,12 +18,12 @@ using TaskBook.Services.Interfaces;
 using TaskBook.DomainModel.ViewModels;
 using TaskBook.WebApi.Attributes;
 using TaskBook.Services;
-using TaskBook.DataAccessLayer.AuthManagers;
 using System.Web;
 using Microsoft.Practices.Unity;
 using System.Web.Http.Tracing;
 using NLog.Mvc;
 using System.Text;
+using TaskBook.Services.AuthManagers;
 
 namespace TaskBook.WebApi.Controllers
 {

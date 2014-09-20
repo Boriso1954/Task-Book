@@ -66,10 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configurations\PermissionConfiguration.cs" />
-    <Compile Include="Configurations\ProjectConfiguration.cs" />
     <Compile Include="Configurations\ProjectUsersConfiguration.cs" />
-    <Compile Include="Configurations\TaskConfiguration.cs" />
-    <Compile Include="Configurations\UserConfiguration.cs" />
     <Compile Include="Exceptions\DataAccessLayerException.cs" />
     <Compile Include="IUnitOfWork.cs" />
     <Compile Include="Migrations\201408110901281_Initial.cs" />
@@ -127,7 +124,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201408110901281_Initial.resx">
