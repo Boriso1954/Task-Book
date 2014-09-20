@@ -30,11 +30,8 @@ namespace TaskBook.DataAccessLayer
             base.OnModelCreating(modelBuilder);
 
             // Other schema configurations here
-            //modelBuilder.Configurations.Add(new UserConfiguration());
             modelBuilder.Configurations.Add(new PermissionConfiguration());
-            //modelBuilder.Configurations.Add(new ProjectConfiguration());
             modelBuilder.Configurations.Add(new ProjectUsersConfiguration());
-            //modelBuilder.Configurations.Add(new TaskConfiguration());
         }
 
         public static TaskBookDbContext Create()
