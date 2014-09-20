@@ -13,10 +13,11 @@ using TaskBook.WebApi.Attributes;
 using TaskBook.DomainModel;
 using TaskBook.Services;
 using System.Web;
-using TaskBook.Services.AuthManagers;
+using TaskBook.DataAccessLayer.AuthManagers;
 using Microsoft.Practices.Unity;
 using System.Web.Http.Tracing;
 using NLog.Mvc;
+using System.Text;
 
 namespace TaskBook.WebApi.Controllers
 {
@@ -148,8 +149,18 @@ namespace TaskBook.WebApi.Controllers
             }
             catch(TbIdentityException ex)
             {
-                _logger.Error(ex.Message, ex);
-                return BadRequest(ex.Message);
+                string msg = GetErrorResult(ex.TbIdentityResult);
+                if(string.IsNullOrEmpty(msg))
+                {
+                    _logger.Error(ex.Message);
+                    return InternalServerError(ex);
+                }
+                else
+                {
+                    msg = ex.Message + ": " + msg;
+                    _logger.Error(msg);
+                    return BadRequest(msg);
+                }
             }
             catch(ArgumentNullException ex) 
             {
@@ -177,8 +188,18 @@ namespace TaskBook.WebApi.Controllers
             }
             catch(TbIdentityException ex)
             {
-                _logger.Error(ex.Message, ex);
-                return BadRequest(ex.Message);
+                string msg = GetErrorResult(ex.TbIdentityResult);
+                if(string.IsNullOrEmpty(msg))
+                {
+                    _logger.Error(ex.Message);
+                    return InternalServerError(ex);
+                }
+                else
+                {
+                    msg = ex.Message + ": " + msg;
+                    _logger.Error(msg);
+                    return BadRequest(msg);
+                }
             }
             catch(Exception ex)
             {
@@ -210,8 +231,18 @@ namespace TaskBook.WebApi.Controllers
             }
             catch(TbIdentityException ex)
             {
-                _logger.Error(ex.Message, ex);
-                return BadRequest(ex.Message);
+                string msg = GetErrorResult(ex.TbIdentityResult);
+                if(string.IsNullOrEmpty(msg))
+                {
+                    _logger.Error(ex.Message);
+                    return InternalServerError(ex);
+                }
+                else
+                {
+                    msg = ex.Message + ": " + msg;
+                    _logger.Error(msg);
+                    return BadRequest(msg);
+                }
             }
             catch(Exception ex)
             {
@@ -237,8 +268,18 @@ namespace TaskBook.WebApi.Controllers
             }
             catch(TbIdentityException ex)
             {
-                _logger.Error(ex.Message, ex);
-                return BadRequest(ex.Message);
+                string msg = GetErrorResult(ex.TbIdentityResult);
+                if(string.IsNullOrEmpty(msg))
+                {
+                    _logger.Error(ex.Message);
+                    return InternalServerError(ex);
+                }
+                else
+                {
+                    msg = ex.Message + ": " + msg;
+                    _logger.Error(msg);
+                    return BadRequest(msg);
+                }
             }
             catch(Exception ex)
             {
@@ -271,8 +312,18 @@ namespace TaskBook.WebApi.Controllers
             }
             catch(TbIdentityException ex)
             {
-                _logger.Error(ex.Message, ex);
-                return BadRequest(ex.Message);
+                string msg = GetErrorResult(ex.TbIdentityResult);
+                if(string.IsNullOrEmpty(msg))
+                {
+                    _logger.Error(ex.Message);
+                    return InternalServerError(ex);
+                }
+                else
+                {
+                    msg = ex.Message + ": " + msg;
+                    _logger.Error(msg);
+                    return BadRequest(msg);
+                }
             }
             catch(Exception ex)
             {
@@ -283,22 +334,24 @@ namespace TaskBook.WebApi.Controllers
             return Ok();
         }
 
-        private IHttpActionResult GetErrorResult(IdentityResult result)
+        private string GetErrorResult(IdentityResult result)
         {
             if(result == null)
             {
-                return InternalServerError();
+                return string.Empty;
             }
             else // !result.Succeeded
             {
                 if(result.Errors != null)
                 {
+                    var sb = new StringBuilder();
                     foreach(string error in result.Errors)
                     {
-                        ModelState.AddModelError(string.Empty, error);
+                        sb.AppendLine(error);
                     }
+                    return sb.ToString();
                 }
-                return BadRequest(ModelState);
+                return string.Empty;
             }
         }
 

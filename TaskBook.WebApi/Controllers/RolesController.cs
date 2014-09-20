@@ -9,7 +9,8 @@ using System.Web.Http.Description;
 using System.Web.Http.Tracing;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Practices.Unity;
-using TaskBook.Services.AuthManagers;
+using NLog.Mvc;
+using TaskBook.DataAccessLayer.AuthManagers;
 using TaskBook.Services.Interfaces;
 
 namespace TaskBook.WebApi.Controllers
@@ -20,11 +21,11 @@ namespace TaskBook.WebApi.Controllers
     {
         private readonly IRoleService _roleService;
         private TbUserManager _userManager;
-        private readonly ITraceWriter _logger;
+        private readonly ILogger _logger;
 
         [InjectionConstructor]
         public RolesController(IRoleService roleService,
-            ITraceWriter logger)
+            ILogger logger)
         {
             _roleService = roleService;
             _roleService.UserManager = UserManager;
@@ -33,7 +34,7 @@ namespace TaskBook.WebApi.Controllers
 
         public RolesController(IRoleService roleService,
             TbUserManager userManager,
-            ITraceWriter logger)
+            ILogger logger)
         {
             _roleService = roleService;
             UserManager = userManager;
@@ -63,14 +64,14 @@ namespace TaskBook.WebApi.Controllers
                 if(roles == null)
                 {
                     string msg = string.Format("Unable to find role for user '{0}'.", userName);
-                    _logger.Warn(Request, ControllerContext.ControllerDescriptor.ControllerType.FullName, msg);
+                    _logger.Warning(msg);
                     return BadRequest(msg);
                 }
                 return Ok(roles);
             }
             catch(Exception ex)
             {
-                _logger.Error(Request, ControllerContext.ControllerDescriptor.ControllerType.FullName, ex);
+                _logger.Error(ex.Message, ex);
                 return BadRequest(ex.Message);
             }
         }
@@ -86,14 +87,14 @@ namespace TaskBook.WebApi.Controllers
                 if(roles == null)
                 {
                     string msg = string.Format("Unable to find role for user with ID '{0}'.", id);
-                    _logger.Warn(Request, ControllerContext.ControllerDescriptor.ControllerType.FullName, msg);
+                    _logger.Warning(msg);
                     return BadRequest(msg);
                 }
                 return Ok(roles);
             }
             catch(Exception ex)
             {
-                _logger.Error(Request, ControllerContext.ControllerDescriptor.ControllerType.FullName, ex);
+                _logger.Error(ex.Message, ex);
                 return BadRequest(ex.Message);
             }
         }

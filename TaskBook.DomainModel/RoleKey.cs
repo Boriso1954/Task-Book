@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TaskBook.DomainModel
 {
-    public class RoleKey
+    public sealed class RoleKey
     {
         public const string Admin = "Admin";
         public const string Manager = "Manager";

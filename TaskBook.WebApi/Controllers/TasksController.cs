@@ -15,6 +15,7 @@ using TaskBook.DomainModel.ViewModels;
 using TaskBook.DataAccessLayer.Exceptions;
 using TaskBook.WebApi.Attributes;
 using System.Web.Http.Tracing;
+using NLog.Mvc;
 
 namespace TaskBook.WebApi.Controllers
 {
@@ -23,10 +24,10 @@ namespace TaskBook.WebApi.Controllers
     public class TasksController : ApiController
     {
         private readonly ITaskService _taskService;
-        private readonly ITraceWriter _logger;
+        private readonly ILogger _logger;
 
         public TasksController(ITaskService taskService,
-            ITraceWriter logger)
+            ILogger logger)
         {
             _taskService = taskService;
             _logger = logger;
@@ -44,14 +45,14 @@ namespace TaskBook.WebApi.Controllers
                 if(tasks == null)
                 {
                     string msg = "Unable to return tasks";
-                    _logger.Warn(Request, ControllerContext.ControllerDescriptor.ControllerType.FullName, msg);
+                    _logger.Warning(msg);
                     return BadRequest(msg);
                 }
                 return Ok(tasks);
             }
             catch(DataAccessReaderException ex)
             {
-                _logger.Error(Request, ControllerContext.ControllerDescriptor.ControllerType.FullName, ex);
+                _logger.Error(ex.Message, ex);
                 return BadRequest(ex.Message);
             }
         }
@@ -68,14 +69,14 @@ namespace TaskBook.WebApi.Controllers
                 if(tasks == null)
                 {
                     string msg = string.Format("Unable to return tasks for project with ID = {0}", projectId);
-                    _logger.Warn(Request, ControllerContext.ControllerDescriptor.ControllerType.FullName, msg);
+                    _logger.Warning(msg);
                     return BadRequest(msg);
                 }
                 return Ok(tasks);
             }
             catch(DataAccessReaderException ex)
             {
-                _logger.Error(Request, ControllerContext.ControllerDescriptor.ControllerType.FullName, ex);
+                _logger.Error(ex.Message, ex);
                 return BadRequest(ex.Message);
             }
         }
@@ -92,14 +93,14 @@ namespace TaskBook.WebApi.Controllers
                 if(task == null)
                 {
                     string msg = string.Format("Unable to return the task with ID = {0}", id);
-                    _logger.Warn(Request, ControllerContext.ControllerDescriptor.ControllerType.FullName, msg);
+                    _logger.Warning(msg);
                     return BadRequest(msg);
                 }
                 return Ok(task);
             }
             catch(DataAccessReaderException ex)
             {
-                _logger.Error(Request, ControllerContext.ControllerDescriptor.ControllerType.FullName, ex);
+                _logger.Error(ex.Message, ex);
                 return BadRequest(ex.Message);
             }
         }
@@ -116,14 +117,14 @@ namespace TaskBook.WebApi.Controllers
                 if(tasks == null)
                 {
                     string msg = string.Format("Unable to return tasks for user '{0}'", userName);
-                    _logger.Warn(Request, ControllerContext.ControllerDescriptor.ControllerType.FullName, msg);
+                    _logger.Warning(msg);
                     return BadRequest(msg);
                 }
                 return Ok(tasks);
             }
             catch(DataAccessReaderException ex)
             {
-                _logger.Error(Request, ControllerContext.ControllerDescriptor.ControllerType.FullName, ex);
+                _logger.Error(ex.Message, ex);
                 return BadRequest(ex.Message);
             }
         }
@@ -145,12 +146,12 @@ namespace TaskBook.WebApi.Controllers
             }
             catch(DataAccessLayerException ex)
             {
-                _logger.Error(Request, ControllerContext.ControllerDescriptor.ControllerType.FullName, ex);
+                _logger.Error(ex.Message, ex);
                 return BadRequest(ex.Message);
             }
             catch(DataAccessReaderException ex)
             {
-                _logger.Error(Request, ControllerContext.ControllerDescriptor.ControllerType.FullName, ex);
+                _logger.Error(ex.Message, ex);
                 return BadRequest(ex.Message);
             }
 
@@ -174,17 +175,17 @@ namespace TaskBook.WebApi.Controllers
             }
             catch(DataAccessLayerException ex)
             {
-                _logger.Error(Request, ControllerContext.ControllerDescriptor.ControllerType.FullName, ex);
+                _logger.Error(ex.Message, ex);
                 return BadRequest(ex.Message);
             }
             catch(DataAccessReaderException ex)
             {
-                _logger.Error(Request, ControllerContext.ControllerDescriptor.ControllerType.FullName, ex);
+                _logger.Error(ex.Message, ex);
                 return BadRequest(ex.Message);
             }
             catch(Exception ex)
             {
-                _logger.Error(Request, ControllerContext.ControllerDescriptor.ControllerType.FullName, ex);
+                _logger.Error(ex.Message, ex);
                 return BadRequest(ex.Message);
             }
 
@@ -203,12 +204,12 @@ namespace TaskBook.WebApi.Controllers
             }
             catch(DataAccessLayerException ex)
             {
-                _logger.Error(Request, ControllerContext.ControllerDescriptor.ControllerType.FullName, ex);
+                _logger.Error(ex.Message, ex);
                 return BadRequest(ex.Message);
             }
             catch(Exception ex)
             {
-                _logger.Error(Request, ControllerContext.ControllerDescriptor.ControllerType.FullName, ex);
+                _logger.Error(ex.Message, ex);
                 return BadRequest(ex.Message);
             }
 

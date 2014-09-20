@@ -8,7 +8,10 @@ using TaskBook.DomainModel;
 
 namespace TaskBook.DataAccessLayer.Configurations
 {
-    public class PermissionConfiguration: EntityTypeConfiguration<Permission>
+    /// <summary>
+    /// Describes Permissions-Roles many-to-many configuration
+    /// </summary>
+    public sealed class PermissionConfiguration: EntityTypeConfiguration<Permission>
     {
         public PermissionConfiguration()
         {

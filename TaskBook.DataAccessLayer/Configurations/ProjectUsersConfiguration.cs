@@ -8,7 +8,10 @@ using TaskBook.DomainModel;
 
 namespace TaskBook.DataAccessLayer.Configurations
 {
-    public class ProjectUsersConfiguration: EntityTypeConfiguration<ProjectUsers>
+    /// <summary>
+    /// Describes ProjectUsers model configuration
+    /// </summary>
+    public sealed class ProjectUsersConfiguration: EntityTypeConfiguration<ProjectUsers>
     {
 
         public ProjectUsersConfiguration()

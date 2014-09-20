@@ -9,6 +9,9 @@ using NLog.Mvc;
 
 namespace TaskBook.WebApi.Tracer
 {
+    /// <summary>
+    /// Trace writer; uses NLog
+    /// </summary>
     public sealed class NLogTracer: ITraceWriter
     {
         private readonly ILogger _logger;
@@ -18,6 +21,13 @@ namespace TaskBook.WebApi.Tracer
             _logger = logger;
         }
 
+        /// <summary>
+        /// Invokes trace action, logs the message record
+        /// </summary>
+        /// <param name="request">The current System.Net.Http.HttpRequestMessage</param>
+        /// <param name="category">The logical category for the trace</param>
+        /// <param name="level">TraceLevel at which to write this trace</param>
+        /// <param name="traceAction">The action to invoke</param>
         public void Trace(HttpRequestMessage request,
             string category,
             TraceLevel level,

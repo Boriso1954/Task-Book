@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Http.Tracing;
+using NLog.Mvc;
 using TaskBook.DataAccessLayer.Exceptions;
 using TaskBook.DomainModel.ViewModels;
 using TaskBook.Services.Interfaces;
@@ -17,10 +18,10 @@ namespace TaskBook.WebApi.Controllers
     public class PermissionsController : ApiController
     {
         private readonly IPermissionService _permissionService;
-        private readonly ITraceWriter _logger;
+        private readonly ILogger _logger;
 
         public PermissionsController(IPermissionService permissionService,
-            ITraceWriter logger)
+            ILogger logger)
         {
             _permissionService = permissionService;
             _logger = logger;
@@ -38,14 +39,14 @@ namespace TaskBook.WebApi.Controllers
                 if(permissions == null)
                 {
                     string msg = string.Format("Unable to return permissions for role '{0}'", roleName);
-                    _logger.Warn(Request, ControllerContext.ControllerDescriptor.ControllerType.FullName, msg);
+                    _logger.Warning(msg);
                     return BadRequest(msg);
                 }
                 return Ok(permissions);
             }
             catch(DataAccessReaderException ex)
             {
-                _logger.Error(Request, ControllerContext.ControllerDescriptor.ControllerType.FullName, ex);
+                _logger.Error(ex.Message, ex);
                 return BadRequest(ex.Message);
             }
         }
