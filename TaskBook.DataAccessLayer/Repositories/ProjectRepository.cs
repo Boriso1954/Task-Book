@@ -9,17 +9,18 @@ using TaskBook.DomainModel;
 
 namespace TaskBook.DataAccessLayer.Repositories
 {
+    /// <summary>
+    /// Provides data repository for TaskBook project
+    /// </summary>
     public class ProjectRepository: Repository<Project>, IProjectRepository
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="database">Database context</param>
         public ProjectRepository(TaskBookDbContext database)
             : base(database)
         {
         }
-
-        //public override object Delete(Project project)
-        //{
-        //    project.DeletedDate = DateTimeOffset.UtcNow;
-        //    return project.Id;
-        //}
     }
 }

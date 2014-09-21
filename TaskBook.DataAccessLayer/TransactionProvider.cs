@@ -14,7 +14,7 @@ namespace TaskBook.DataAccessLayer
             var transactionOptions = new TransactionOptions 
             {
                 IsolationLevel = IsolationLevel.ReadCommitted, // The default value is Serializable, this could often result in a transaction deadlock 
-                Timeout = TimeSpan.FromMinutes(5) //assume 5 min is the timeout time
+                Timeout = TimeSpan.FromMinutes(5) //Assume 5 min is the timeout time
             }; 
             return new TransactionScope(TransactionScopeOption.Required, transactionOptions); 
         } 

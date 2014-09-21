@@ -8,8 +8,15 @@ using TaskBook.DomainModel;
 
 namespace TaskBook.DataAccessLayer.Repositories
 {
+    /// <summary>
+    /// Provides data repository for ProjectUsers entity
+    /// </summary>
     public class ProjectUsersRepository: Repository<ProjectUsers>, IProjectUsersRepository
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="database">Database context</param>
         public ProjectUsersRepository(TaskBookDbContext database)
             : base(database)
         {
