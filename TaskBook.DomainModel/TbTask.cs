@@ -11,12 +11,12 @@ namespace TaskBook.DomainModel
     [Table("Tasks")]
     public class TbTask: Entity
     {
-        [Required(ErrorMessage = "Title is required.")]
-        [MaxLength(64, ErrorMessage = "Title should be from 1 to 64 characters long.")]
+        [Required]
+        [MaxLength(64)]
         public string Title { get; set; }
 
-        [Required(ErrorMessage = "Description is required.")]
-        [MaxLength(512, ErrorMessage = "Description should be from 1 to 512 characters long.")]
+        [Required]
+        [MaxLength(512)]
         public string Description { get; set; }
 
         public long ProjectId { get; set; }

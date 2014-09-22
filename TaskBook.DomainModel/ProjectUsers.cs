@@ -11,9 +11,12 @@ namespace TaskBook.DomainModel
     {
         [Required]
         public string UserId { get; set; }
+
         public TbUser User { get; set; }
+
         [Required]
         public long ProjectId { get; set; }
+
         public Project Project { get; set; }
     }
 }

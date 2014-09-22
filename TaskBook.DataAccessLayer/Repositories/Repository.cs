@@ -10,7 +10,7 @@ using TaskBook.DomainModel;
 namespace TaskBook.DataAccessLayer.Repositories
 {
     /// <summary>
-    /// Abstract repository class. Provides main CRUD operations
+    /// Abstract generic repository for data access; provides main CRUD operations
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public abstract class Repository<T>: IRepository<T> where T: Entity

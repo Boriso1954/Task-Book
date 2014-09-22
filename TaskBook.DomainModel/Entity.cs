@@ -11,7 +11,7 @@ namespace TaskBook.DomainModel
     /// <summary>
     /// Base class for domain models
     /// </summary>
-    public class Entity
+    public abstract class Entity
     {
         /// <summary>
         /// Model identifier - primary key

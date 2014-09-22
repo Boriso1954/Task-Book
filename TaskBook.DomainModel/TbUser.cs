@@ -12,11 +12,11 @@ namespace TaskBook.DomainModel
     public class TbUser: IdentityUser
     {
         [Required]
-        [MaxLength(25, ErrorMessage = "FirstName shall be from 1 to 25 characters long.")]
+        [MaxLength(25)]
         public string FirstName { get; set; }
 
         [Required]
-        [MaxLength(25, ErrorMessage = "LastName shall be from 1 to 25 characters long.")]
+        [MaxLength(25)]
         public string LastName { get; set; }
 
         [DataType(DataType.Date)]

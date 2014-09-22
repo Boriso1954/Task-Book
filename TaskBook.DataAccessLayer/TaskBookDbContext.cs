@@ -10,11 +10,17 @@ using TaskBook.DomainModel;
 
 namespace TaskBook.DataAccessLayer
 {
+    /// <summary>
+    /// Database context class which also provides operations to manipulate users and roles
+    /// </summary>
     public class TaskBookDbContext: IdentityDbContext<TbUser>
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public TaskBookDbContext()
-            : base("TaskBookDbContext")
-            //: base("TaskBookDbContextTest") // Only for test goal
+            //: base("TaskBookDbContext")
+            : base("TaskBookDbContextTest") // Only for test goal
 
         {
             Configuration.ProxyCreationEnabled = false;
@@ -34,6 +40,10 @@ namespace TaskBook.DataAccessLayer
             modelBuilder.Configurations.Add(new ProjectUsersConfiguration());
         }
 
+        /// <summary>
+        /// Creates the Database context instance
+        /// </summary>
+        /// <returns>Database context</returns>
         public static TaskBookDbContext Create()
         {
             return new TaskBookDbContext();

@@ -12,6 +12,9 @@ using TaskBook.DataAccessLayer.Repositories.Interfaces;
 
 namespace TaskBook.DataAccessLayer
 {
+    /// <summary>
+    /// Provide business transactions and coordinates the writing out of changes and the resolution of concurrency problems
+    /// </summary>
     public class UnitOfWork: IUnitOfWork, IDisposable
     {
         private readonly TaskBookDbContext _dbContext;
@@ -20,11 +23,18 @@ namespace TaskBook.DataAccessLayer
         private ITaskRepository _taskRepository;
         private IReaderRepository _readerRepository;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="dbContext">Database context</param>
         public UnitOfWork(TaskBookDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
+        /// <summary>
+        /// Returns the reference to the database context object
+        /// </summary>
         public TaskBookDbContext DbContext
         {
             get
@@ -33,6 +43,9 @@ namespace TaskBook.DataAccessLayer
             }
         }
 
+        /// <summary>
+        /// Returns the reference to the ProjectRepository object
+        /// </summary>
         public IProjectRepository ProjectRepository
         {
             get
@@ -45,6 +58,9 @@ namespace TaskBook.DataAccessLayer
             }
         }
 
+        /// <summary>
+        /// Returns the reference to the ProjectUsersRepository object
+        /// </summary>
         public IProjectUsersRepository ProjectUsersRepository
         {
             get
@@ -57,6 +73,9 @@ namespace TaskBook.DataAccessLayer
             }
         }
 
+        /// <summary>
+        /// Returns the reference to the TaskRepository object
+        /// </summary>
         public ITaskRepository TaskRepository
         {
             get
@@ -69,6 +88,9 @@ namespace TaskBook.DataAccessLayer
             }
         }
 
+        /// <summary>
+        /// Returns the reference to the ReaderRepository object
+        /// </summary>
         public IReaderRepository ReaderRepository
         {
             get
@@ -81,6 +103,9 @@ namespace TaskBook.DataAccessLayer
             }
         }
 
+        /// <summary>
+        /// Commits the unit of work
+        /// </summary>
         public void Commit()
         {
             try
@@ -108,7 +133,6 @@ namespace TaskBook.DataAccessLayer
 
                 throw new DataAccessLayerException("Entity Validation Failed - errors follow:\n" + errMessage, ex);
 
-                //throw new DataAccessLayerException("Validation", ex);
             }
             catch(DbUpdateException ex)
             {

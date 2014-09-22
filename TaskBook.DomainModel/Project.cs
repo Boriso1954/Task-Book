@@ -10,8 +10,8 @@ namespace TaskBook.DomainModel
 {
     public class Project: Entity
     {
-        [Required(ErrorMessage = "Title is required.")]
-        [MaxLength(32, ErrorMessage = "Title should be from 1 to 32 characters long.")]
+        [Required]
+        [MaxLength(32)]
         [Index(IsUnique = true)]
         public string Title { get; set; }
 

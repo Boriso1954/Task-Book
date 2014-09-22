@@ -11,8 +11,9 @@ namespace TaskBook.DomainModel
     public class TbRole: IdentityRole
     {
         [Required]
-        [MaxLength(256, ErrorMessage = "Description should be up to 256 characters long.")]
+        [MaxLength(256)]
         public string Description { get; set; }
+
         public ICollection<Permission> Permissions { get; set; }
     }
 }

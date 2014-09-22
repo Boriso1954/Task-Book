@@ -1,32 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Transactions;
 using Microsoft.AspNet.Identity;
-using TaskBook.DataAccessLayer.Exceptions;
-using TaskBook.DataAccessLayer.Repositories.Interfaces;
 using TaskBook.DomainModel;
 using TaskBook.Services.Interfaces;
 using TaskBook.DomainModel.ViewModels;
-using TaskBook.DataAccessLayer.Reader;
 using TaskBook.DataAccessLayer;
 using TaskBook.DataAccessLayer.AuthManagers;
 using Microsoft.Practices.Unity;
 
 namespace TaskBook.Services
 {
+    /// <summary>
+    /// Service to manage TaskBook projects in the database
+    /// </summary>
     public sealed class ProjectService: IProjectService
     {
         private readonly IUnitOfWork _unitOfWork;
 
+        /// <summary>
+        /// Constructor; uses by the Unity dependency injector
+        /// </summary>
+        /// <param name="unitOfWork">Represents UnitOfWork object</param>
         [InjectionConstructor]
         public ProjectService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="unitOfWork">Represents UnitOfWork object</param>
+        /// <param name="userManager">Represents Identity UserManager object</param>
         public ProjectService(IUnitOfWork unitOfWork,
             TbUserManager userManager)
         {
@@ -34,8 +40,15 @@ namespace TaskBook.Services
             UserManager = userManager;
         }
 
+        /// <summary>
+        /// Accessor to the UserManager object
+        /// </summary>
         public TbUserManager UserManager { get; set; }
 
+        /// <summary>
+        /// Returns projects and project managers
+        /// </summary>
+        /// <returns>Projects and project managers</returns>
         public IQueryable<ProjectManagerVm> GetProjectsAndManagers()
         {
             var readerRepository = _unitOfWork.ReaderRepository;
@@ -43,6 +56,11 @@ namespace TaskBook.Services
             return projectsAndManagers;
         }
 
+        /// <summary>
+        /// Returns some project data and its manager
+        /// </summary>
+        /// <param name="projectId">Project ID</param>
+        /// <returns>Some project data and its manager</returns>
         public ProjectManagerVm GetProjectsAndManagers(long projectId)
         {
             var readerRepository = _unitOfWork.ReaderRepository;
@@ -50,6 +68,11 @@ namespace TaskBook.Services
             return projectAndManager;
         }
 
+        /// <summary>
+        /// Returns projects data
+        /// </summary>
+        /// <param name="id">Project ID</param>
+        /// <returns>Project data</returns>
         public ProjectVm GetById(long id)
         {
             var projectRepository = _unitOfWork.ProjectRepository;
@@ -67,6 +90,10 @@ namespace TaskBook.Services
             return projectVm;
         }
 
+        /// <summary>
+        /// Adds a project to the database
+        /// </summary>
+        /// <param name="projectVm">Project data</param>
         public void AddProject(ProjectVm projectVm)
         {
             var project = new Project()
@@ -75,10 +102,12 @@ namespace TaskBook.Services
                 CreatedDate = DateTimeOffset.UtcNow,
             };
 
+            // "NotAssigned" system account uses as a manager for the new project
             var notAssignedUserId = UserManager.FindByName("NotAssigned").Id;
             var projectRepository = _unitOfWork.ProjectRepository;
             var projectAccessService = new ProjectAccessService(_unitOfWork);
 
+            // Envelop the sequence of the db operations in the transaction scope
             using(var transaction = TransactionProvider.GetTransactionScope())
             {
                 projectRepository.Add(project);
@@ -88,6 +117,11 @@ namespace TaskBook.Services
             }
         }
 
+        /// <summary>
+        /// Updates project data in the database
+        /// </summary>
+        /// <param name="id">Project ID</param>
+        /// <param name="projectVm">Input project data</param>
         public void UpdateProject(long id, ProjectManagerVm projectVm)
         {
             if(id != projectVm.ProjectId)
@@ -108,6 +142,12 @@ namespace TaskBook.Services
             _unitOfWork.Commit();
         }
 
+        /// <summary>
+        /// Removes project prom the database
+        /// </summary>
+        /// <param name="id">Project ID</param>
+        /// <param name="softDeleted">TRUE if the project should be only marked sa deleted</param>
+        /// <remarks>During project deletion all the dependent records (users in the project and their tasks) must be deleted as well</remarks>
         public void DeleteProject(long id, bool softDeleted = false)
         {
             var projectRepository = _unitOfWork.ProjectRepository;

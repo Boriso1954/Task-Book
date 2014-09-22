@@ -2,24 +2,21 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Transactions;
 using Microsoft.AspNet.Identity;
-using TaskBook.DataAccessLayer.Exceptions;
 using TaskBook.DomainModel;
 using TaskBook.Services.Interfaces;
 using TaskBook.DomainModel.ViewModels;
-using TaskBook.DataAccessLayer.Reader;
-using TaskBook.DataAccessLayer.Repositories.Interfaces;
 using TaskBook.DataAccessLayer;
 using Microsoft.Practices.Unity;
 using System.Net.Mail;
-using Microsoft.AspNet.Identity.Owin;
 using TaskBook.DataAccessLayer.AuthManagers;
-using System.Net;
 using TaskBook.DomainModel.Mapping;
 
 namespace TaskBook.Services
 {
+    /// <summary>
+    /// Service to manage TaskBook users in the database
+    /// </summary>
     public sealed class UserService: IUserService
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -50,6 +47,12 @@ namespace TaskBook.Services
                 </div>
                 ";
 
+        /// <summary>
+        /// Constructor; uses by the Unity dependency injector
+        /// </summary>
+        /// <param name="unitOfWork">Represents UnitOfWork object</param>
+        /// <param name="emailService">Represents EamilService object</param>
+        /// <param name="mapper">Represents AutoMapper object</param>
         [InjectionConstructor]
         public UserService(IUnitOfWork unitOfWork,
             IEmailService emailService,
@@ -60,6 +63,13 @@ namespace TaskBook.Services
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="unitOfWork">Represents UnitOfWork object</param>
+        /// <param name="userManager">Represents Identity UserManager object</param>
+        /// <param name="emailService">Represents EamilService object</param>
+        /// <param name="mapper">Represents AutoMapper object</param>
         public UserService(IUnitOfWork unitOfWork,
             TbUserManager userManager,
             IEmailService emailService,
@@ -71,15 +81,32 @@ namespace TaskBook.Services
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="unitOfWork">Represents UnitOfWork object</param>
+        /// <param name="userManager">Represents Identity UserManager object</param>
         public UserService(IUnitOfWork unitOfWork,
             TbUserManager userManager)
             : this(unitOfWork, userManager, null, null)
         {
         }
 
+        /// <summary>
+        /// Accessor to the host URL
+        /// </summary>
         public string Host { get; set; }
+
+        /// <summary>
+        /// Accessor to the UserManager object
+        /// </summary>
         public TbUserManager UserManager { get; set; }
 
+        /// <summary>
+        /// Returns user's data by user ID
+        /// </summary>
+        /// <param name="id">User ID</param>
+        /// <returns>User's data</returns>
         public TbUser GetById(string id)
         {
             var user = UserManager.FindById(id);
@@ -87,17 +114,32 @@ namespace TaskBook.Services
             
         }
 
+        /// <summary>
+        /// Returns user's data by user name
+        /// </summary>
+        /// <param name="name">User name</param>
+        /// <returns>User's data</returns>
         public TbUser GetByName(string name)
         {
             var user = UserManager.FindByName(name);
             return user;
         }
 
+        /// <summary>
+        /// Returns user's data by user name asyncronously
+        /// </summary>
+        /// <param name="name">User name</param>
+        /// <returns>Task to enable asynchronous execution</returns>
         public Task<TbUser> GetByNameAsync(string name)
         {
            return UserManager.FindByNameAsync(name);
         }
 
+        /// <summary>
+        /// Returns user's data including role by user name
+        /// </summary>
+        /// <param name="userName">User name</param>
+        /// <returns>User's data including role</returns>
         public TbUserRoleVm GetUserByUserName(string userName)
         {
             var readerRepository = _unitOfWork.ReaderRepository;
@@ -105,6 +147,11 @@ namespace TaskBook.Services
             return user;
         }
 
+        /// <summary>
+        /// Returns users with their roles for the project
+        /// </summary>
+        /// <param name="projectId"Project ID></param>
+        /// <returns>users with their roles</returns>
         public IQueryable<TbUserRoleVm> GetUsersWithRolesByProjectId(long projectId)
         {
             var readerRepository = _unitOfWork.ReaderRepository;
@@ -112,6 +159,11 @@ namespace TaskBook.Services
             return users;
         }
 
+        /// <summary>
+        /// Returns users short data for the project
+        /// </summary>
+        /// <param name="projectId">Project ID</param>
+        /// <returns>Users short data</returns>
         public IQueryable<UserProjectVm> GetUsersByProjectId(long projectId)
         {
             var readerRepository = _unitOfWork.ReaderRepository;
@@ -119,6 +171,11 @@ namespace TaskBook.Services
             return users;
         }
 
+        /// <summary>
+        /// Creates and send email message to a user to reset a password
+        /// </summary>
+        /// <param name="model">User's data (email)</param>
+        /// <returns>Task to enable asynchronous execution</returns>
         public async Task ForgotPassword(ForgotPasswordVm model)
         {
             var user = await UserManager.FindByEmailAsync(model.Email);
@@ -127,11 +184,13 @@ namespace TaskBook.Services
                 throw new TbIdentityException("Find user error");
             }
 
+            // Create a password reset token and email body
             var code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
             //code = WebUtility.UrlEncode(code);
             string link = string.Format("{0}/#/resetPassword/{1}/{2}", Host, user.UserName, code);
-            //string link = string.Format("{0}/#/resetPassword?userId={1}&code={2}", Host, user.UserName, code);
             string body = string.Format(_resetPswEmailBodyConst, user.FirstName, link);
+
+            // Create the email message to reset a password and send it
             MailMessage message = new MailMessage();
             message.To.Add(user.Email);
             message.Subject = "Reset password";
@@ -140,6 +199,11 @@ namespace TaskBook.Services
             await _emailService.SendMailAsync(message);
         }
 
+        /// <summary>
+        /// Resets a password
+        /// </summary>
+        /// <param name="model">User's data to reset password</param>
+        /// <returns>Task to enable asynchronous execution</returns>
         public async Task ResetPassword(ResetPasswordVm model)
         {
             var user = await UserManager.FindByNameAsync(model.UserName);
@@ -154,22 +218,34 @@ namespace TaskBook.Services
             }
         }
 
+        /// <summary>
+        /// Adds user to the system asyncronously
+        /// </summary>
+        /// <param name="userModel">User's data</param>
+        /// <returns>Task to enable asynchronous execution</returns>
         public async Task AddUserAsync(TbUserRoleVm userModel)
         {
             // Base user constructor creates Id, which must be kept in the model before mapping
             var user = new TbUser();
             userModel.UserId = user.Id;
+
+            // Execute mapping from the view model to the domain object
             user = _mapper.Map<TbUserRoleVm, TbUser>(userModel, user);
 
+            // TODO: consider more secure psw generation 
             string password = "user12";
+
+            // Envelop the sequence of the db operations in the transaction scope
             using(var transaction = TransactionProvider.GetTransactionScope())
             {
+                // Create a user
                 var result = UserManager.Create(user, password);
                 if(result == null || !result.Succeeded)
                 {
                     throw new TbIdentityException("Create user error", result);
                 }
 
+                // Add a user to the specified role
                 string role = userModel.Role;
                 long projectId = (long)userModel.ProjectId;
                 string userId = user.Id;
@@ -180,6 +256,7 @@ namespace TaskBook.Services
                     throw new TbIdentityException("Add to role error", result);
                 }
 
+                // Add a user to the specified project
                 var projectUsers = new ProjectUsers()
                 {
                     ProjectId = projectId,
@@ -189,6 +266,7 @@ namespace TaskBook.Services
                 var projectUsersRepository = _unitOfWork.ProjectUsersRepository;
                 projectUsersRepository.Add(projectUsers);
 
+                // If just added user is a manager, delete "NotAssigned" (manager) system account from the project
                 if(role == RoleKey.Manager)
                 {
                     string notAssignedUserId = UserManager.FindByName("NotAssigned").Id;
@@ -198,7 +276,7 @@ namespace TaskBook.Services
                 transaction.Complete();
             }
 
-            // Send email notification
+            // Create email notification and send it
             string login = string.Format("{0}/#/login", Host);
             string retrive = string.Format("{0}/#/forgotPassword", Host);
             string body = string.Format(_addUserEmailBodyConst, user.FirstName, user.UserName, password, retrive, login);
@@ -210,6 +288,11 @@ namespace TaskBook.Services
             await _emailService.SendMailAsync(message);
         }
 
+        /// <summary>
+        /// Updates user's data in the database
+        /// </summary>
+        /// <param name="id">User ID</param>
+        /// <param name="userVm">Input user's data</param>
         public void UpdateUser(string id, TbUserRoleVm userVm)
         {
             if(id != userVm.UserId)
@@ -223,16 +306,20 @@ namespace TaskBook.Services
                 throw new Exception(string.Format("Unable to find user '{0}'.", userVm.UserName));
             }
 
+            // Execute mapping from the view model to the domain object
             user = _mapper.Map<TbUserRoleVm, TbUser>(userVm, user);
 
+            // Envelop the sequence of the db operations in the transaction scope
             using(var transaction = TransactionProvider.GetTransactionScope())
             {
+                // Update user's data
                 var result = UserManager.Update(user);
                 if(result == null || !result.Succeeded)
                 {
                     throw new TbIdentityException("Update user error", result);
                 }
             
+                // Change user's role if it had been changed
                 string prevRole = UserManager.GetRoles(id).FirstOrDefault();
                 if(prevRole != userVm.Role)
                 {
@@ -251,6 +338,12 @@ namespace TaskBook.Services
             }
         }
 
+        /// <summary>
+        /// Removes a user from the database 
+        /// </summary>
+        /// <param name="id">User ID</param>
+        /// <param name="softDeleted">TRUE if the project should be only marked sa deleted</param>
+        /// <remarks>During user deletion all the user's must be deleted as well</remarks>
         public void DeleteUser(string id, bool softDeleted = false)
         {
             var user = UserManager.FindById(id);
@@ -259,12 +352,14 @@ namespace TaskBook.Services
                 throw new Exception(string.Format("Unable to delete user with ID '{0}'.", id));
             }
 
+            // Envelop the sequence of the db operations in the transaction scope
             using(var transaction = TransactionProvider.GetTransactionScope())
             {
+                // Delete user's tasks first
                 IList<TaskUserVm> tasks;
                 using(var readerRepository = _unitOfWork.ReaderRepository)
                 {
-                    // Delete user's tasks first
+                    
                     tasks = readerRepository.GetUserTasks(user.UserName).ToList();
                 }
 
@@ -279,7 +374,7 @@ namespace TaskBook.Services
                     _unitOfWork.Commit();
                 }
 
-                // Mark User as deleted (soft deletion), skip the system user
+                // Mark User as deleted (soft deletion), but skip the system user
                 if(user.UserName != "NotAssigned")
                 {
                     user.DeletedDate = DateTimeOffset.UtcNow;

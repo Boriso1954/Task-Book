@@ -7,8 +7,15 @@ using System.Transactions;
 
 namespace TaskBook.DataAccessLayer
 {
-    public class TransactionProvider
+    /// <summary>
+    /// Customizes the TransactionScope object
+    /// </summary>
+    public sealed class TransactionProvider
     {
+        /// <summary>
+        /// Returns an instance of the TransactionScope object with custom options
+        /// </summary>
+        /// <returns>Reference to the TransactionScope object</returns>
         public static TransactionScope GetTransactionScope()
          { 
             var transactionOptions = new TransactionOptions 

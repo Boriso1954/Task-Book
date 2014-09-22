@@ -8,8 +8,14 @@ using TaskBook.DomainModel.ViewModels;
 
 namespace TaskBook.DomainModel.Mapping
 {
+    /// <summary>
+    /// AutoMapper profile class for mapping from view models to domain objects
+    /// </summary>
     public sealed class ViewModelToDomainMappingProfile: Profile
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public override string ProfileName
         {
             get { return "ViewModelToDomainMappings"; }
@@ -17,6 +23,7 @@ namespace TaskBook.DomainModel.Mapping
 
         protected override void Configure()
         {
+            // Creates the mapping from TaskVm view model to TbTask domain object
             Mapper.CreateMap<TaskVm, TbTask>()
                 .IgnoreUnmappedMembers()
                 .ForMember(d => d.Id, o => o.MapFrom(s => s.TaskId))
@@ -28,6 +35,7 @@ namespace TaskBook.DomainModel.Mapping
                 .ForMember(d => d.CompletedDate, o => o.MapFrom(s => s.CompletedDate))
                 .ForMember(d => d.Status, o => o.ResolveUsing<TaskStatusResolver>().FromMember(s => s.Status));
 
+            // Creates the mapping from TbUserRoleVm view model to TbUser domain object
             Mapper.CreateMap<TbUserRoleVm, TbUser>()
                 .IgnoreUnmappedMembers()
                 .ForMember(d => d.Id, o => o.MapFrom(s => s.UserId))
