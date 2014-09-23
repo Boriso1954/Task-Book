@@ -1,18 +1,11 @@
-using Microsoft.Practices.Unity;
-using Microsoft.Practices.Unity.Configuration;
-using System.Web.Http;
-using Unity.WebApi;
-using TaskBook.DataAccessLayer;
-using Microsoft.AspNet.Identity;
-using TaskBook.DomainModel;
-using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 using System.Configuration;
 using System.Linq;
 using System.Reflection;
-using System;
-using TaskBook.Services;
-using TaskBook.Services.Interfaces;
-using TaskBook.WebApi.Controllers;
+using System.Web.Http;
+using Microsoft.Practices.Unity;
+using Microsoft.Practices.Unity.Configuration;
+using Unity.WebApi;
 
 namespace TaskBook.WebApi
 {

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TaskBook.DataAccessLayer.Repositories.Interfaces;
+﻿using TaskBook.DataAccessLayer.Repositories.Interfaces;
 using TaskBook.DomainModel;
 
 namespace TaskBook.DataAccessLayer.Repositories
@@ -11,7 +6,7 @@ namespace TaskBook.DataAccessLayer.Repositories
     /// <summary>
     /// Provides data repository for ProjectUsers entity
     /// </summary>
-    public class ProjectUsersRepository: Repository<ProjectUsers>, IProjectUsersRepository
+    public sealed class ProjectUsersRepository: Repository<ProjectUsers>, IProjectUsersRepository
     {
         /// <summary>
         /// Constructor

@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace TaskBook.DataAccessLayer.Reader
 {
-    internal sealed class SpNames
+    internal static class SpNames
     {
         internal const string spGetProjectsAndManagers = "spGetProjectsAndManagers";
         internal const string spGetUserDetailsByUserName = "spGetUserDetailsByUserName";

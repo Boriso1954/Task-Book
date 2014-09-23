@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.Net;
 using System.Net.Mail;
-using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Identity;
 using TaskBook.Services.Interfaces;
 
 namespace TaskBook.Services
@@ -26,7 +21,7 @@ namespace TaskBook.Services
         }
 
         /// <summary>
-        /// Sends message to the outlook SMYP server for delivery
+        /// Sends message to the outlook SMTP server for delivery
         /// </summary>
         /// <param name="message">Email message</param>
         public void Send(MailMessage message)

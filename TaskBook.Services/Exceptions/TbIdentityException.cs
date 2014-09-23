@@ -6,7 +6,7 @@ namespace TaskBook.Services.Interfaces
     /// <summary>
     /// TaskBook identity exception
     /// </summary>
-    public class TbIdentityException: Exception
+    public sealed class TbIdentityException: Exception
     {
         /// <summary>
         /// Default constructor

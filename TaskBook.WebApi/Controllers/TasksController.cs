@@ -1,21 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
-using TaskBook.DomainModel;
-using TaskBook.DataAccessLayer;
-using TaskBook.Services.Interfaces;
-using TaskBook.DomainModel.ViewModels;
-using TaskBook.DataAccessLayer.Exceptions;
-using TaskBook.WebApi.Attributes;
-using System.Web.Http.Tracing;
 using NLog.Mvc;
+using TaskBook.DataAccessLayer.Exceptions;
+using TaskBook.DomainModel;
+using TaskBook.DomainModel.ViewModels;
+using TaskBook.Services.Interfaces;
+using TaskBook.WebApi.Attributes;
 
 namespace TaskBook.WebApi.Controllers
 {

@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using TaskBook.DataAccessLayer.Exceptions;
 using TaskBook.DataAccessLayer.Reader;
 using TaskBook.DataAccessLayer.Repositories;
@@ -15,7 +12,7 @@ namespace TaskBook.DataAccessLayer
     /// <summary>
     /// Provide business transactions and coordinates the writing out of changes and the resolution of concurrency problems
     /// </summary>
-    public class UnitOfWork: IUnitOfWork, IDisposable
+    public sealed class UnitOfWork: IUnitOfWork, IDisposable
     {
         private readonly TaskBookDbContext _dbContext;
         private IProjectRepository _projectRepository;

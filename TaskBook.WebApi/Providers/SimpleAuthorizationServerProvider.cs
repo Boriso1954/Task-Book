@@ -1,8 +1,8 @@
 ﻿using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.Owin.Security.OAuth;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security.OAuth;
 using TaskBook.DataAccessLayer.AuthManagers;
 
 namespace TaskBook.WebApi.Providers
@@ -10,7 +10,7 @@ namespace TaskBook.WebApi.Providers
     /// <summary>
     /// Creates and provides "access_token"
     /// </summary>
-    public class SimpleAuthorizationServerProvider: OAuthAuthorizationServerProvider
+    public sealed class SimpleAuthorizationServerProvider: OAuthAuthorizationServerProvider
     {
         /// <summary>
         /// Validates the input context

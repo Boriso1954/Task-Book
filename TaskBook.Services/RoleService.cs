@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Microsoft.AspNet.Identity;
 using Microsoft.Practices.Unity;
-using TaskBook.DomainModel;
 using TaskBook.DataAccessLayer.AuthManagers;
 using TaskBook.Services.Interfaces;
 

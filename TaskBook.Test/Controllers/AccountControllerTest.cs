@@ -1,17 +1,16 @@
-﻿using System.Web.Http.Results;
-using Microsoft.AspNet.Identity;
-using Moq;
-using NUnit.Framework;
-using TaskBook.DomainModel;
-using TaskBook.DomainModel.ViewModels;
-using TaskBook.DataAccessLayer.AuthManagers;
-using TaskBook.Services.Interfaces;
-using TaskBook.WebApi.Controllers;
-using NLog.Mvc;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System;
+using System.Web.Http.Results;
+using Microsoft.AspNet.Identity;
+using Moq;
+using NLog.Mvc;
+using NUnit.Framework;
+using TaskBook.DataAccessLayer.AuthManagers;
+using TaskBook.DomainModel;
+using TaskBook.DomainModel.ViewModels;
+using TaskBook.Services.Interfaces;
+using TaskBook.WebApi.Controllers;
 
 namespace TaskBook.Test
 {
@@ -47,7 +46,7 @@ namespace TaskBook.Test
                 UserName = "User1"
             };
 
-            _userService.Setup(x => x.GetUserByUserName(user.UserName))
+            _userService.Setup(x => x.GetUserWithRoleByUserName(user.UserName))
                 .Returns(user)
                 .Verifiable("Must call IUserService.GetUserByUserName");
 
@@ -69,7 +68,7 @@ namespace TaskBook.Test
             TbUserRoleVm user = null;
             string userName = "User1";
 
-            _userService.Setup(x => x.GetUserByUserName(It.IsAny<string>()))
+            _userService.Setup(x => x.GetUserWithRoleByUserName(It.IsAny<string>()))
                .Returns(user)
                .Verifiable("Must call IUserService.GetUserByUserName");
 

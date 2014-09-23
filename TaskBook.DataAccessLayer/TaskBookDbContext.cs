@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data.Entity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using TaskBook.DataAccessLayer.Configurations;
 using TaskBook.DomainModel;
@@ -13,7 +8,7 @@ namespace TaskBook.DataAccessLayer
     /// <summary>
     /// Database context class which also provides operations to manipulate users and roles
     /// </summary>
-    public class TaskBookDbContext: IdentityDbContext<TbUser>
+    public sealed class TaskBookDbContext: IdentityDbContext<TbUser>
     {
         /// <summary>
         /// Constructor

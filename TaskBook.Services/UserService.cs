@@ -1,16 +1,16 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
-using TaskBook.DomainModel;
-using TaskBook.Services.Interfaces;
-using TaskBook.DomainModel.ViewModels;
-using TaskBook.DataAccessLayer;
 using Microsoft.Practices.Unity;
-using System.Net.Mail;
+using TaskBook.DataAccessLayer;
 using TaskBook.DataAccessLayer.AuthManagers;
+using TaskBook.DomainModel;
 using TaskBook.DomainModel.Mapping;
+using TaskBook.DomainModel.ViewModels;
+using TaskBook.Services.Interfaces;
 
 namespace TaskBook.Services
 {
@@ -103,44 +103,11 @@ namespace TaskBook.Services
         public TbUserManager UserManager { get; set; }
 
         /// <summary>
-        /// Returns user's data by user ID
-        /// </summary>
-        /// <param name="id">User ID</param>
-        /// <returns>User's data</returns>
-        public TbUser GetById(string id)
-        {
-            var user = UserManager.FindById(id);
-            return user;
-            
-        }
-
-        /// <summary>
-        /// Returns user's data by user name
-        /// </summary>
-        /// <param name="name">User name</param>
-        /// <returns>User's data</returns>
-        public TbUser GetByName(string name)
-        {
-            var user = UserManager.FindByName(name);
-            return user;
-        }
-
-        /// <summary>
-        /// Returns user's data by user name asyncronously
-        /// </summary>
-        /// <param name="name">User name</param>
-        /// <returns>Task to enable asynchronous execution</returns>
-        public Task<TbUser> GetByNameAsync(string name)
-        {
-           return UserManager.FindByNameAsync(name);
-        }
-
-        /// <summary>
         /// Returns user's data including role by user name
         /// </summary>
         /// <param name="userName">User name</param>
         /// <returns>User's data including role</returns>
-        public TbUserRoleVm GetUserByUserName(string userName)
+        public TbUserRoleVm GetUserWithRoleByUserName(string userName)
         {
             var readerRepository = _unitOfWork.ReaderRepository;
             var user = readerRepository.GetUserByUserName(userName).FirstOrDefault();
@@ -151,7 +118,7 @@ namespace TaskBook.Services
         /// Returns users with their roles for the project
         /// </summary>
         /// <param name="projectId"Project ID></param>
-        /// <returns>users with their roles</returns>
+        /// <returns>Users with their roles</returns>
         public IQueryable<TbUserRoleVm> GetUsersWithRolesByProjectId(long projectId)
         {
             var readerRepository = _unitOfWork.ReaderRepository;
@@ -219,7 +186,7 @@ namespace TaskBook.Services
         }
 
         /// <summary>
-        /// Adds user to the system asyncronously
+        /// Adds a user to the system asyncronously
         /// </summary>
         /// <param name="userModel">User's data</param>
         /// <returns>Task to enable asynchronous execution</returns>
@@ -343,7 +310,7 @@ namespace TaskBook.Services
         /// </summary>
         /// <param name="id">User ID</param>
         /// <param name="softDeleted">TRUE if the project should be only marked sa deleted</param>
-        /// <remarks>During user deletion all the user's must be deleted as well</remarks>
+        /// <remarks>During user deletion all the user's tasks must be deleted as well</remarks>
         public void DeleteUser(string id, bool softDeleted = false)
         {
             var user = UserManager.FindById(id);

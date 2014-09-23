@@ -9,7 +9,7 @@ namespace TaskBook.DataAccessLayer.AuthManagers
     /// <summary>
     /// Provides role related api
     /// </summary>
-    public class TbRoleManager: RoleManager<TbRole>
+    public sealed class TbRoleManager: RoleManager<TbRole>
     {
         /// <summary>
         /// Constructor

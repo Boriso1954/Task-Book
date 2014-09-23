@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNet.Identity;
-using TaskBook.DomainModel;
-using TaskBook.Services.Interfaces;
-using TaskBook.DomainModel.ViewModels;
+using Microsoft.Practices.Unity;
 using TaskBook.DataAccessLayer;
 using TaskBook.DataAccessLayer.AuthManagers;
-using Microsoft.Practices.Unity;
+using TaskBook.DomainModel;
+using TaskBook.DomainModel.ViewModels;
+using TaskBook.Services.Interfaces;
 
 namespace TaskBook.Services
 {
@@ -57,10 +57,10 @@ namespace TaskBook.Services
         }
 
         /// <summary>
-        /// Returns some project data and its manager
+        /// Returns project data including project manager
         /// </summary>
         /// <param name="projectId">Project ID</param>
-        /// <returns>Some project data and its manager</returns>
+        /// <returns>project data including project manager</returns>
         public ProjectManagerVm GetProjectsAndManagers(long projectId)
         {
             var readerRepository = _unitOfWork.ReaderRepository;
@@ -69,7 +69,7 @@ namespace TaskBook.Services
         }
 
         /// <summary>
-        /// Returns projects data
+        /// Returns project data
         /// </summary>
         /// <param name="id">Project ID</param>
         /// <returns>Project data</returns>
@@ -146,7 +146,7 @@ namespace TaskBook.Services
         /// Removes project prom the database
         /// </summary>
         /// <param name="id">Project ID</param>
-        /// <param name="softDeleted">TRUE if the project should be only marked sa deleted</param>
+        /// <param name="softDeleted">TRUE if the project should be only marked as deleted</param>
         /// <remarks>During project deletion all the dependent records (users in the project and their tasks) must be deleted as well</remarks>
         public void DeleteProject(long id, bool softDeleted = false)
         {

@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace TaskBook.DomainModel
 {
-    public class ProjectUsers: Entity
+    public sealed class ProjectUsers: Entity
     {
         [Required]
         public string UserId { get; set; }

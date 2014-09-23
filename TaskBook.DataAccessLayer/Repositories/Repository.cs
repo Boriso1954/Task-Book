@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using TaskBook.DataAccessLayer.Repositories.Interfaces;
 using TaskBook.DomainModel;
@@ -12,7 +11,7 @@ namespace TaskBook.DataAccessLayer.Repositories
     /// <summary>
     /// Abstract generic repository for data access; provides main CRUD operations
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">Entity</typeparam>
     public abstract class Repository<T>: IRepository<T> where T: Entity
     {
         private readonly TaskBookDbContext _db;
@@ -34,17 +33,17 @@ namespace TaskBook.DataAccessLayer.Repositories
         }
 
         /// <summary>
-        /// Get an entity from data store by ID
+        /// Get an entity from the repository by ID
         /// </summary>
         /// <param name="id">Entity ID</param>
-        /// <returns>Entity object to be returned</returns>
+        /// <returns>Entity object</returns>
         public virtual T GetById(object id)
         {
             return _dbset.Find(id);
         }
 
         /// <summary>
-        /// Returns the entity collection according to the specified predicate
+        /// Returns the entity collection from the repository according to the specified predicate
         /// </summary>
         /// <param name="predicate">Method that defines a filter criterion</param>
         /// <returns>Entities collection met the predicate</returns>
@@ -64,10 +63,10 @@ namespace TaskBook.DataAccessLayer.Repositories
         }
 
         /// <summary>
-        /// Checks if an entity exists
+        /// Checks if an entity exists in the repository
         /// </summary>
         /// <param name="id">Entity ID</param>
-        /// <returns>Entity object to be returned</returns>
+        /// <returns>TRUE if the entity exists</returns>
         public bool Exists(object id)
         {
             return _dbset.Find(id) == null;
@@ -97,7 +96,7 @@ namespace TaskBook.DataAccessLayer.Repositories
         }
 
         /// <summary>
-        /// Marks an entity as modified
+        /// Changes entity proprties and marks an entity as modified
         /// </summary>
         /// <param name="t">Entity object to be updated</param>
         public virtual void Update(T t)
@@ -107,7 +106,7 @@ namespace TaskBook.DataAccessLayer.Repositories
         }
 
         /// <summary>
-        /// Marks entities as deleted
+        /// Marks entity as deleted
         /// </summary>
         /// <param name="t">Entity object to be deleted</param>
         public virtual object Delete(T t)

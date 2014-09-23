@@ -1,29 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Transactions;
+using System.Text;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
-using TaskBook.DataAccessLayer;
-using TaskBook.DataAccessLayer.Exceptions;
-using TaskBook.DataAccessLayer.Repositories.Interfaces;
-using TaskBook.DataAccessLayer.Reader;
-using TaskBook.DomainModel;
-using TaskBook.Services.Interfaces;
-using TaskBook.DomainModel.ViewModels;
-using TaskBook.WebApi.Attributes;
-using TaskBook.Services;
-using System.Web;
 using Microsoft.Practices.Unity;
-using System.Web.Http.Tracing;
 using NLog.Mvc;
-using System.Text;
 using TaskBook.DataAccessLayer.AuthManagers;
+using TaskBook.DataAccessLayer.Exceptions;
+using TaskBook.DomainModel;
+using TaskBook.DomainModel.ViewModels;
+using TaskBook.Services.Interfaces;
+using TaskBook.WebApi.Attributes;
 
 namespace TaskBook.WebApi.Controllers
 {

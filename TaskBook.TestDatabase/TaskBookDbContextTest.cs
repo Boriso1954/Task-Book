@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data.Entity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using TaskBook.DataAccessLayer.Configurations;
 using TaskBook.DomainModel;
 
 namespace TaskBook.TestDatabase
 {
-    public class TaskBookDbContextTest: IdentityDbContext<TbUser>
+    public sealed class TaskBookDbContextTest: IdentityDbContext<TbUser>
     {
         public TaskBookDbContextTest()
             : base("TaskBookDbContextTest")

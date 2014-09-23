@@ -1,18 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
 using TaskBook.DataAccessLayer;
 using TaskBook.DataAccessLayer.AuthManagers;
-using TaskBook.DataAccessLayer.Repositories;
-using TaskBook.DomainModel;
 using TaskBook.WebApi.Providers;
-using TaskBook.Services;
 
 namespace TaskBook.WebApi
 {

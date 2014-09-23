@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
-using System.Web.Http.Tracing;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Practices.Unity;
 using NLog.Mvc;

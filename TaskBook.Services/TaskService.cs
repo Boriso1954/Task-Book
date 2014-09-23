@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
+using TaskBook.DataAccessLayer;
 using TaskBook.DomainModel;
+using TaskBook.DomainModel.Mapping;
 using TaskBook.DomainModel.ViewModels;
 using TaskBook.Services.Interfaces;
-using TaskBook.DataAccessLayer;
-using TaskBook.DomainModel.Mapping;
 
 namespace TaskBook.Services
 {
@@ -45,7 +45,7 @@ namespace TaskBook.Services
         /// </summary>
         /// <param name="projectId">Project ID</param>
         /// <returns>Tasks for the project</returns>
-        /// <remarks>If project id does not specify the method returns tasks for all the projects</remarks>
+        /// <remarks>If the project ID does not specify the method returns tasks for all the projects</remarks>
         public IQueryable<TaskVm> GetTasks(long? projectId = null)
         {
             IQueryable<TaskVm> tasks;
@@ -75,7 +75,7 @@ namespace TaskBook.Services
         }
 
         /// <summary>
-        /// ASdds a task to the database
+        /// Adds a task to the database
         /// </summary>
         /// <param name="taskVm">Task data</param>
         public void AddTask(TaskVm taskVm)
@@ -130,7 +130,7 @@ namespace TaskBook.Services
         /// <summary>
         /// Removes a task from the database
         /// </summary>
-        /// <param name="id">task ID</param>
+        /// <param name="id">Task ID</param>
         public void DeleteTask(long id)
         {
             var taskRepository = _unitOfWork.TaskRepository;

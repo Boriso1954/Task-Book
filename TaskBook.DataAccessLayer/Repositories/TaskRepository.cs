@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TaskBook.DataAccessLayer.Repositories.Interfaces;
+﻿using TaskBook.DataAccessLayer.Repositories.Interfaces;
 using TaskBook.DomainModel;
 
 namespace TaskBook.DataAccessLayer.Repositories
@@ -11,7 +6,7 @@ namespace TaskBook.DataAccessLayer.Repositories
     /// <summary>
     /// Provides data repository for Task entity
     /// </summary>
-    public class TaskRepository: Repository<TbTask>, ITaskRepository
+    public sealed class TaskRepository: Repository<TbTask>, ITaskRepository
     {
         /// <summary>
         /// Constructor

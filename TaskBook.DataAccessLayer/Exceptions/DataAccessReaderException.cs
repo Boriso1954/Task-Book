@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TaskBook.DataAccessLayer.Exceptions
 {
     /// <summary>
     /// Specific exception for the data reader
     /// </summary>
-    public class DataAccessReaderException: Exception
+    public sealed class DataAccessReaderException: Exception
     {
         /// <summary>
         /// Constructor
