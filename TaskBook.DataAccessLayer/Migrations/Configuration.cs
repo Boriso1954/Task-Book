@@ -14,7 +14,7 @@ namespace TaskBook.DataAccessLayer.Migrations
     /// <summary>
     /// Database migration configuration class
     /// </summary>
-    internal sealed class Configuration : DbMigrationsConfiguration<TaskBook.DataAccessLayer.TaskBookDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<TaskBookDbContext>
     {
         /// <summary>
         /// Constructor
@@ -70,7 +70,7 @@ namespace TaskBook.DataAccessLayer.Migrations
             }
             catch(Exception ex)
             {
-                Console.WriteLine("Error during creating SP: {0}", ex.Message);
+                //Console.WriteLine("Error during creating SP: {0}", ex.Message);
                 context.Database.Connection.Close();
                 return;
             }

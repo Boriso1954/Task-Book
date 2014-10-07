@@ -1,5 +1,6 @@
 ﻿"use strict";
-app.controller("addProjectController", ["$scope", "projectService", function ($scope, projectService) {
+app.controller("addProjectController", ["$scope", "projectService",
+    function ($scope, projectService) {
 
         $scope.project = {};
         $scope.message = "";

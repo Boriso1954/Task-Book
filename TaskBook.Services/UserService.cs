@@ -370,7 +370,6 @@ namespace TaskBook.Services
                     // Delete user (cascade deletion from UserRoles and ProgectUsers)
                     UserManager.Delete(deletedUser);
                 }
-                
             }
         }
         

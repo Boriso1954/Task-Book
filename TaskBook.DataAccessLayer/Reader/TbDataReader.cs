@@ -6,7 +6,7 @@ using TaskBook.DataAccessLayer.Exceptions;
 namespace TaskBook.DataAccessLayer.Reader
 {
     /// <summary>
-    /// Data reader class
+    /// Provides direct data read operations based on stored procedures
     /// </summary>
     public sealed class TbDataReader: IDisposable
     {

@@ -49,6 +49,7 @@ namespace TaskBook.Services
             projectUsersRepository.DeleteByPredicate(x => x.UserId == userId && x.ProjectId == projectId);
             _unitOfWork.Commit();
         }
+
         public void Dispose()
         {
             _unitOfWork.Dispose();

@@ -16,8 +16,8 @@ namespace TaskBook.Test
             var routeData = config.Routes.GetRouteData(request);
             request.Properties[HttpPropertyKeys.HttpRouteDataKey] = routeData;
 
-            var controllerContext = new HttpControllerContext(config, routeData, request);
             var controllerSelector = new DefaultHttpControllerSelector(config);
+            var controllerContext = new HttpControllerContext(config, routeData, request);
             var controllerDescriptor = controllerSelector.SelectController(request);
             controllerContext.ControllerDescriptor = controllerDescriptor;
             var controllerType = controllerContext.ControllerDescriptor.ControllerType;

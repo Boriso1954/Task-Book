@@ -22,6 +22,8 @@ namespace TaskBook.WebApi
             // The line below duplicates the above line
             //WebApiConfig.Register(GlobalConfiguration.Configuration);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            //BundleTable.EnableOptimizations = true;
         }
     }
 }

@@ -301,5 +301,4 @@ app.controller("tasksController", ["$scope", "$routeParams", "accountService", "
                 $scope.maxDate = null;
             }
         };
-
 }]);

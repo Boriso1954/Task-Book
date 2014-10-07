@@ -16,7 +16,7 @@ describe("$accountService", function () {
         });
     });
 
-    it("should contain a accountService and set of functions", function () {
+    it("should contain an accountService and set of functions", function () {
         expect(accountService).not.toBeNull();
         expect(angular.isFunction(accountService.getUserDetailsByUserName)).toBeTruthy();
         expect(angular.isFunction(accountService.getUsersByProjectId)).toBeTruthy();

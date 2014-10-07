@@ -20,13 +20,7 @@ app.controller("loginController", ["$scope", "$location", "$routeParams", "authS
                             if (role == "Admin") {
                                 $location.path("/projects");
                             }
-                            else if (role == "Manager") {
-                                $location.path("/tasks/" + $scope.loginData.userName);
-                            }
-                            else if (role == "Advanced") {
-                                $location.path("/tasks/" + $scope.loginData.userName);
-                            }
-                            else { // User
+                            else { // Manager, Advanced, User
                                 $location.path("/tasks/" + $scope.loginData.userName);
                             }
                         }, function (error) {

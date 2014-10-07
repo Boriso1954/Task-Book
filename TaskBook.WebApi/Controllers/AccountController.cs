@@ -30,6 +30,7 @@ namespace TaskBook.WebApi.Controllers
         public AccountController(IUserService userService,
             TbUserManager userManager,
             ILogger logger)
+
         {
             _userService = userService;
             _userManager = userManager;

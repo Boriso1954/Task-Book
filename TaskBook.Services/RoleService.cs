@@ -49,7 +49,7 @@ namespace TaskBook.Services
                 throw new Exception(string.Format("Unable to find user '{0}'", userName));
             }
 
-            var rolesForUser = UserManager.GetRoles(user.Id);
+            var rolesForUser = GetRolesByUserId(user.Id);
             return rolesForUser;
         }
 

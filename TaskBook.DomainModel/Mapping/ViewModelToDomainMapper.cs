@@ -57,7 +57,5 @@ namespace TaskBook.DomainModel.Mapping
         {
             return Mapper.Map<TSource, TDest>(source, destination);
         }
-
-
     }
 }

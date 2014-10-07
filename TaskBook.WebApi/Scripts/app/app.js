@@ -71,7 +71,7 @@ app.config(function ($routeProvider) {
 });
 
 app.config(function ($httpProvider) {
-    $httpProvider.interceptors.push('authInterceptorService');
+    $httpProvider.interceptors.push("authInterceptorService");
 });
 
 app.filter("dateRange", function () {

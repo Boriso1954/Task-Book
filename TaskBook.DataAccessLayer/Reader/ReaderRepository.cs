@@ -7,7 +7,7 @@ using TaskBook.DomainModel.ViewModels;
 namespace TaskBook.DataAccessLayer.Reader
 {
     /// <summary>
-    /// Provides direct data read operations based on stored procedures in the database
+    /// Provides API for reading data from the database
     /// </summary>
     public sealed class ReaderRepository: IReaderRepository, IDisposable
     {

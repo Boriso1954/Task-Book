@@ -20,8 +20,7 @@ namespace TaskBook.Test
         private TbUserManager _userManager;
         private Mock<ILogger> _logger;
         private Mock<IUserService> _userService;
-
-
+        
         [SetUp]
         public void Init()
         {

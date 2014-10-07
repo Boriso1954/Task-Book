@@ -24,10 +24,6 @@ namespace TaskBook.WebApi
 
             container.LoadConfiguration();
 
-            //var accountInjectionConstructor = new InjectionConstructor(new TaskBookDbContext());
-            //container.RegisterType<IUserStore<TbUser>, UserStore<TbUser>>(accountInjectionConstructor);
-            //container.RegisterType<TaskBook.Services.Interfaces.ITbRoleService, TbRoleService>();
-
             return container;
         }
 
