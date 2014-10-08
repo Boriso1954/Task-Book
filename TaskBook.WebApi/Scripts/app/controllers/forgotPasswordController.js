@@ -11,7 +11,7 @@ app.controller("forgotPasswordController", ["$scope", "passwordService",
                 $scope.forgotPswForm.$setPristine();
             }, function (error) {
                 $scope.successful = false;
-                $scope.message = error.data.Message;
+                $scope.message = error.data.ExceptionMessage;
             });
         };
 

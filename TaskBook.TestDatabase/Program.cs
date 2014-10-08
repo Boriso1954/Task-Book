@@ -48,7 +48,7 @@ namespace TaskBook.TestDatabase
                 }
             }
 
-            // Migrtae to the latest schema and add initial data 
+            // Migrate to the latest schema and add initial data 
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<TaskBookDbContextTest, ConfigurationTest>());
             var configuration = new ConfigurationTest();
             var migrator = new DbMigrator(configuration);
