@@ -44,8 +44,8 @@ app.controller("usersController", ["$scope", "$routeParams", "accountService", "
                     projectService.getProjectsAndManagersByProjectId(authUser.ProjectId)
                     .then(function (result) {
                         $scope.successful = true;
-                        $scope.manager.userName = result.data.UserName;
-                        $scope.manager.projectTitle = result.data.Title;
+                        $scope.manager.userName = result.data.ManagerName;
+                        $scope.manager.projectTitle = result.data.ProjectTitle;
                         projectId = result.data.ProjectId;
                         getUsers(projectId);
                     }, function (error) {

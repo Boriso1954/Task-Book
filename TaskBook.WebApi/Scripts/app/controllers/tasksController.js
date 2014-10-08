@@ -58,8 +58,8 @@ app.controller("tasksController", ["$scope", "$routeParams", "accountService", "
                     projectService.getProjectsAndManagersByProjectId($scope.authUser.ProjectId)
                     .then(function (result) {
                         $scope.successful = true;
-                        $scope.manager.userName = result.data.UserName;
-                        $scope.manager.projectTitle = result.data.Title;
+                        $scope.manager.userName = result.data.ManagerName;
+                        $scope.manager.projectTitle = result.data.ProjectTitle;
                         if ($scope.authUser.Role === "Advanced") {
                             projectId = result.data.ProjectId;
                             getTasksByProjectId(projectId);

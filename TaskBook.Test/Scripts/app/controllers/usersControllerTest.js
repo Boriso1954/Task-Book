@@ -29,7 +29,7 @@ describe("$usersController", function () {
     };
 
     var project = {
-        data: {UserName: "Manager1", Title: "Project2"}
+        data: {UserName: "Manager1", Title: "Project2", ManagerName: "Manager1", ProjectTitle: "Project2"}
     };
 
     var errMessage = "Error message";
@@ -108,8 +108,8 @@ describe("$usersController", function () {
 
         expect($scope.successful).toBeTruthy();
         expect($scope.message).toBe("");
-        expect($scope.manager.userName).toBe(project.data.UserName);
-        expect($scope.manager.projectTitle).toBe(project.data.Title);
+        expect($scope.manager.userName).toBe(project.data.ManagerName);
+        expect($scope.manager.projectTitle).toBe(project.data.ProjectTitle);
         expect($scope.users).toEqual(users.data);
     });
 
