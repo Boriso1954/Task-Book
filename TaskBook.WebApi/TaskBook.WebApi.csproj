@@ -192,6 +192,7 @@
     <Content Include="Scripts\app\controllers\editTaskController.js" />
     <Content Include="Scripts\app\controllers\modalDeleteTaskController.js" />
     <Content Include="Scripts\app\controllers\modalDeleteUserController.js" />
+    <Content Include="Scripts\app\controllers\permissionsController.js" />
     <Content Include="Scripts\app\controllers\resetPasswordController.js" />
     <Content Include="Scripts\app\controllers\tasksController.js" />
     <Content Include="Scripts\app\controllers\usersController.js" />
@@ -206,6 +207,7 @@
     <Content Include="Scripts\app\views\editTask.html" />
     <Content Include="Scripts\app\views\modalDeleteTask.html" />
     <Content Include="Scripts\app\views\modalDeleteUser.html" />
+    <Content Include="Scripts\app\views\permissions.html" />
     <Content Include="Scripts\app\views\resetPassword.html" />
     <Content Include="Scripts\app\views\tasks.html" />
     <Content Include="Scripts\app\views\users.html" />

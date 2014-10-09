@@ -67,6 +67,11 @@ app.config(["$routeProvider", function ($routeProvider) {
         templateUrl: "Scripts/app/views/editTask.html"
     });
 
+    $routeProvider.when("/permissions/:role", {
+        controller: "permissionsController",
+        templateUrl: "Scripts/app/views/permissions.html"
+    });
+
     $routeProvider.otherwise({ redirectTo: "/" });
 }]);
 
