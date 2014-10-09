@@ -9,7 +9,7 @@ namespace TaskBook.WebApi
         {
             // Web API configuration and services
 
-            // Web API routes
+            // For Web API 2 - enable attribute routing
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(

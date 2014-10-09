@@ -47,7 +47,7 @@ app.controller("editUserController", ["$scope", "$routeParams", "$modal", "$loca
         $scope.openModalDeleteUserDialog = function (size) {
 
             var modalInstance = $modal.open({
-                templateUrl: "/Scripts/app/views/modalDeleteUser.html",
+                templateUrl: "Scripts/app/views/modalDeleteUser.html",
                 controller: "modalDeleteUserController",
                 size: size
             });

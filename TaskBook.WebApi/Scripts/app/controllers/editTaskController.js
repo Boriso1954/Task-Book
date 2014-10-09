@@ -64,7 +64,7 @@ app.controller("editTaskController", ["$scope", "$routeParams", "$modal", "$loca
         $scope.openModalDeleteTaskDialog = function (size) {
 
             var modalInstance = $modal.open({
-                templateUrl: "/Scripts/app/views/modalDeleteTask.html",
+                templateUrl: "Scripts/app/views/modalDeleteTask.html",
                 controller: "modalDeleteTaskController",
                 size: size
             });

@@ -32,7 +32,7 @@ app.controller("editProjectController", ["$scope", "$routeParams", "$modal", "$l
         $scope.openModalDeleteProjectDialog = function (size) {
 
             var modalInstance = $modal.open({
-                templateUrl: "/Scripts/app/views/modalDeleteProject.html",
+                templateUrl: "Scripts/app/views/modalDeleteProject.html",
                 controller: "modalDeleteProjectController",
                 size: size
             });

@@ -8,7 +8,7 @@ namespace TaskBook.WebApi
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/vendor/jquery-{version}.js"));
+                       "~/Scripts/vendor/jquery-{version}.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/angular").Include(
                        "~/Scripts/vendor/angular.js",
@@ -22,8 +22,8 @@ namespace TaskBook.WebApi
                        ));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/vendor/bootstrap.js"
-                      ));
+                       "~/Scripts/vendor/bootstrap.js"
+                       ));
 
             bundles.Add(new ScriptBundle("~/bundles/app").Include(
                        "~/Scripts/app/app.js",
@@ -32,11 +32,11 @@ namespace TaskBook.WebApi
                        ));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
-                      "~/Content/loading-bar.css",
-                      "~/Content/site.css",
-                      "~/Content/app.css"
-                      ));
+                       "~/Content/bootstrap.css",
+                       "~/Content/loading-bar.css",
+                       "~/Content/site.css",
+                       "~/Content/app.css"
+                       ));
         }
     }
 }

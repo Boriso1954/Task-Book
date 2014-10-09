@@ -15,14 +15,18 @@ namespace TaskBook.WebApi
             // Initialize automapper
             AutoMapperConfiguration.Initialize();
 
-            // Enables attribute routing
+            // Enable Web API 2 configuration
             GlobalConfiguration.Configure(WebApiConfig.Register);
-            RouteConfig.RegisterRoutes(RouteTable.Routes);
 
-            // The line below duplicates the above line
+            // NOTE: This commented code will NOT work for Web API 2.0.
             //WebApiConfig.Register(GlobalConfiguration.Configuration);
+
+            // Other configurations: routes, bundles, minifications
+            RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
+            // This line is used only in the debug mode to test bundle and minification
+            // Commented out it in the production mode. The minification enables by the debug attribute in the web.config
             //BundleTable.EnableOptimizations = true;
         }
     }
