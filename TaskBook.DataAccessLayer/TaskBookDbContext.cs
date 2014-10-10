@@ -14,9 +14,7 @@ namespace TaskBook.DataAccessLayer
         /// Constructor
         /// </summary>
         public TaskBookDbContext()
-            //: base("TaskBookDbContext")
-            : base("TaskBookDbContextTest") // Only for demo goal
-
+            : base("TaskBookDbContext")
         {
             Configuration.ProxyCreationEnabled = false;
         }
