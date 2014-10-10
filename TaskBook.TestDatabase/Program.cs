@@ -24,8 +24,8 @@ namespace TaskBook.TestDatabase
 
             foreach(var s in args)
             {
-                create = s.ToUpper().Contains("CREATE");
-                demo = s.ToUpper().Contains("DEMO");
+                create |= s.ToUpper().Contains("CREATE");
+                demo |= s.ToUpper().Contains("DEMO");
             }
             help = !(create || demo);
             if(help)
@@ -37,6 +37,7 @@ namespace TaskBook.TestDatabase
             }
 
             Console.WriteLine("Started.");
+            Console.WriteLine("Arguments:\nCreate: {0}\nDemo: {1}", create, demo);
             
             InitializeDataStore(demo);
 
