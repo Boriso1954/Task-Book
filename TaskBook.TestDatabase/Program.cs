@@ -28,8 +28,6 @@ namespace TaskBook.TestDatabase
                 demo = s.ToUpper().Contains("DEMO");
             }
             help = !(create || demo);
-            help = false;
-            demo = true;
             if(help)
             {
                 Console.WriteLine("HELP: TaskBookDatabase.exe [Create] [Demo]");
