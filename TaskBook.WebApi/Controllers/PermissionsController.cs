@@ -48,7 +48,11 @@ namespace TaskBook.WebApi.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            _permissionService.Dispose();
+            if(disposing)
+            {
+                // Release both managed and unmanaged resources
+                _permissionService.Dispose();
+            }
             base.Dispose(disposing);
         }
 
