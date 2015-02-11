@@ -32,7 +32,7 @@ namespace TaskBook.Services
             _smtpClient.EnableSsl = true;
             _smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
             _smtpClient.UseDefaultCredentials = false;
-            _smtpClient.Credentials = new NetworkCredential("b.obuhov@outlook.com", "bMo#1962");
+            _smtpClient.Credentials = new NetworkCredential("b.obuhov@outlook.com", "password");
             _smtpClient.Send(message);
         }
 
@@ -49,7 +49,7 @@ namespace TaskBook.Services
             _smtpClient.EnableSsl = true;
             _smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
             _smtpClient.UseDefaultCredentials = false;
-            _smtpClient.Credentials = new NetworkCredential("b.obuhov@outlook.com", "bMo#1962");
+            _smtpClient.Credentials = new NetworkCredential("b.obuhov@outlook.com", "password");
             return _smtpClient.SendMailAsync(message);
         }
 
