@@ -53,6 +53,7 @@ namespace TaskBook.WebApi.Controllers
         [Route("GetTasks/{projectId:long}")]
         [ResponseType(typeof(IQueryable<TaskVm>))]
         [AuthorizeRoles(RoleKey.Manager, RoleKey.AdvancedUser)]
+        [AuthorizeProject]
         public IHttpActionResult GetTasks(long projectId)
         {
             try
