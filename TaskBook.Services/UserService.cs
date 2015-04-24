@@ -376,7 +376,10 @@ namespace TaskBook.Services
         public void Dispose()
         {
             UserManager.Dispose();
-            _emailService.Dispose();
+            if (_emailService != null)
+            {
+                _emailService.Dispose();
+            }
             _unitOfWork.Dispose();
         }
     }
