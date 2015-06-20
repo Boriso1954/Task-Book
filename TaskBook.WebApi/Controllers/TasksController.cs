@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Security.Claims;
 using System.Web.Http;
 using System.Web.Http.Description;
 using NLog.Mvc;
@@ -58,6 +59,10 @@ namespace TaskBook.WebApi.Controllers
         {
             try
             {
+
+                var identity = User.Identity as ClaimsIdentity;
+                var claims = identity.Claims;
+
                 var tasks = _taskService.GetTasks(projectId);
                 if(tasks == null)
                 {
