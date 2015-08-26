@@ -24,15 +24,15 @@
                     </div>
                 </div>
 
-                <div class="form-group" data-ng-class="{ 'has-error' : userForm.userName.$invalid && userForm.userName.$dirty }">
+                <div class="form-group" data-ng-class="{ 'has-error' : addUserForm.userName.$invalid && addUserForm.userName.$dirty }">
                     <label class="col-md-3 control-label">User name</label>
                     <div class="col-md-9">
-                        <input type="text" name ="userName" class="form-control" placeholder="Enter user name" data-ng-model="user.UserName" required autofocus/>
+                        <input type="text" name="userName" class="form-control" placeholder="Enter user name" data-ng-model="user.UserName" required autofocus />
                         <span data-ng-show="addUserForm.userName.$invalid && addUserForm.userName.$dirty" class="help-block">Name is required.</span>
                     </div>
                 </div>
 
-                <div class="form-group" data-ng-class="{ 'has-error' : userForm.email.$invalid && userForm.email.$dirty }">
+                <div class="form-group" data-ng-class="{ 'has-error' : addUserForm.email.$invalid && addUserForm.email.$dirty }">
                     <label class="col-md-3 control-label">Email</label>
                     <div class="col-md-9">
                         <input type="email" name ="email" class="form-control" placeholder="Enter email" data-ng-model="user.Email"/>
@@ -40,7 +40,7 @@
                     </div>
                 </div>
 
-                <div class="form-group" data-ng-class="{ 'has-error' : userForm.firstName.$invalid && userForm.firstName.$dirty }">
+                <div class="form-group" data-ng-class="{ 'has-error' : addUserForm.firstName.$invalid && addUserForm.firstName.$dirty }">
                     <label class="col-md-3 control-label">First name</label>
                     <div class="col-md-9">
                         <input type="text" name ="firstName" class="form-control" placeholder="Enter first name" data-ng-model="user.FirstName" required/>
@@ -48,7 +48,7 @@
                     </div>
                 </div>
 
-                <div class="form-group" data-ng-class="{ 'has-error' : userForm.lastName.$invalid && userForm.lastName.$dirty }">
+                <div class="form-group" data-ng-class="{ 'has-error' : addUserForm.lastName.$invalid && addUserForm.lastName.$dirty }">
                     <label class="col-md-3 control-label">Last name</label>
                     <div class="col-md-9">
                         <input type="text" name ="lastName" class="form-control" placeholder="Enter last name" data-ng-model="user.LastName" required/>
