@@ -50,11 +50,15 @@
         </div>
     </div>
 
-    <div class="container body-content">
+    <div class="container body-content" data-ng-controller="layoutController">
         @RenderBody()
         <footer>
             <hr />
             <p>&copy; @DateTime.Now.Year - TaskBook</p>
+
+            Version: <span class="label label-primary" data-ng-bind="version"></span></strong>
+            Created: <span class="label label-primary" data-ng-bind="created"></span></strong>
+           
         </footer>
     </div>
 
