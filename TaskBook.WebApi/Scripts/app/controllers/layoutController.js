@@ -1,5 +1,6 @@
 ﻿"use strict";
-app.controller("layoutController", ["$scope", "$location", "$http", "authService", function ($scope, $location, $http, authService) {
+app.controller("layoutController", ["$scope", "$location", "$http", "$modal", "authService",
+    function ($scope, $location, $http, $modal, authService) {
 
     $scope.version = "";
     $scope.created = "";
@@ -21,6 +22,15 @@ app.controller("layoutController", ["$scope", "$location", "$http", "authService
     $scope.refresh = function () {
         var path = $location.path();
         $location.path(path);
+    };
+
+    $scope.openLoginDialog = function (size) {
+
+        var modalInstance = $modal.open({
+            templateUrl: "Scripts/app/views/modalLogin.html",
+            controller: "modalLoginController",
+            size: size
+        });
     };
 
     $scope.authentication = authService.authData;
